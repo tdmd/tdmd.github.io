@@ -2,9 +2,40 @@
 <html>
   <head>
     <style>
-    body {
-      font-family: Helvetica;
+    @font-face {
+    	font-family:libel;
+    	src: url("libel-suit-rg.ttf");
+    }
+
+    body
+    {
+    	margin:10;
+    	padding:10;
+    	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+    	font-weight:100;
+    	color: #fff;
+    	letter-spacing:1;
+
+    	font-family: libel;
       text-align: center;
+      text-transform: uppercase;
+
+    	background:
+        radial-gradient(rgb(0,0,0) 15%, transparent 16%) 0 0,
+        radial-gradient(rgb(0,0,0) 15%, transparent 16%) 8px 8px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+      background-color: rgb(55,55,55);
+      background-size: 3px 3px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #7da1bc;
+    }
+    a:hover {
+        text-decoration: none;
+    	color: orange;
     }
     </style>
 
@@ -17,9 +48,12 @@
     <div class="container">
       <section id="main_content">
 
-       <h2> tdmd Repo </h2>
+       <h1> tdmd Repo </h1>
+
        <h5> A Cydia Repo by tdmd </h5>
-        <h3> <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://tdmd.github.io/" > Add tdmd Repo</a> to Cydia</h3>
+       <p></p>
+        <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://tdmd.github.io/" > Add tdmd Repo</a> to Cydia
+        <p></p>
         <div id="title">
           <span class="credits right"> Reddit  <a href="https://www.reddit.com/user/tdmd/">/u/tdmd</a> </span>
           <br>
