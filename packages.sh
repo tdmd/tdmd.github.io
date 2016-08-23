@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.lockglyph-bmw
+dpkg-deb -Zgzip -b com.tdmd.lockglyph-finger1

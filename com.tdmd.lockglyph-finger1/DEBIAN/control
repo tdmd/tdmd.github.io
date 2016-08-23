@@ -1,0 +1,10 @@
+Package: com.tdmd.lockglyph-finger1
+Name: LockGlyph Fingerprint 1
+Version: 1.0
+Architecture: iphoneos-arm
+Description: LockGlyph Fingerprint 1
+Depends: com.evilgoldfish.lockglyph
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes (LockGlyph)
+Depiction: https://tdmd.github.io/Packages/dep/com.tdmd.lockglyph-finger1/index.html
