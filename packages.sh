@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b ForDEB
+dpkg-deb -Zgzip -b com.tdmd.lockglyph-iphone
