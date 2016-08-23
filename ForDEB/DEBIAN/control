@@ -6,5 +6,5 @@ Description: tdmd - Zelda battery for LockScreen
 Depends: com.bushe.lockhtml4, com.eldwin.iwidgets, com.matchstic.infostats2
 Maintainer: TDMD <tdmd@outlook.com>
 Author: TDMD <tdmd@outlook.com>
-Section: Themes(LockScreens)
+Section: Themes (LockScreens)
 Depiction: https://tdmd.github.io/Packages/dep/tdmd-IS2-LS-battery-zelda/index.html
