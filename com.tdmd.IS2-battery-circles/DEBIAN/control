@@ -1,0 +1,10 @@
+Package: com.tdmd.IS2-battery-circles
+Name: Charging Battery for LockScreen
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Charging Battery for LockScreen
+Depends: com.bushe.lockhtml4, com.eldwin.iwidgets, com.matchstic.infostats2
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes (LockScreens)
+Depiction: https://tdmd.github.io/Depictions/com.tdmd.IS2-battery-circles/index.html
