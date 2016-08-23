@@ -1,0 +1,32 @@
+Package: com.tdmd.tdmd-IS2-LS-battery-zelda
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: TDMD <tdmd@outlook.com>
+Depends: com.bushe.lockhtml4, com.eldwin.iwidgets, com.matchstic.infostats2
+Filename: ./ForDEB.deb
+Size: 36774
+MD5sum: 0123c2e53086922e3f5b052a06034e3c
+SHA1: f9e2906b55a11269e6dc5b5ef2430db9d0920e45
+SHA256: 18340c2ffd8398c9690c96b556f97c81241b407c293c736fbe2782f7b38b55f6
+Section: LockScreens
+Description: tdmd - Zelda battery for LockScreen
+Author: TDMD <tdmd@outlook.com>
+Depiction: https://tdmd.github.io/Packages/dep/tdmd-IS2-LS-battery-zelda/index.html
+Name: tdmd - Zelda battery for LockScreen
+
+Package: net.winneonsword.package
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: Jesse Bryan <winneonsword@gmail.com>
+Filename: ./Package.deb
+Size: 736
+MD5sum: cf80ce5175306da0b8b37cf2632ddcd7
+SHA1: b22acbaa8b4a37a93e600334952f17fa99e4bc31
+SHA256: 205e70b5ed9cd70fb889660578d4c9dfb702dc84e8ac37596a801f447b9d321f
+Section: Themes
+Homepage: http://repo.winneonsword.net
+Description: This is a test package from /u/WinneonSword's tutorial repository!
+Author: Jesse Bryan <winneonsword@gmail.com>
+Depiction: http://repo.winneonsword.net/packages/package.html
+Name: Test Package
+

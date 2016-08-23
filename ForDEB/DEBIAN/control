@@ -1,0 +1,10 @@
+Package: com.tdmd.tdmd-IS2-LS-battery-zelda
+Name: tdmd - Zelda battery for LockScreen
+Version: 1.0
+Architecture: iphoneos-arm
+Description: tdmd - Zelda battery for LockScreen
+Depends: com.bushe.lockhtml4, com.eldwin.iwidgets, com.matchstic.infostats2
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: LockScreens
+Depiction: https://tdmd.github.io/Packages/dep/tdmd-IS2-LS-battery-zelda/index.html
