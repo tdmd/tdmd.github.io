@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>Mario Coin Battery by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+@font-face {
+	font-family:prstart;
+	src: url("prstart.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+	letter-spacing:2;
+
+	background-color: transparent;
+	text-transform: uppercase;
+}
+
+#tblBattery
+{
+	padding: 1px;
+	border-collapse: collapse;
+}
+
+#trBattery
+{
+	border: none;
+}
+
+#tdChargingStatus
+{
+	text-align: center;
+	font-family: prstart;
+}
+
+#tdBattery
+{
+	color: white;
+}
+
+img
+{
+	padding: 2px;
+}
+</style>
+<!-- Cycript data access-->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+</script>
+
+<script type="text/javascript" charset="utf-8">
+function startOnLoad()
+{
+	// set the styles
+	document.getElementById('tdChargingStatus').style.fontSize = strChargeStatusFontSize;
+	document.getElementById('tdChargingStatus').style.color = "white";
+
+	document.getElementById('tdBattery').style.fontSize = "20";
+	document.getElementById('tdBattery').style.color = "white";
+
+	setInterval ( "setBattery()", 1000);
+}
+
+function setBattery()
+{
+	var intBatteryPercent = parseInt(getBatteryPercentage());
+	var intBatteryPercentTemp = intBatteryPercent;
+	var strChargedSymbol = "<img src='coin.png' style='width: 20px;'>";
+	var strDisabledSymbol = "<img src='coin2.png' style='width: 20px;'>";
+	//var strSymbol = strSymbolChoice;
+	var strBatteryTextToDisplay = "";
+
+	var intIndexForEmpty = 0;
+
+	if (intBatteryPercent <= 10)
+	{
+		strBatteryTextToDisplay += strChargedSymbol + " ";
+	}
+	else {
+		while (intBatteryPercentTemp >= 10) {
+	    strBatteryTextToDisplay += strChargedSymbol;
+	    intBatteryPercentTemp = intBatteryPercentTemp - 10;
+			intIndexForEmpty++;
+		}
+	}
+
+	// set the disabled charged coins
+	for (var i = intIndexForEmpty; i < 10; i++) {
+		strBatteryTextToDisplay += strDisabledSymbol;
+	}
+
+	document.getElementById('tdBattery').innerHTML = strBatteryTextToDisplay;
+
+	// show the charging status
+	document.getElementById('tdChargingStatus').innerHTML = (getBatteryState()==2) ? "CHARGING":"";
+
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+<table id="tblBattery">
+	<tr id="trBattery">
+		<td id="tdBattery" nowrap></td>
+	</tr>
+	<tr>
+		<td align=center valign=center>&nbsp;</td>
+	</tr>
+	<tr id="trChargingStatus">
+		<td id="tdChargingStatus" nowrap></td>
+	</tr>
+</table>
+</body>
+</html>
