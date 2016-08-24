@@ -7,6 +7,11 @@
     	src: url("libel-suit-rg.ttf");
     }
 
+    @font-face {
+    	font-family:satisfaction;
+    	src: url("satisfaction.ttf");
+    }
+
     body
     {
     	margin:10;
@@ -43,6 +48,14 @@
     {
       color: orange;
     }
+
+    h1.title
+    {
+      font-family: satisfaction;
+      text-transform: lowercase;
+      font-size: 60px;
+      color: orange;
+    }
     </style>
 
     <meta charset='utf-8'>
@@ -51,15 +64,15 @@
     </head>
     <body>
       <div>
-        <h1> tdmd Repo </h1>
-        <h3> A Cydia Repo by tdmd </h5>
+        <h1 class="title">tdmd</h1>
+        <h3>A Cydia Repository by tdmd</h3>
         <p></p>
-        <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://tdmd.github.io/" > Add tdmd Repo</a> to Cydia
+        <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://tdmd.github.io/" >Click here to add this repository to Cydia</a>
         <p></p>
         <div id="title">
-          <span class="credits right"> Reddit  <a href="https://www.reddit.com/user/tdmd/">/u/tdmd</a> </span>
+          <span class="credits right">Reddit&nbsp;&nbsp;<a href="https://www.reddit.com/user/tdmd/" target="_blank">/u/tdmd</a> </span>
           <br>
-          <span class="credits left"> Twitter <a href="https://twitter.com/mwoolweaver">@tvdmd</a></span>
+          <span class="credits left">Twitter&nbsp;&nbsp;<a href="https://twitter.com/tvdmd" target="_blank">@tvdmd</a></span>
         </div>
       </div>
     </body>
