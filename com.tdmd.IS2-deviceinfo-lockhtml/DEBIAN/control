@@ -1,0 +1,10 @@
+Package: com.tdmd.IS2-deviceinfo-lockhtml
+Name: Device Information on LockScreen
+Version: 1.01
+Architecture: iphoneos-arm
+Description: Device Information on LockScreen
+Depends: com.bushe.lockhtml4, com.matchstic.infostats2
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes (LockScreens)
+Depiction: https://tdmd.github.io/Depictions/com.tdmd.IS2-deviceinfo-lockhtml/index.html
