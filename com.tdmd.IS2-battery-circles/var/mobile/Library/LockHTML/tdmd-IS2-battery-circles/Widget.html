@@ -51,7 +51,6 @@ function startOnLoad()
 	document.getElementById('tdChargingStatus').style.fontSize = strChargeStatusFontSize;
 	document.getElementById('tdChargingStatus').style.color = "white";
 
-
 	document.getElementById('tdBattery').style.fontSize = strSize;
 	document.getElementById('tdBattery').style.color = "white";
 
@@ -60,46 +59,54 @@ function startOnLoad()
 
 function setBattery()
 {
-	var intBatteryPercent = parseInt(getBatteryPercentage());
-	var intBatteryPercentTemp = intBatteryPercent;
-	//var strSymbol = "☉";
-	var strSymbol = strSymbolChoice;
 	var strBatteryTextToDisplay = "";
 
-	var strChargedCircleColor = "4bcf54";
-	var strUnchargedCircleColor = "b5b5b5";
-
-	var intIndexForEmpty = 0;
-
-	strBatteryTextToDisplay += "<span style='color:" + strChargedCircleColor + "'>";
-
-	if (intBatteryPercent <= 10)
-	{
-		strBatteryTextToDisplay += strSymbol + " ";
-	}
-	else {
-		while (intBatteryPercentTemp >= 10) {
-	    strBatteryTextToDisplay += strSymbol + " ";
-	    intBatteryPercentTemp = intBatteryPercentTemp - 10;
-			intIndexForEmpty++;
-		}
-	}
-
-	strBatteryTextToDisplay += "</span>";
-
-	// set the disabled charged circles
-	strBatteryTextToDisplay += "<span style='color:" + strUnchargedCircleColor + "'>";
-
-	for (var i = intIndexForEmpty; i < 10; i++) {
-		strBatteryTextToDisplay += strSymbol + " ";
-	}
-
-	strBatteryTextToDisplay += "</span>";
-
-	document.getElementById('tdBattery').innerHTML = strBatteryTextToDisplay;
+	// get the charging status, 1=not charging, 2=charging
+	var intBatteryState = getBatteryState();
 
 	// show the charging status
-	document.getElementById('tdChargingStatus').innerHTML = (getBatteryState()==2) ? "CHARGING":"";
+	document.getElementById('tdChargingStatus').innerHTML = (intBatteryState==2) ? "CHARGING":"";
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && intBatteryState==2))
+	{
+		var intBatteryPercent = parseInt(getBatteryPercentage());
+		var intBatteryPercentTemp = intBatteryPercent;
+		//var strSymbol = "☉";
+		var strSymbol = strSymbolChoice;
+		var strBatteryTextToDisplay = "";
+
+		var strChargedCircleColor = "4bcf54";
+		var strUnchargedCircleColor = "b5b5b5";
+
+		var intIndexForEmpty = 0;
+
+		strBatteryTextToDisplay += "<span style='color:" + strChargedCircleColor + "'>";
+
+		if (intBatteryPercent <= 10)
+		{
+			strBatteryTextToDisplay += strSymbol + " ";
+		}
+		else {
+			while (intBatteryPercentTemp >= 10) {
+		    strBatteryTextToDisplay += strSymbol + " ";
+		    intBatteryPercentTemp = intBatteryPercentTemp - 10;
+				intIndexForEmpty++;
+			}
+		}
+
+		strBatteryTextToDisplay += "</span>";
+
+		// set the disabled charged circles
+		strBatteryTextToDisplay += "<span style='color:" + strUnchargedCircleColor + "'>";
+
+		for (var i = intIndexForEmpty; i < 10; i++) {
+			strBatteryTextToDisplay += strSymbol + " ";
+		}
+
+		strBatteryTextToDisplay += "</span>";
+	}
+
+	document.getElementById('tdBattery').innerHTML = strBatteryTextToDisplay;
 }
 </script>
 </head>

@@ -68,37 +68,43 @@ function startOnLoad()
 
 function setBattery()
 {
-	var intBatteryPercent = parseInt(getBatteryPercentage());
-	var intBatteryPercentTemp = intBatteryPercent;
-	var strChargedSymbol = "<img src='coin.png' style='width: 20px;'>";
-	var strDisabledSymbol = "<img src='coin2.png' style='width: 20px;'>";
-	//var strSymbol = strSymbolChoice;
 	var strBatteryTextToDisplay = "";
 
-	var intIndexForEmpty = 0;
+	// get the charging status, 1=not charging, 2=charging
+	var intBatteryState = getBatteryState();
 
-	if (intBatteryPercent <= 10)
+	// show the charging status
+	document.getElementById('tdChargingStatus').innerHTML = (intBatteryState==2) ? "CHARGING":"";
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && intBatteryState==2))
 	{
-		strBatteryTextToDisplay += strChargedSymbol + " ";
-	}
-	else {
-		while (intBatteryPercentTemp >= 10) {
-	    strBatteryTextToDisplay += strChargedSymbol;
-	    intBatteryPercentTemp = intBatteryPercentTemp - 10;
-			intIndexForEmpty++;
+		var intBatteryPercent = parseInt(getBatteryPercentage());
+		var intBatteryPercentTemp = intBatteryPercent;
+		var strChargedSymbol = "<img src='coin.png' style='width: 20px;'>";
+		var strDisabledSymbol = "<img src='coin2.png' style='width: 20px;'>";
+		//var strSymbol = strSymbolChoice;
+
+		var intIndexForEmpty = 0;
+
+		if (intBatteryPercent <= 10)
+		{
+			strBatteryTextToDisplay += strChargedSymbol + " ";
+		}
+		else {
+			while (intBatteryPercentTemp >= 10) {
+		    strBatteryTextToDisplay += strChargedSymbol;
+		    intBatteryPercentTemp = intBatteryPercentTemp - 10;
+				intIndexForEmpty++;
+			}
+		}
+
+		// set the disabled charged coins
+		for (var i = intIndexForEmpty; i < 10; i++) {
+			strBatteryTextToDisplay += strDisabledSymbol;
 		}
 	}
 
-	// set the disabled charged coins
-	for (var i = intIndexForEmpty; i < 10; i++) {
-		strBatteryTextToDisplay += strDisabledSymbol;
-	}
-
 	document.getElementById('tdBattery').innerHTML = strBatteryTextToDisplay;
-
-	// show the charging status
-	document.getElementById('tdChargingStatus').innerHTML = (getBatteryState()==2) ? "CHARGING":"";
-
 }
 </script>
 </head>

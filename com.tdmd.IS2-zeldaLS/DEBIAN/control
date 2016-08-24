@@ -1,6 +1,6 @@
 Package: com.tdmd.IS2-zeldaLS
 Name: Zelda battery for LockScreen
-Version: 1.01
+Version: 1.02
 Architecture: iphoneos-arm
 Description: Zelda battery for LockScreen
 Depends: com.bushe.lockhtml4, com.matchstic.infostats2

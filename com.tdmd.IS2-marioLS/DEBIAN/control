@@ -1,6 +1,6 @@
 Package: com.tdmd.IS2-marioLS
 Name: Mario battery for LockScreen
-Version: 1.0
+Version: 1.02
 Architecture: iphoneos-arm
 Description: Mario battery for LockScreen
 Depends: com.bushe.lockhtml4, com.matchstic.infostats2

@@ -4,6 +4,16 @@
 <array>
 <dict>
 	<key>default</key>
+	<false/>
+	<key>label</key>
+	<string>Only show when plugged in</string>
+	<key>name</key>
+	<string>blnOnlyShowWhenPluggedIn</string>
+	<key>type</key>
+	<string>switch</string>
+</dict>
+<dict>
+	<key>default</key>
 	<string>circle</string>
 	<key>label</key>
 	<string>symbol</string>
