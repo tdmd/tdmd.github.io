@@ -1,8 +1,8 @@
 Package: com.tdmd.LS1
-Name: TDMD LockScreen 1
+Name: tdMD LockScreen 1
 Version: 1.02
 Architecture: iphoneos-arm
-Description: TDMD LockScreen 1
+Description: tdMD LockScreen 1
 Depends: com.bushe.lockhtml4, com.macciti.tdmdclockcalendarwidgetpack1
 Maintainer: TDMD <tdmd@outlook.com>
 Author: TDMD <tdmd@outlook.com>
