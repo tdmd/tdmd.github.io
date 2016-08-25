@@ -32,51 +32,71 @@
         function showFeaturedThemes()
         {
 
-          var strHTML = "<br>";
-          var intArrayLength = 1;
+          var strHTML = "<table style='width: 100%; border-collapse: collapse;'>";
+          var intArrayLength = 3;
 
           var arrFeaturedThemes = new Array();
-          for (var i=0; i < 1; i++)
+          for (var i=0; i < intArrayLength; i++)
           {
-            arrFeaturedThemes[i] = new Array(3);
+            arrFeaturedThemes[i] = new Array(6);
           }
 
           arrFeaturedThemes[0][0] = "32aa";
           arrFeaturedThemes[0][1] = "tdmd";
           arrFeaturedThemes[0][2] = (iOS) ? "cydia://package/com.macciti.32aa":"http://cydia.saurik.com/package/com.macciti.32aa/";
+          arrFeaturedThemes[0][3] = "2.99";
+          arrFeaturedThemes[0][4] = "http://cydia.saurik.com/icon@2x/com.macciti.32aa.png";
+          arrFeaturedThemes[0][5] = 0;
+
+          arrFeaturedThemes[1][0] = "34aa";
+          arrFeaturedThemes[1][1] = "tdmd";
+          arrFeaturedThemes[1][2] = (iOS) ? "cydia://package/com.macciti.34aa":"http://cydia.saurik.com/package/com.macciti.34aa/";
+          arrFeaturedThemes[1][3] = "3.29";
+          arrFeaturedThemes[1][4] = "http://cydia.saurik.com/icon@2x/com.macciti.34aa.png";
+          arrFeaturedThemes[1][5] = 1;
+
+          arrFeaturedThemes[2][0] = "Pasties";
+          arrFeaturedThemes[2][1] = "tdmd";
+          arrFeaturedThemes[2][2] = (iOS) ? "cydia://package/com.macciti.pasties":"http://cydia.saurik.com/package/com.macciti.pasties/";
+          arrFeaturedThemes[2][3] = "3.50";
+          arrFeaturedThemes[2][4] = "http://cydia.saurik.com/icon@2x/com.macciti.pasties.png";
+          arrFeaturedThemes[2][5] = 1;
 
           for (var i=0; i < arrFeaturedThemes.length; i++)
           {
+            strHTML += "<tr style='border-bottom: 1pt solid #ddd;'>";
+            strHTML += "<td style='vertical-align: top; padding: 3px;'>"
             strHTML += "<a href='" + arrFeaturedThemes[i][2] + "'>";
-            strHTML += "<img class='icon' src='http://cydia.saurik.com/icon@2x/com.macciti.32aa.png' width='58' height='58'>";
-            strHTML += "<div><div><label><p>" + arrFeaturedThemes[i][0] + "</p></label></div></div></a>";
+            strHTML += "<img style='border-radius: 4px; width: 40px; height:40px;' src='" + arrFeaturedThemes[i][4] + "'>";
+            strHTML += "</a></td>";
+            strHTML += "<td style='vertical-align: top; padding-left: 5px;' nowrap width='100%'>";
+            strHTML += "<a style='color: #50a5f4;' href='" + arrFeaturedThemes[i][2] + "'>" + arrFeaturedThemes[i][0] + "</a>";
+            strHTML += "<br>" + arrFeaturedThemes[i][1];
+            strHTML += "</td><td style='vertical-align: top;'>";
+            strHTML += "<table style='width:100%;height:100%'><tr><td style='vertical-align:top'>";
+            strHTML += "<span style='font-size: smaller; background-color: #50a5f4; border-top-right-radius: 0px; border-bottom-left-radius: 8px; padding: 4px; color: #fff;'>$" + arrFeaturedThemes[i][3] + "</span></tr>";
+            strHTML += (arrFeaturedThemes[i][5]==1) ? "<tr><td style='text-align:right;height:100%;vertical-align: bottom;'><span style='vertical-align: bottom; font-size: 5px; background-color: #cb4949; border-top-left-radius: 8px; padding: 4px; color: #fff;'>NEW</span></tr>":"";
+            strHTML += "</table><td>";
+            strHTML += "</tr>";
+            //cb4949
+
           }
 
+          strHTML += "</table>";
           document.getElementById('divFeaturedThemes').innerHTML = strHTML;
         }
         </script>
     </head>
     <body class="pinstripe" onload="startOnLoad()">
         <panel>
-            <label>Info</label>
+            <label>Featured Themes</label>
             <fieldset>
-                <div style="padding: 10px; font-weight: bold;">tdMD Featured Themes</div>
+                <div style="padding: 10px; font-weight: bold;">Handpicked by tdMD</div>
                 <div id="divFeaturedThemes"></div>
             </fieldset>
-            <label>Description</label>
+            <label>Donations</label>
             <fieldset>
               <div><div><label><p>
-                This is a series of lockscreens created by me (tdMD).  This is the LS1.
-                <div style="border-bottom: 1px solid #ddd; width: 100%; margin-top: 5px; margin-bottom: 10px;">&nbsp;</div>
-
-                <div style="font-size: smaller; padding: 5px; color: #fff; background-color: #d74343; text-transform: uppercase;">
-                  Please note:
-                  <br><br>
-                  This requires LockHTML4 to work properly.  Also, you must have purchased my widget pack (tdmd ClockCalendar Widget Pack 1)
-                  available from the macciti repo.
-                  <br><br>
-                  Links to the required dependencies are available below in the Dependencies section</div>
-                  <div style="border-top: 1px solid #ddd; width: 100%; margin-top: 5px; margin-bottom: 5px;">&nbsp;</div>
                   <span class="credits left">If you appreciate my work, consider a small donation to buy me coffee.&nbsp;&nbsp;</span>
                   <br><br>
                   <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -95,13 +115,13 @@
             <label>Theming Engines</label>
             <fieldset>
               <a id="lnkAnemone">
-                  <img class="icon" src="anemone.png" width="58" height="58">
+                  <img class="icon" src="anemone.png" width="58" height="58" style='border-radius: 8px;' >
                   <div><div><label><p>
                       Anemone
                   </p></label></div></div>
               </a>
               <a id="lnkWinterboard">
-                  <img class="icon" src="winterboard.png" width="58" height="58">
+                  <img class="icon" src="winterboard.png" width="58" height="58" style='border-radius: 8px;' >
                   <div><div><label><p>
                       Winterboard
                   </p></label></div></div>
@@ -110,7 +130,7 @@
             <label>Links</label>
             <fieldset>
                 <a href="https://twitter.com/tvdmd">
-                    <img class="icon" src="../resources/twitter.png" width="58" height="58">
+                    <img class="icon" src="../resources/twitter.png" width="58" height="58" style='border-radius: 8px;' >
                     <div><div><label><p>
                         Twitter
                     </p></label></div></div>
