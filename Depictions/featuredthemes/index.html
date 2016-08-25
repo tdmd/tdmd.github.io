@@ -27,6 +27,7 @@
           document.getElementById('lnkWinterboard').href = strWinterboardLink;
 
           showFeaturedThemes();
+          showFeaturedThemer();
         }
 
         function showFeaturedThemes()
@@ -129,6 +130,103 @@
           document.getElementById('divFeaturedThemes').appendChild(fsThemes);
         }
 
+        function showFeaturedThemer()
+        {
+          var intArrayLength = 2;
+
+          var arrFeaturedThemes = new Array();
+          for (var i=0; i < intArrayLength; i++)
+          {
+            arrFeaturedThemes[i] = new Array(6);
+          }
+
+          arrFeaturedThemes[0][0] = "32aa";
+          arrFeaturedThemes[0][1] = "tdmd";
+          arrFeaturedThemes[0][2] = (iOS) ? "cydia://package/com.macciti.32aa":"http://cydia.saurik.com/package/com.macciti.32aa/";
+          arrFeaturedThemes[0][3] = "2.99";
+          arrFeaturedThemes[0][4] = "http://cydia.saurik.com/icon@2x/com.macciti.32aa.png";
+          arrFeaturedThemes[0][5] = 0;
+
+          arrFeaturedThemes[1][0] = "34aa";
+          arrFeaturedThemes[1][1] = "tdmd";
+          arrFeaturedThemes[1][2] = (iOS) ? "cydia://package/com.macciti.34aa":"http://cydia.saurik.com/package/com.macciti.34aa/";
+          arrFeaturedThemes[1][3] = "3.29";
+          arrFeaturedThemes[1][4] = "http://cydia.saurik.com/icon@2x/com.macciti.34aa.png";
+          arrFeaturedThemes[1][5] = 1;
+
+          var lnkNewItemToAdd;
+          var imgNewItemToAdd;
+          var divNewItemToAdd1;
+          var divNewItemToAdd2;
+          var lblNewItemToAdd;
+          var pNewItemToAdd;
+          var pLabelThemeName;
+          var pLabelThemeAuthor;
+          var pBR;
+          var divDivider;
+          var pLabelThemePrice;
+
+          var imgFeaturedThemer;
+
+          var fsThemes = document.createElement("fieldset");
+          imgFeaturedThemer = document.createElement("img");
+          imgFeaturedThemer.setAttribute('src','featuredthemer/featuredthemer_avatar.png');
+          imgFeaturedThemer.setAttribute("width", "100%");
+          fsThemes.appendChild(imgFeaturedThemer);
+
+          for (var i=0; i < arrFeaturedThemes.length; i++)
+          {
+            lnkNewItemToAdd = document.createElement("a");
+            lnkNewItemToAdd.setAttribute('href',arrFeaturedThemes[i][2]);
+            lnkNewItemToAdd.setAttribute('id',"lnkTheme" + i);
+
+            imgNewItemToAdd = document.createElement("img");
+            imgNewItemToAdd.setAttribute('src',arrFeaturedThemes[i][4]);
+            //imgNewItemToAdd.className = "icon";
+            imgNewItemToAdd.setAttribute("style", "border-radius: 5px; float:left; margin: 7px;");
+            imgNewItemToAdd.setAttribute("width", "45");
+            lnkNewItemToAdd.appendChild(imgNewItemToAdd);
+
+            divNewItemToAdd1 = document.createElement("div");
+            divNewItemToAdd1.setAttribute("style","vertical-align:top;");
+            divNewItemToAdd2 = document.createElement("div");
+            lblNewItemToAdd = document.createElement("label");
+            pNewItemToAdd = document.createElement("p");
+            pNewItemToAdd.setAttribute("style","vertical-align:top;");
+
+            pLabelThemePrice = document.createElement('span');
+            pLabelThemePrice.setAttribute("style", "float:right;padding:4px;border-radius:5px;font-weight:normal;text-shadow:none;font-size:12px;color:#fff;background-color:#df3d3d;");
+            pLabelThemePrice.innerText = arrFeaturedThemes[i][3];
+
+            pLabelThemeName = document.createElement('label');
+            pLabelThemeName.innerText = arrFeaturedThemes[i][0];
+
+            //pLabelThemeAuthor = document.createElement('label');
+            //pLabelThemeAuthor.innerText = arrFeaturedThemes[i][1];
+
+            pNewItemToAdd.appendChild(pLabelThemeName);
+
+            pBR = document.createElement('br');
+            pNewItemToAdd.appendChild(pBR);
+
+            //pNewItemToAdd.appendChild(pLabelThemeAuthor);
+
+            pNewItemToAdd.appendChild(pLabelThemePrice);
+
+            lblNewItemToAdd.appendChild(pNewItemToAdd);
+            divNewItemToAdd2.appendChild(lblNewItemToAdd);
+            divNewItemToAdd1.appendChild(divNewItemToAdd2);
+
+            lnkNewItemToAdd.appendChild(divNewItemToAdd1);
+
+            fsThemes.appendChild(lnkNewItemToAdd);
+
+            fsThemes.appendChild(getDivider());
+          }
+
+          document.getElementById('divFeaturedThemer').appendChild(fsThemes);
+        }
+
         function getDivider()
         {
           var divDivider = document.createElement("div");
@@ -137,7 +235,7 @@
         }
         </script>
         <style>
-        #divFeaturedThemes
+        #divFeaturedThemes, #divFeaturedThemer
         {
           background-color: #fff;
           border-top: 1px solid #ddd;
@@ -146,6 +244,8 @@
     </head>
     <body class="pinstripe" onload="startOnLoad()">
         <panel>
+            <label>Featured Themer</label>
+            <div id="divFeaturedThemer"></div>
             <label>Featured Themes</label>
             <div id="divFeaturedThemes"></div>
             <label>Donations</label>
