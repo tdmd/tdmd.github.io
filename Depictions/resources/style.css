@@ -90,16 +90,16 @@ sup {
     margin-top: -6px
 }
 pre {
-    font-family: monospace
+    font-family: inherit;
 }
 html.cytyle-faux {
-    font-family: Helvetica, Arial
+    font-family: inherit;
 }
 html.cytyle-faux #cytyle-metric {
     font-size: 16px
 }
 html.cytyle-flat {
-    font-family: "Helvetica Neue", Helvetica, Arial
+    font-family: inherit;
 }
 html.cytyle-flat #cytyle-metric {
     font-size: 17px
@@ -253,7 +253,7 @@ panel>fieldset {
 panel>fieldset.terminal {
     background-color: #000;
     color: #fff;
-    font-family: monospace;
+    font-family: inherit;
     font-size: 14px;
     font-weight: bold;
     padding: 10px
