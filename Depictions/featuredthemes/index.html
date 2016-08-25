@@ -31,8 +31,6 @@
 
         function showFeaturedThemes()
         {
-
-          var strHTML = "<table style='width: 100%; border-collapse: collapse;'>";
           var intArrayLength = 3;
 
           var arrFeaturedThemes = new Array();
@@ -55,6 +53,7 @@
           arrFeaturedThemes[1][4] = "http://cydia.saurik.com/icon@2x/com.macciti.34aa.png";
           arrFeaturedThemes[1][5] = 1;
 
+
           arrFeaturedThemes[2][0] = "Pasties";
           arrFeaturedThemes[2][1] = "tdmd";
           arrFeaturedThemes[2][2] = (iOS) ? "cydia://package/com.macciti.pasties":"http://cydia.saurik.com/package/com.macciti.pasties/";
@@ -62,42 +61,97 @@
           arrFeaturedThemes[2][4] = "http://cydia.saurik.com/icon@2x/com.macciti.pasties.png";
           arrFeaturedThemes[2][5] = 1;
 
+
+          var lnkNewItemToAdd;
+          var imgNewItemToAdd;
+          var divNewItemToAdd1;
+          var divNewItemToAdd2;
+          var lblNewItemToAdd;
+          var pNewItemToAdd;
+          var pLabelThemeName;
+          var pLabelThemeAuthor;
+          var pBR;
+          var divDivider;
+          var pLabelThemePrice;
+
+          var fsThemes = document.createElement("fieldset");
+
           for (var i=0; i < arrFeaturedThemes.length; i++)
           {
-            strHTML += "<tr style='border-bottom: 1pt solid #ddd;'>";
-            strHTML += "<td style='vertical-align: top; padding: 3px;'>"
-            strHTML += "<a href='" + arrFeaturedThemes[i][2] + "'>";
-            strHTML += "<img style='border-radius: 4px; width: 40px; height:40px;' src='" + arrFeaturedThemes[i][4] + "'>";
-            strHTML += "</a></td>";
-            strHTML += "<td style='vertical-align: top; padding-left: 5px;' nowrap width='100%'>";
-            strHTML += "<a style='color: #50a5f4;' href='" + arrFeaturedThemes[i][2] + "'>" + arrFeaturedThemes[i][0] + "</a>";
-            strHTML += "<br>" + arrFeaturedThemes[i][1];
-            strHTML += "</td><td style='vertical-align: top;'>";
-            strHTML += "<table style='width:100%;height:100%'><tr><td style='vertical-align:top'>";
-            strHTML += "<span style='font-size: smaller; background-color: #50a5f4; border-top-right-radius: 0px; border-bottom-left-radius: 8px; padding: 4px; color: #fff;'>$" + arrFeaturedThemes[i][3] + "</span></tr>";
-            strHTML += (arrFeaturedThemes[i][5]==1) ? "<tr><td style='text-align:right;height:100%;vertical-align: bottom;'><span style='vertical-align: bottom; font-size: 5px; background-color: #cb4949; border-top-left-radius: 8px; padding: 4px; color: #fff;'>NEW</span></tr>":"";
-            strHTML += "</table><td>";
-            strHTML += "</tr>";
-            //cb4949
+            lnkNewItemToAdd = document.createElement("a");
+            lnkNewItemToAdd.setAttribute('href',arrFeaturedThemes[i][2]);
+            lnkNewItemToAdd.setAttribute('id',"lnkTheme" + i);
 
+            imgNewItemToAdd = document.createElement("img");
+            imgNewItemToAdd.setAttribute('src',arrFeaturedThemes[i][4]);
+            //imgNewItemToAdd.className = "icon";
+            imgNewItemToAdd.setAttribute("style", "border-radius: 5px; float:left; margin: 7px;");
+            imgNewItemToAdd.setAttribute("width", "45");
+            lnkNewItemToAdd.appendChild(imgNewItemToAdd);
+
+            divNewItemToAdd1 = document.createElement("div");
+            divNewItemToAdd1.setAttribute("style","vertical-align:top;");
+            divNewItemToAdd2 = document.createElement("div");
+            lblNewItemToAdd = document.createElement("label");
+            pNewItemToAdd = document.createElement("p");
+            pNewItemToAdd.setAttribute("style","vertical-align:top;");
+
+            pLabelThemePrice = document.createElement('span');
+            pLabelThemePrice.setAttribute("style", "float:right;padding:4px;border-radius:5px;font-weight:normal;text-shadow:none;font-size:12px;color:#fff;background-color:#df3d3d;");
+            pLabelThemePrice.innerText = arrFeaturedThemes[i][3];
+
+            pLabelThemeName = document.createElement('label');
+            pLabelThemeName.innerText = arrFeaturedThemes[i][0];
+
+            pLabelThemeAuthor = document.createElement('label');
+            pLabelThemeAuthor.innerText = arrFeaturedThemes[i][1];
+
+            pNewItemToAdd.appendChild(pLabelThemeName);
+
+            pBR = document.createElement('br');
+            pNewItemToAdd.appendChild(pBR);
+
+            pNewItemToAdd.appendChild(pLabelThemeAuthor);
+
+            pNewItemToAdd.appendChild(pLabelThemePrice);
+
+            lblNewItemToAdd.appendChild(pNewItemToAdd);
+            divNewItemToAdd2.appendChild(lblNewItemToAdd);
+            divNewItemToAdd1.appendChild(divNewItemToAdd2);
+
+            lnkNewItemToAdd.appendChild(divNewItemToAdd1);
+
+            fsThemes.appendChild(lnkNewItemToAdd);
+
+            fsThemes.appendChild(getDivider());
           }
 
-          strHTML += "</table>";
-          document.getElementById('divFeaturedThemes').innerHTML = strHTML;
+          document.getElementById('divFeaturedThemes').appendChild(fsThemes);
+        }
+
+        function getDivider()
+        {
+          var divDivider = document.createElement("div");
+          divDivider.setAttribute("style", "border-bottom:1px solid #ddd;");
+          return divDivider;
         }
         </script>
+        <style>
+        #divFeaturedThemes
+        {
+          background-color: #fff;
+          border-top: 1px solid #ddd;
+        }
+        </style>
     </head>
     <body class="pinstripe" onload="startOnLoad()">
         <panel>
             <label>Featured Themes</label>
-            <fieldset>
-                <div style="padding: 10px; font-weight: bold;">Handpicked by tdMD</div>
-                <div id="divFeaturedThemes"></div>
-            </fieldset>
+            <div id="divFeaturedThemes"></div>
             <label>Donations</label>
             <fieldset>
               <div><div><label><p>
-                  <span class="credits left">If you appreciate my work, consider a small donation to buy me coffee.&nbsp;&nbsp;</span>
+                  <span>If you appreciate my work, consider a small donation to buy me coffee.&nbsp;&nbsp;</span>
                   <br><br>
                   <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                   <input type="hidden" name="cmd" value="_donations">
@@ -116,15 +170,11 @@
             <fieldset>
               <a id="lnkAnemone">
                   <img class="icon" src="anemone.png" width="58" height="58" style='border-radius: 8px;' >
-                  <div><div><label><p>
-                      Anemone
-                  </p></label></div></div>
+                  <div><div><label><p>Anemone</p></label></div></div>
               </a>
               <a id="lnkWinterboard">
                   <img class="icon" src="winterboard.png" width="58" height="58" style='border-radius: 8px;' >
-                  <div><div><label><p>
-                      Winterboard
-                  </p></label></div></div>
+                  <div><div><label><p>Winterboard</p></label></div></div>
               </a>
             </fieldset>
             <label>Links</label>
