@@ -167,12 +167,24 @@
           var pLabelThemePrice;
 
           var imgFeaturedThemer;
+          var spnFeaturedThemerDetails;
 
           var fsThemes = document.createElement("fieldset");
           imgFeaturedThemer = document.createElement("img");
           imgFeaturedThemer.setAttribute('src','featuredthemer/featuredthemer_avatar.png');
           imgFeaturedThemer.setAttribute("width", "100%");
           fsThemes.appendChild(imgFeaturedThemer);
+
+          pBR = document.createElement('br');
+          fsThemes.appendChild(pBR);
+
+          spnFeaturedThemerDetails = document.createElement("p");
+
+          spnFeaturedThemerDetails.innerHTML = "tdMD has been theming ever since he left the womb.<br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?";
+          spnFeaturedThemerDetails.setAttribute("style","width:100%; text-align:left;vertical-align:top;padding:10px;");
+          fsThemes.appendChild(spnFeaturedThemerDetails);
+
+          fsThemes.appendChild(getDivider());
 
           for (var i=0; i < arrFeaturedThemes.length; i++)
           {
