@@ -132,7 +132,7 @@
 
         function showFeaturedThemer()
         {
-          var intArrayLength = 2;
+          var intArrayLength = 1;
 
           var arrFeaturedThemes = new Array();
           for (var i=0; i < intArrayLength; i++)
@@ -140,19 +140,12 @@
             arrFeaturedThemes[i] = new Array(6);
           }
 
-          arrFeaturedThemes[0][0] = "32aa";
-          arrFeaturedThemes[0][1] = "tdmd";
-          arrFeaturedThemes[0][2] = (iOS) ? "cydia://package/com.macciti.32aa":"http://cydia.saurik.com/package/com.macciti.32aa/";
+          arrFeaturedThemes[0][0] = "Sublimity8";
+          arrFeaturedThemes[0][1] = "subywrex";
+          arrFeaturedThemes[0][2] = (iOS) ? "cydia://package/com.modmyi.sublimity8":"http://cydia.saurik.com/package/com.modmyi.sublimity8/";
           arrFeaturedThemes[0][3] = "2.99";
-          arrFeaturedThemes[0][4] = "http://cydia.saurik.com/icon@2x/com.macciti.32aa.png";
+          arrFeaturedThemes[0][4] = "http://cydia.saurik.com/icon@2x/com.modmyi.sublimity8.png";
           arrFeaturedThemes[0][5] = 0;
-
-          arrFeaturedThemes[1][0] = "34aa";
-          arrFeaturedThemes[1][1] = "tdmd";
-          arrFeaturedThemes[1][2] = (iOS) ? "cydia://package/com.macciti.34aa":"http://cydia.saurik.com/package/com.macciti.34aa/";
-          arrFeaturedThemes[1][3] = "3.29";
-          arrFeaturedThemes[1][4] = "http://cydia.saurik.com/icon@2x/com.macciti.34aa.png";
-          arrFeaturedThemes[1][5] = 1;
 
           var lnkNewItemToAdd;
           var imgNewItemToAdd;
@@ -169,22 +162,27 @@
           var imgFeaturedThemer;
           var spnFeaturedThemerDetails;
 
-          var fsThemes = document.createElement("fieldset");
+          var strFeaturedThemerTwitterHandle = "subywrex";
+          var strFeaturedThemerTwitter = "https://twitter.com/" + strFeaturedThemerTwitterHandle;
+          var strFeaturedThemername = "Subywrex";
+          var strFeaturedThemerImage = "https://pbs.twimg.com/profile_images/455481560133681153/3Ynheur0_400x400.jpeg";
+
+          var fsFeaturedThemer = document.createElement("fieldset");
           imgFeaturedThemer = document.createElement("img");
-          imgFeaturedThemer.setAttribute('src','featuredthemer/featuredthemer_avatar.png');
+          imgFeaturedThemer.setAttribute('src',strFeaturedThemerImage);
           imgFeaturedThemer.setAttribute("width", "100%");
-          fsThemes.appendChild(imgFeaturedThemer);
+          fsFeaturedThemer.appendChild(imgFeaturedThemer);
 
           pBR = document.createElement('br');
-          fsThemes.appendChild(pBR);
+          fsFeaturedThemer.appendChild(pBR);
 
           spnFeaturedThemerDetails = document.createElement("p");
 
-          spnFeaturedThemerDetails.innerHTML = "tdMD has been theming ever since he left the womb.<br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?";
+          spnFeaturedThemerDetails.innerHTML = strFeaturedThemername + " has been theming ever since he left the womb.<br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?";
           spnFeaturedThemerDetails.setAttribute("style","width:100%; text-align:left;vertical-align:top;padding:10px;");
-          fsThemes.appendChild(spnFeaturedThemerDetails);
+          fsFeaturedThemer.appendChild(spnFeaturedThemerDetails);
 
-          fsThemes.appendChild(getDivider());
+          fsFeaturedThemer.appendChild(getDivider());
 
           for (var i=0; i < arrFeaturedThemes.length; i++)
           {
@@ -231,12 +229,45 @@
 
             lnkNewItemToAdd.appendChild(divNewItemToAdd1);
 
-            fsThemes.appendChild(lnkNewItemToAdd);
+            fsFeaturedThemer.appendChild(lnkNewItemToAdd);
 
-            fsThemes.appendChild(getDivider());
+            fsFeaturedThemer.appendChild(getDivider());
           }
 
-          document.getElementById('divFeaturedThemer').appendChild(fsThemes);
+          // add featured themer twitter
+
+          lnkNewItemToAdd = document.createElement("a");
+          lnkNewItemToAdd.setAttribute('href',strFeaturedThemerTwitter);
+          lnkNewItemToAdd.setAttribute('id',"lnkFeaturedThemerTwitter");
+
+          imgNewItemToAdd = document.createElement("img");
+          imgNewItemToAdd.setAttribute('src','../resources/twitter.png');
+          imgNewItemToAdd.setAttribute("style", "border-radius: 5px; float:left; margin: 7px;");
+          imgNewItemToAdd.className = "icon";
+          lnkNewItemToAdd.appendChild(imgNewItemToAdd);
+
+          divNewItemToAdd1 = document.createElement("div");
+          divNewItemToAdd1.setAttribute("style","vertical-align:top;");
+          divNewItemToAdd2 = document.createElement("div");
+          lblNewItemToAdd = document.createElement("label");
+          pNewItemToAdd = document.createElement("p");
+          pNewItemToAdd.setAttribute("style","vertical-align:top;");
+
+          var pLabelFeaturedThemerTwitterHandle = document.createElement('label');
+          pLabelFeaturedThemerTwitterHandle.innerText = "@" + strFeaturedThemerTwitterHandle;
+
+          pNewItemToAdd.appendChild(pLabelFeaturedThemerTwitterHandle);
+
+          lblNewItemToAdd.appendChild(pNewItemToAdd);
+          divNewItemToAdd2.appendChild(lblNewItemToAdd);
+          divNewItemToAdd1.appendChild(divNewItemToAdd2);
+
+          lnkNewItemToAdd.appendChild(divNewItemToAdd1);
+
+          fsFeaturedThemer.appendChild(lnkNewItemToAdd);
+          fsFeaturedThemer.appendChild(getDivider());
+
+          document.getElementById('divFeaturedThemer').appendChild(fsFeaturedThemer);
         }
 
         function getDivider()
