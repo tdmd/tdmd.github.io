@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.IS2-zeldaLS
+dpkg-deb -Zgzip -b com.tdmd.LS1

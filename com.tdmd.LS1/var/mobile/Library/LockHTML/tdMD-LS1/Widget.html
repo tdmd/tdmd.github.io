@@ -1,0 +1,212 @@
+<html>
+<head>
+<title>tdMD - LS1 by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+	letter-spacing:1;
+	color: #fff;
+
+	font-family: libel;
+	background-color:transparent;
+	text-transform: uppercase;
+
+}
+
+#tblMainContainer
+{
+	position:absolute;
+	z-index:-90;
+	height: auto;
+	border-collapse: collapse;
+}
+
+td
+{
+	padding: 5px;
+	text-align: center;
+}
+
+.tdDividerTop
+{
+	border-bottom: 1px solid #fff;
+}
+
+.tdDividerBottom
+{
+	border-top: 1px solid #fff;
+}
+
+#trNext
+{
+	font-size: smaller;
+	color: #ddd;
+	border-top: 1px solid #fff;
+}
+
+#trPrevious
+{
+	font-size: smaller;
+	color: #ddd;
+	border-bottom: 1px solid #fff;
+}
+</style>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var strLanguage = "de";
+var strFontSize = "40";
+var blnAbbreviateDay = true;
+var blnAbbreviateMonth = true;
+*/
+
+var arrWeekday = new Array(7);
+var arrWeekdayAbbreviated = new Array(7);
+var arrMonth = new Array(12);
+var arrMonthAbbreviated = new Array(12);
+
+// different language support
+switch (strLanguage) {
+case "fr":
+	var arrWeekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+	var arrWeekdayAbbreviated = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+	var arrMonth = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
+	var arrMonthAbbreviated = ["janv","févr","mars","avril","mai","juin","juil","août","sept","oct","nov","déc"];
+  break;
+case "de":
+	var arrWeekday = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+	var arrWeekdayAbbreviated = ["So","Mo","Di","Mi","Do","Fri","Sa"];
+	var arrMonth = ["Januar","Februar","Marz","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+	var arrMonthAbbreviated = ["Jän","Feb","März","Apr","Mai","Juni","Juli","Aug","Sept","Okt","Nov","Dez"];
+  break;
+case "sp":
+	var arrWeekday = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
+	var arrWeekdayAbbreviated = ["Do","Lu","Ma","Mi","Ju","Vi","Sa"];
+	var arrMonth = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+	var arrMonthAbbreviated = ["enero","Feb","marzo","abr","mayo","jun","jul","agosto","sept","oct","nov","dic"];
+  break;
+case "it":
+	var arrWeekday = ["Domenica","Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato"];
+	var arrWeekdayAbbreviated = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+	var arrMonth = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+	var arrMonthAbbreviated = ["genn","febbr","mar","apr","magg","giugno","luglio","ag","sett","ott","nov","dic"];
+  break;
+case "vn":
+	var arrWeekday = ["chủ nhật", "thứ hai","thứ ba","thứ tư","thứ năm","thứ sáu","thứ bảy"];
+	var arrWeekdayAbbreviated = ["chủ nhật", "thứ 2", "thứ 3", "thứ 4", "thứ 5", "thứ 6", "thứ 7" ];
+	var arrMonth = ["tháng một","tháng hai","tháng ba","tháng tư","tháng năm","tháng sáu","tháng bảy","tháng tám","tháng chín","tháng mười","tháng mười một","tháng mười hai"];
+	var arrMonthAbbreviated = ["tháng 1","tháng 2","tháng 3","tháng 4","tháng 5","tháng 6","tháng 7","tháng 8","tháng 9","tháng 10","tháng 11","tháng 12"];;
+	break;
+default:
+	var arrWeekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var arrWeekdayAbbreviated = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+	var arrMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+	var arrMonthAbbreviated = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  break;
+}
+
+// set opacity for disabled items, from 0 to 1
+var strDisabledItemOpacity = "0.2";
+
+function startOnLoad()
+{
+	document.getElementById('tblMainContainer').style.fontSize = strFontSize;
+	document.getElementById('trNext').style.fontSize = parseInt(strFontSize) - 10;
+	document.getElementById('trPrevious').style.fontSize = parseInt(strFontSize) - 10;
+	document.getElementById('trNext').style.opacity = strDisabledItemOpacity;
+	document.getElementById('trPrevious').style.opacity = strDisabledItemOpacity;
+	setInterval ( "setCurrentDay()", 1000);
+}
+
+function setCurrentDay()
+{
+	var dtCurrentDate = new Date();
+
+	// get day of week
+  var intDayOfWeek = dtCurrentDate.getDay();
+	var intMonth = dtCurrentDate.getMonth();
+	var intDateDay = dtCurrentDate.getDate();
+
+	var intFullYear = dtCurrentDate.getFullYear();
+	var strDayOfWeek = (blnAbbreviateDay) ? arrWeekdayAbbreviated[intDayOfWeek]:arrWeekday[intDayOfWeek];
+	var strMonth = (blnAbbreviateMonth) ? arrMonthAbbreviated[intMonth]:arrMonth[intMonth];
+
+	document.getElementById('tdCurrentDayOfWeek').innerHTML = strDayOfWeek;
+	document.getElementById('tdCurrentMonth').innerHTML = strMonth;
+	document.getElementById('tdCurrentDateDay').innerHTML = intDateDay;
+
+	// set the date back 1 day
+	dtCurrentDate.setDate(dtCurrentDate.getDate()-1);
+	intDayOfWeek = dtCurrentDate.getDay();
+	intDateDay = dtCurrentDate.getDate();
+
+	// we have to get the previous month
+	var dtDateToGetPreviousMonth = new Date();
+	dtDateToGetPreviousMonth = new Date(dtDateToGetPreviousMonth.setMonth(dtCurrentDate.getMonth()-1));
+	intMonth = dtDateToGetPreviousMonth.getMonth();
+
+	intFullYear = dtCurrentDate.getFullYear();
+	strDayOfWeek = (blnAbbreviateDay) ? arrWeekdayAbbreviated[intDayOfWeek]:arrWeekday[intDayOfWeek];
+	strMonth = (blnAbbreviateMonth) ? arrMonthAbbreviated[intMonth]:arrMonth[intMonth];
+
+	document.getElementById('tdPreviousDayOfWeek').innerHTML = strDayOfWeek;
+	document.getElementById('tdPreviousMonth').innerHTML = strMonth;
+	document.getElementById('tdPreviousDateDay').innerHTML = intDateDay;
+
+	// set the date back 1 day forward (but actually 2 days forward since we set it 1 day back already)
+	dtCurrentDate.setDate(dtCurrentDate.getDate()+2);
+	intDayOfWeek = dtCurrentDate.getDay();
+	intDateDay = dtCurrentDate.getDate();
+
+	// we have to get the previous month
+	var dtDateToGetNextMonth = new Date();
+	dtDateToGetNextMonth = new Date(dtDateToGetNextMonth.setMonth(dtCurrentDate.getMonth()+1));
+	intMonth = dtDateToGetNextMonth.getMonth();
+
+	intFullYear = dtCurrentDate.getFullYear();
+	strDayOfWeek = (blnAbbreviateDay) ? arrWeekdayAbbreviated[intDayOfWeek]:arrWeekday[intDayOfWeek];
+	strMonth = (blnAbbreviateMonth) ? arrMonthAbbreviated[intMonth]:arrMonth[intMonth];
+
+	document.getElementById('tdNextDayOfWeek').innerHTML = strDayOfWeek;
+	document.getElementById('tdNextMonth').innerHTML = strMonth;
+	document.getElementById('tdNextDateDay').innerHTML = intDateDay;
+
+	// special case for vietnamese Language
+	if (strLanguage=="vn")
+	{
+		document.getElementById('tdPreviousDateDay').innerHTML = "Ngày " + document.getElementById('tdPreviousDateDay').innerHTML;
+		document.getElementById('tdCurrentDateDay').innerHTML = "Ngày " + document.getElementById('tdCurrentDateDay').innerHTML;
+		document.getElementById('tdNextDateDay').innerHTML = "Ngày " + document.getElementById('tdNextDateDay').innerHTML;
+	}
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+<table id="tblMainContainer">
+	<tr id="trPrevious">
+		<td nowrap id="tdPreviousDayOfWeek"></td>
+		<td nowrap id="tdPreviousMonth"></td>
+		<td nowrap id="tdPreviousDateDay"></td>
+	</tr>
+	<tr>
+		<td nowrap id="tdCurrentDayOfWeek"></td>
+		<td nowrap id="tdCurrentMonth"></td>
+		<td nowrap id="tdCurrentDateDay"></td>
+	</tr>
+	<tr id="trNext">
+		<td nowrap id="tdNextDayOfWeek"></td>
+		<td nowrap id="tdNextMonth"></td>
+		<td nowrap id="tdNextDateDay"></td>
+	</tr>
+</table>
+</body>
+</html>

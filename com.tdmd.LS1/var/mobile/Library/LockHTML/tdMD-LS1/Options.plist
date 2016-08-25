@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>default</key>
+		<true/>
+		<key>label</key>
+		<string>Abbreviate day</string>
+		<key>name</key>
+		<string>blnAbbreviateDay</string>
+		<key>type</key>
+		<string>switch</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<true/>
+		<key>label</key>
+		<string>Abbreviate month</string>
+		<key>name</key>
+		<string>blnAbbreviateMonth</string>
+		<key>type</key>
+		<string>switch</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<string>40</string>
+		<key>label</key>
+		<string>Font size</string>
+		<key>name</key>
+		<string>strFontSize</string>
+		<key>type</key>
+		<string>edit</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<string>English</string>
+		<key>label</key>
+		<string>Language</string>
+		<key>name</key>
+		<string>strLanguage</string>
+		<key>options</key>
+		<dict>
+			<key>English</key>
+			<string>en</string>
+			<key>French</key>
+			<string>fr</string>
+			<key>German</key>
+			<string>de</string>
+			<key>Italian</key>
+			<string>it</string>
+			<key>Spanish</key>
+			<string>sp</string>
+			<key>Vietnamese</key>
+			<string>vn</string>
+		</dict>
+		<key>type</key>
+		<string>select</string>
+	</dict>
+</array>
+</plist>
