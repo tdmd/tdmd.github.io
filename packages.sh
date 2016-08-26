@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.LS1
+dpkg-deb -Zgzip -b com.tdmd.LS2

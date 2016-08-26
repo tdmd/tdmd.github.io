@@ -1,0 +1,332 @@
+<html>
+<head>
+<title>Clock Calendar 5 by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+	font-weight:100;
+	color:ffffff;
+	letter-spacing:1;
+
+	font-family: libel;
+	background-color:transparent;
+}
+
+#tblGlobal
+{
+	position:absolute; width: 250; z-index:-90;
+}
+
+#tblMainContainer
+{
+	position:absolute; width: 100%; z-index:-90;
+	text-transform: uppercase;
+	padding: 10;
+}
+
+.tdDayOfWeek
+{
+	text-align: left;
+	padding-top: 0px;
+	font-size: 20px;
+}
+
+.spnDayOfWeek
+{
+	opacity: 0.5;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 12px;
+}
+
+#spnClock
+{
+	font-size: 85px;
+}
+
+#divMonthAndDay
+{
+	font-size: 30px;
+	font-weight: normal;
+}
+
+#spnSeconds
+{
+  position: absolute;
+}
+
+#spnUnderline
+{
+	position: absolute;
+	z-index: -89;
+}
+
+#imgUnderline
+{
+	height: 1px;
+	opacity: 0.8;
+}
+
+#imgSeconds
+{
+  height: 1px;
+  opacity: 1;
+	z-index: -70;
+}
+</style>
+<script type="text/javascript" charset="utf-8">
+/*
+// boolean variables for options
+// set blnAbbreviateMonth to true if you want it to abbreviate the month
+var blnAbbreviateMonth = false;
+
+// set blnAbbreviateDay to true if you want it to abbreviate the day
+var blnAbbreviateDay = true;
+
+// set blnShowSeconds to true if you want to show the seconds
+var blnShowSeconds = true;
+
+// set blnShowAMPM to true if you want to show the AM/PM
+var blnShowAMPM = true;
+
+// set bln24hours to true if you want to show the time in 24 hours
+var bln24hours = false;
+
+// set blnShowYear to true if you want to show the year
+var blnShowYear = true;
+
+var strLanguage = "en";
+*/
+// set the color for the current day
+
+var strCurrentDayColor = "36a6ed";
+
+var arrWeekday = new Array(7);
+var arrMonth = new Array(12);
+
+switch (strLanguage) {
+case "fr":
+	var arrWeekday = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+	var arrMonth = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
+  break;
+case "de":
+	var arrWeekday = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+	var arrMonth = ["Januar","Februar","Marz","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  break;
+case "sp":
+	var arrWeekday = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"];
+	var arrMonth = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  break;
+case "it":
+	var arrWeekday = ["Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato","Domenica"];
+	var arrMonth = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+  break;
+case "vn":
+  	var arrWeekday = ["thứ hai","thứ ba","thứ tư","thứ năm","thứ sáu","thứ bảy","chủ nhật"];
+  	var arrMonth = ["tháng một, ngày","tháng hai, ngày","tháng ba, ngày","tháng tư, ngày","tháng năm, ngày","tháng sáu, ngày","tháng bảy, ngày","tháng tám, ngày","tháng chín, ngày","tháng mười, ngày","tháng mười một, ngày","tháng mười hai, ngày"];
+    blnAbbreviateMonth = false;
+    blnAbbreviateDay = false;
+    break;
+default:
+	var arrWeekday = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday"];
+	var arrMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  break;
+}
+
+// set opacity for disabled weekdays, from 0 to 1
+var strDisabledWeekdayOpacity = "0.4";
+
+function startOnLoad()
+{
+
+  // set the days of the week
+  // check if we abbreviate the days
+  if (blnAbbreviateDay)
+  {
+    document.getElementById('spnMon').innerHTML = arrWeekday[0].substring(0,3);
+    document.getElementById('spnTue').innerHTML = arrWeekday[1].substring(0,3);
+    document.getElementById('spnWed').innerHTML = arrWeekday[2].substring(0,3);
+    document.getElementById('spnThu').innerHTML = arrWeekday[3].substring(0,3);
+    document.getElementById('spnFri').innerHTML = arrWeekday[4].substring(0,3);
+    document.getElementById('spnSat').innerHTML = arrWeekday[5].substring(0,3);
+    document.getElementById('spnSun').innerHTML = arrWeekday[6].substring(0,3);
+  }
+  else {
+    document.getElementById('spnMon').innerHTML = arrWeekday[0];
+    document.getElementById('spnTue').innerHTML = arrWeekday[1];
+    document.getElementById('spnWed').innerHTML = arrWeekday[2];
+    document.getElementById('spnThu').innerHTML = arrWeekday[3];
+    document.getElementById('spnFri').innerHTML = arrWeekday[4];
+    document.getElementById('spnSat').innerHTML = arrWeekday[5];
+    document.getElementById('spnSun').innerHTML = arrWeekday[6];
+  }
+
+	setInterval ( "setDateAndTime()", 1000);
+}
+
+function setDateAndTime() {
+  var dtCurrentDate = new Date();
+  var intHours = dtCurrentDate.getHours();
+  var intMinutes = dtCurrentDate.getMinutes();
+  var intSeconds = dtCurrentDate.getSeconds();
+
+  var intMinutesToDisplay = checkTime(intMinutes);
+  var intSecondsToDisplay = checkTime(intSeconds);
+
+	var intHourToDisplay = intHours;
+
+	if (!bln24hours)
+	{
+		if (intHours > 12) { intHourToDisplay = intHours - 12;}
+	  if (intHours == 0) { intHourToDisplay = intHours + 12;}
+	}
+
+  var strTimeToDisplay = checkTime(intHourToDisplay) + ":" + intMinutesToDisplay;
+
+	if (blnShowSeconds)
+	{
+		strTimeToDisplay += ":" + intSecondsToDisplay;
+	}
+
+	if (blnShowAMPM  && !bln24hours)
+	{
+		strTimeToDisplay += (intHours >= 12) ? "PM":"AM";
+	}
+
+	document.getElementById('spnClock').innerHTML = strTimeToDisplay;
+	setMonthAndDay(dtCurrentDate);
+
+	var intLineWidth = document.getElementById('tblMainContainer').getBoundingClientRect().right - document.getElementById('tblMainContainer').getBoundingClientRect().left;
+
+	document.getElementById('imgUnderline').style.width = intLineWidth;
+  document.getElementById('spnUnderline').style.left = document.getElementById('tblMainContainer').getBoundingClientRect().left;
+  document.getElementById('spnUnderline').style.top = document.getElementById('spnClock').getBoundingClientRect().bottom + 2;
+
+	var intSecondsLineWidth = intLineWidth;
+	var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
+
+	document.getElementById('spnSeconds').style.left = document.getElementById('spnUnderline').getBoundingClientRect().left;
+	document.getElementById('spnSeconds').style.top = document.getElementById('spnUnderline').getBoundingClientRect().top;
+  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
+
+}
+
+function checkTime(intDigit) {
+    if (intDigit < 10) { intDigit = "0" + intDigit};  // add zero in front of numbers < 10
+    return intDigit;
+}
+
+function setMonthAndDay(dtCurrentDate)
+{
+	// get day of week
+  var intDayOfWeek = dtCurrentDate.getDay();
+  var strDayOfWeek = arrWeekday[intDayOfWeek];
+	strDayOfWeek = (blnAbbreviateDay) ? strDayOfWeek.substring(0,3):strDayOfWeek;
+
+  // get month name
+  var strMonth = arrMonth[dtCurrentDate.getMonth()];
+  strMonth = (blnAbbreviateMonth == true) ? strMonth.substring(0,3):strMonth;
+
+	// get day of month
+  var strDayOfMonth = dtCurrentDate.getDate().toString();
+
+  if (strLanguage == "en")
+  {
+    // get wording for day of month
+    var intLastNumberOfDay = strDayOfMonth.slice(-1);
+
+    var strDayOfMonthAppend = "";
+
+		switch (intLastNumberOfDay) {
+    	case "1":
+    		strDayOfMonthAppend = "st";
+    		break;
+    	case "2":
+    		strDayOfMonthAppend = "nd";
+    		break;
+    	case "3":
+    		strDayOfMonthAppend = "rd";
+    		break;
+    	default:
+    		strDayOfMonthAppend = "th";
+    }
+
+    strDayOfMonth = strDayOfMonth + strDayOfMonthAppend;
+  }
+
+	// get year
+	var intYear = dtCurrentDate.getFullYear();
+	strDayOfMonth += (blnShowYear) ? ", " + intYear:"";
+
+  // show the Month and Day in our div
+  document.getElementById('divMonthAndDay').innerHTML = strMonth + " " + strDayOfMonth;
+
+	// reset our highlighted day of week
+	var arrSpnDayOfWeek = document.querySelectorAll(".spnDayOfWeek");
+	var blnNoDayOfWeekAbbreviation = false;
+
+	if (strLanguage == "vn")
+	{
+		blnNoDayOfWeekAbbreviation = true;
+	}
+
+	for (var i = 0; i < arrSpnDayOfWeek.length; i++) {
+	  arrSpnDayOfWeek[i].style.opacity = strDisabledWeekdayOpacity;
+
+		if (blnNoDayOfWeekAbbreviation) arrSpnDayOfWeek[i].style.fontSize = "10";
+	}
+
+  var arrDayOfWeekElements = new Array(7);
+	arrDayOfWeekElements[0]=  arrSpnDayOfWeek[6];
+  arrDayOfWeekElements[1] = arrSpnDayOfWeek[0];
+  arrDayOfWeekElements[2] = arrSpnDayOfWeek[1];
+  arrDayOfWeekElements[3] = arrSpnDayOfWeek[2];
+  arrDayOfWeekElements[4] = arrSpnDayOfWeek[3];
+  arrDayOfWeekElements[5] = arrSpnDayOfWeek[4];
+  arrDayOfWeekElements[6] = arrSpnDayOfWeek[5];
+
+  arrDayOfWeekElements[intDayOfWeek].style.opacity = "1";
+	arrDayOfWeekElements[intDayOfWeek].style.color = strCurrentDayColor;
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+	<table id="tblGlobal">
+		<tr>
+			<td nowrap align="center">
+				<table id="tblMainContainer">
+					<tr>
+						<td nowrap><span id="spnClock"/></span></td>
+					</tr>
+					<tr>
+						<td nowrap class="tdDayOfWeek" id="tdDayOfWeek">
+							<span id="spnMon" class="spnDayOfWeek">Mon</span>
+							<span id="spnTue" class="spnDayOfWeek">Tue</span>
+							<span id="spnWed" class="spnDayOfWeek">Wed</span>
+							<span id="spnThu" class="spnDayOfWeek">Thu</span>
+							<span id="spnFri" class="spnDayOfWeek">Fri</span>
+							<span id="spnSat" class="spnDayOfWeek">Sat</span>
+							<span id="spnSun" class="spnDayOfWeek">Sun</span>
+						</td>
+					</tr>
+					<tr>
+						<td nowrap id="divMonthAndDay">&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
+	<span id="spnUnderline"><img id="imgUnderline" src="seconds.jpg"></span>
+</body>
+</html>
