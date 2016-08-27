@@ -13,32 +13,30 @@ body
 {
 	margin:0;
 	padding:0;
-	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
-	font-weight:100;
 	color:ffffff;
 	letter-spacing:1;
 
 	font-family: libel;
-	background-color:transparent;
+	background-color: rgba(0,0,0,0.3);
 }
 
 #tblGlobal
 {
-	position:absolute; width: 250; z-index:-90;
+	position:absolute; width: 100%; z-index:-5;
+	padding: 8;
 }
 
 #tblMainContainer
 {
-	position:absolute; width: 100%; z-index:-90;
+	position:absolute; width: 100%; z-index:-5;
 	text-transform: uppercase;
-	padding: 10;
 }
 
 .tdDayOfWeek
 {
 	text-align: left;
 	padding-top: 0px;
-	font-size: 20px;
+	font-size: 8px;
 }
 
 .spnDayOfWeek
@@ -46,18 +44,20 @@ body
 	opacity: 0.5;
 	padding-left: 3px;
 	padding-right: 3px;
-	font-size: 12px;
+	font-size: 8px;
 }
 
 #spnClock
 {
-	font-size: 85px;
+	font-size: 35px;
+	width: 250px;
 }
 
 #divMonthAndDay
 {
-	font-size: 30px;
+	font-size: 12px;
 	font-weight: normal;
+	text-align: center;
 }
 
 #spnSeconds
@@ -80,11 +80,42 @@ body
 #imgSeconds
 {
   height: 1px;
-  opacity: 1;
+  opacity: 0.4;
 	z-index: -70;
 }
+
+td.SignalCaption, #tdPhoneCarrier
+{
+	font-size: 7px;
+	font-weight: normal;
+}
+
+td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
+{
+	vertical-align: middle;
+}
+
+.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
+{
+	font-size: 9px;
+	vertical-align: middle;
+}
+
 </style>
+
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+	var getPhoneSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
+	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
+</script>
+
 <script type="text/javascript" charset="utf-8">
+var strEnabledColor = "4bcf54";
+var strDisabledColor = "b5b5b5";
+var blnBlinkText = false;
+
 // set opacity for disabled weekdays, from 0 to 1
 var strDisabledWeekdayOpacity = "0.4";
 var strDisabledDayColor = "#a8a8a8";
@@ -157,6 +188,16 @@ function startOnLoad()
 		document.getElementById('spnFri').innerHTML = arrWeekday[5];
 		document.getElementById('spnSat').innerHTML = arrWeekday[6];
 	}
+
+	document.getElementById("spnBatteryEnabled").style.color = strEnabledColor;
+	document.getElementById("spnBatteryDisabled").style.color = strDisabledColor;
+
+	document.getElementById("spnCellularSignalEnabled").style.color = strEnabledColor;
+	document.getElementById("spnCellularSignalDisabled").style.color = strDisabledColor;
+
+	document.getElementById("spnWifiSignalEnabled").style.color = strEnabledColor;
+	document.getElementById("spnWifiSignalDisabled").style.color = strDisabledColor;
+
 	setInterval ( "setDateAndTime()", 1000);
 }
 
@@ -179,31 +220,30 @@ function setDateAndTime() {
 
   var strTimeToDisplay = checkTime(intHourToDisplay) + ":" + intMinutesToDisplay;
 
-	if (blnShowSeconds)
-	{
-		strTimeToDisplay += ":" + intSecondsToDisplay;
-	}
-
-	if (blnShowAMPM  && !bln24hours)
-	{
-		strTimeToDisplay += (intHours >= 12) ? "PM":"AM";
-	}
-
 	document.getElementById('spnClock').innerHTML = strTimeToDisplay;
 	setMonthAndDay(dtCurrentDate);
 
-	var intLineWidth = document.getElementById('tblMainContainer').getBoundingClientRect().right - document.getElementById('tblMainContainer').getBoundingClientRect().left;
+	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
+	var intLineHeight = document.getElementById('spnClock').getBoundingClientRect().bottom - document.getElementById('spnClock').getBoundingClientRect().top;
 
-	document.getElementById('imgUnderline').style.width = intLineWidth;
-  document.getElementById('spnUnderline').style.left = document.getElementById('tblMainContainer').getBoundingClientRect().left;
-  document.getElementById('spnUnderline').style.top = document.getElementById('spnClock').getBoundingClientRect().bottom + 2;
+	var intUnderlineWidth = document.getElementById('tdDayOfWeek').getBoundingClientRect().right - document.getElementById('tdDayOfWeek').getBoundingClientRect().left;
+	document.getElementById('imgUnderline').style.width = intUnderlineWidth;
+  document.getElementById('spnUnderline').style.left = document.getElementById('tdDayOfWeek').getBoundingClientRect().left;
+  document.getElementById('spnUnderline').style.top = document.getElementById('tdDayOfWeek').getBoundingClientRect().bottom;
 
 	var intSecondsLineWidth = intLineWidth;
 	var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
 
-	document.getElementById('spnSeconds').style.left = document.getElementById('spnUnderline').getBoundingClientRect().left;
-	document.getElementById('spnSeconds').style.top = document.getElementById('spnUnderline').getBoundingClientRect().top;
+	document.getElementById('spnSeconds').style.left = document.getElementById('spnClock').getBoundingClientRect().left;
+	document.getElementById('spnSeconds').style.top = document.getElementById('spnClock').getBoundingClientRect().top;
   document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
+	document.getElementById('imgSeconds').style.height = intLineHeight;
+
+	setBattery();
+	setPhone();
+	setWifi();
+	blinkItem(document.getElementById('spnBatteryEnabled'));
+
 }
 
 function checkTime(intDigit) {
@@ -279,6 +319,81 @@ function setMonthAndDay(dtCurrentDate)
   arrDayOfWeekElements[intDayOfWeek].style.opacity = "1";
 	arrDayOfWeekElements[intDayOfWeek].style.color = strCurrentDayColor;
 }
+
+function setBattery()
+{
+	var objEnabled = document.getElementById("spnBatteryEnabled");
+	var objDisabled = document.getElementById("spnBatteryDisabled");
+	setLevel(getBatteryPercentage(), 10, objEnabled, objDisabled);
+	blnBlink = (getBatteryState()==2) ? true:false;
+}
+
+function setPhone()
+{
+	var objEnabled = document.getElementById("spnCellularSignalEnabled");
+	var objDisabled = document.getElementById("spnCellularSignalDisabled");
+	setLevel((getPhoneSignalBars()*20), 5, objEnabled, objDisabled);
+}
+
+function setWifi()
+{
+	var objEnabled = document.getElementById("spnWifiSignalEnabled");
+	var objDisabled = document.getElementById("spnWifiSignalDisabled");
+	setLevel((getWifiSignalBars()*33.4), 3, objEnabled, objDisabled);
+}
+
+function blinkItem(objItem)
+{
+		if(objItem && blnBlink)
+		{
+				//objItem.style.visibility= (objItem.style.visibility=="visible")?"hidden":"visible";
+				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
+				document.getElementById("tdBatteryCaption").innerHTML = getBatteryPercentage() + "%";
+		}
+		else {
+			//objItem.style.visibility = "visible";
+			objItem.style.opacity = "1";
+			document.getElementById("tdBatteryCaption").innerHTML = "BATTERY";
+		}
+}
+
+function setLevel(intLevel, intCircles, objEnabled, objDisabled)
+{
+	var intLevelPercentTemp = intLevel;
+	var intIncrement = (100/intCircles);
+
+	var intIndexForEmpty = 0;
+
+	var strSymbol = "&#9679;";
+	var strEnabledTextToDisplay = "";
+	var strDisabledTextToDisplay = "";
+
+	var intIndexForEmpty = 0;
+
+	if (intLevel > 0)
+	{
+		if (intLevel <= intIncrement)
+		{
+			strEnabledTextToDisplay += strSymbol + " ";
+		}
+		else {
+			while (intLevelPercentTemp >= intIncrement) {
+		    strEnabledTextToDisplay += strSymbol + " ";
+		    intLevelPercentTemp = intLevelPercentTemp - intIncrement;
+				intIndexForEmpty++;
+			}
+		}
+	}
+
+	objEnabled.innerHTML = strEnabledTextToDisplay;
+
+	// set the disabled charged circles
+	for (var i = intIndexForEmpty; i < intCircles; i++) {
+		strDisabledTextToDisplay += strSymbol + " ";
+	}
+
+	objDisabled.innerHTML = strDisabledTextToDisplay;
+}
 </script>
 </head>
 <body onload="startOnLoad()">
@@ -287,17 +402,33 @@ function setMonthAndDay(dtCurrentDate)
 			<td nowrap align="center">
 				<table id="tblMainContainer">
 					<tr>
-						<td nowrap><span id="spnClock"/></span></td>
-					</tr>
-					<tr>
+						<td nowrap rowspan="2"><span id="spnClock"/></span></td>
+						<td rowspan="2">&nbsp;</td>
 						<td nowrap class="tdDayOfWeek" id="tdDayOfWeek">
-							<span id="spnMon" class="spnDayOfWeek">Mon</span>
-							<span id="spnTue" class="spnDayOfWeek">Tue</span>
-							<span id="spnWed" class="spnDayOfWeek">Wed</span>
-							<span id="spnThu" class="spnDayOfWeek">Thu</span>
-							<span id="spnFri" class="spnDayOfWeek">Fri</span>
-							<span id="spnSat" class="spnDayOfWeek">Sat</span>
-							<span id="spnSun" class="spnDayOfWeek">Sun</span>
+							<span id="spnMon" class="spnDayOfWeek"></span>
+							<span id="spnTue" class="spnDayOfWeek"></span>
+							<span id="spnWed" class="spnDayOfWeek"></span>
+							<span id="spnThu" class="spnDayOfWeek"></span>
+							<span id="spnFri" class="spnDayOfWeek"></span>
+							<span id="spnSat" class="spnDayOfWeek"></span>
+							<span id="spnSun" class="spnDayOfWeek"></span>
+						</td>
+						<td width=100%>&nbsp;</td>
+						<td nowrap rowspan="2" id="tdPhoneDetails">
+							<table id="tblPhoneDetails">
+								<tr>
+									<td class="SignalCaption" id="tdBatteryCaption">Battery</td>
+									<td class="Level" nowrap id="tdBattery"><span id="spnBatteryEnabled"></span><span id="spnBatteryDisabled"></span></td>
+								</tr>
+								<tr>
+									<td class="SignalCaption">Signal</td>
+									<td class="Level" nowrap id="tdCellularSignalLevel"><span id="spnCellularSignalEnabled"></span><span id="spnCellularSignalDisabled"></span></td>
+								</tr>
+								<tr>
+									<td class="SignalCaption">Wifi</td>
+									<td class="Level" nowrap id="tdWifiSignalLevel"><span id="spnWifiSignalEnabled"></span><span id="spnWifiSignalDisabled"></span></td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr>
