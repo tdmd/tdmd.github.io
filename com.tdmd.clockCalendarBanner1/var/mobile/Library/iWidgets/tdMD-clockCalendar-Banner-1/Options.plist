@@ -2,25 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-<dict>
-	<key>default</key>
-	<string>iPhone 6/S Plus</string>
-	<key>label</key>
-	<string>Device</string>
-	<key>name</key>
-	<string>intDevice</string>
-	<key>options</key>
 	<dict>
-		<key>iPhone 5/S</key>
-		<string>1</string>
-		<key>iPhone 6/S</key>
-		<string>2</string>
-		<key>iPhone 6/S Plus</key>
-		<string>3</string>
+		<key>default</key>
+		<string>iPhone 6/S Plus</string>
+		<key>label</key>
+		<string>Device</string>
+		<key>name</key>
+		<string>intDevice</string>
+		<key>options</key>
+		<dict>
+			<key>iPhone 5/S</key>
+			<string>1</string>
+			<key>iPhone 6/S</key>
+			<string>2</string>
+			<key>iPhone 6/S Plus</key>
+			<string>3</string>
+		</dict>
+		<key>type</key>
+		<string>select</string>
 	</dict>
-	<key>type</key>
-	<string>select</string>
-</dict>
 	<dict>
 		<key>default</key>
 		<false/>
@@ -53,11 +53,31 @@
 	</dict>
 	<dict>
 		<key>default</key>
+		<false/>
+		<key>label</key>
+		<string>Show leading zero on hour</string>
+		<key>name</key>
+		<string>blnShowLeadingZeroHour</string>
+		<key>type</key>
+		<string>switch</string>
+	</dict>
+	<dict>
+		<key>default</key>
 		<true/>
 		<key>label</key>
 		<string>Show year</string>
 		<key>name</key>
 		<string>blnShowYear</string>
+		<key>type</key>
+		<string>switch</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<true/>
+		<key>label</key>
+		<string>Show red seconds bar</string>
+		<key>name</key>
+		<string>blnShowSeconds</string>
 		<key>type</key>
 		<string>switch</string>
 	</dict>

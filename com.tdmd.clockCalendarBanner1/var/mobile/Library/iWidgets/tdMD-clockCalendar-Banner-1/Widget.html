@@ -150,9 +150,12 @@ function setDateAndTime() {
 	  if (intHours == 0) { intHourToDisplay = intHours + 12;}
 	}
 
-  var strTimeToDisplay = checkTime(intHourToDisplay) + ":" + intMinutesToDisplay;
+	intHourToDisplay = (blnShowLeadingZeroHour) ? checkTime(intHourToDisplay):intHourToDisplay;
+
+  var strTimeToDisplay = intHourToDisplay + ":" + intMinutesToDisplay;
 
 	document.getElementById('spnClock').innerHTML = strTimeToDisplay;
+
 	setMonthAndDay(dtCurrentDate);
 
 	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
@@ -163,13 +166,22 @@ function setDateAndTime() {
   document.getElementById('spnUnderline').style.left = document.getElementById('tdDayOfWeek').getBoundingClientRect().left;
   document.getElementById('spnUnderline').style.top = document.getElementById('tdDayOfWeek').getBoundingClientRect().bottom;
 
-	var intSecondsLineWidth = intLineWidth;
-	var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
+	// only show the seconds bar if the user has enabled it
+	if (blnShowSeconds)
+	{
+		document.getElementById('spnSeconds').style.visibility = "visible";
 
-	document.getElementById('spnSeconds').style.left = document.getElementById('spnClock').getBoundingClientRect().left;
-	document.getElementById('spnSeconds').style.top = document.getElementById('spnClock').getBoundingClientRect().top;
-  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
-	document.getElementById('imgSeconds').style.height = intLineHeight;
+		var intSecondsLineWidth = intLineWidth;
+		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
+
+		document.getElementById('spnSeconds').style.left = document.getElementById('spnClock').getBoundingClientRect().left;
+		document.getElementById('spnSeconds').style.top = document.getElementById('spnClock').getBoundingClientRect().top;
+	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
+		document.getElementById('imgSeconds').style.height = intLineHeight;
+	}
+	else {
+		document.getElementById('spnSeconds').style.visibility = "hidden";
+	}
 
 	setBattery();
 	setPhone();
