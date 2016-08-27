@@ -1,0 +1,96 @@
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:ffffff;
+	letter-spacing:1;
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+}
+
+#tblGlobal
+{
+	position:absolute; width: 100%; z-index:-5;
+	padding: 8;
+}
+
+#tblMainContainer
+{
+	position:absolute; width: 100%; z-index:-5;
+	text-transform: uppercase;
+}
+
+.tdDayOfWeek
+{
+	text-align: left;
+	padding-top: 0px;
+	font-size: 6px;
+}
+
+.spnDayOfWeek
+{
+	opacity: 0.5;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 6px;
+}
+
+#spnClock
+{
+	font-size: 25px;
+	width: 250px;
+}
+
+#divMonthAndDay
+{
+	font-size: 10px;
+	font-weight: normal;
+	text-align: center;
+}
+
+#spnSeconds
+{
+  position: absolute;
+}
+
+#spnUnderline
+{
+	position: absolute;
+	z-index: -89;
+}
+
+#imgUnderline
+{
+	height: 1px;
+	opacity: 0.8;
+}
+
+#imgSeconds
+{
+  height: 1px;
+  opacity: 0.4;
+	z-index: -70;
+}
+
+td.SignalCaption, #tdPhoneCarrier
+{
+	font-size: 7px;
+	font-weight: normal;
+}
+
+td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
+{
+	vertical-align: middle;
+}
+
+.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
+{
+	font-size: 6px;
+	vertical-align: middle;
+}
