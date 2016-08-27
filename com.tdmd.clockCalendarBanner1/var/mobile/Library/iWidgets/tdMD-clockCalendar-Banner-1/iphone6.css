@@ -16,7 +16,7 @@ body
 
 #tblGlobal
 {
-	position:absolute; width: 414px; z-index:-5;
+	position:absolute; width: 375px; z-index:-5;
 	padding: 8;
 }
 
@@ -43,13 +43,13 @@ body
 
 #spnClock
 {
-	font-size: 35px;
+	font-size: 30px;
 	width: 250px;
 }
 
 #divMonthAndDay
 {
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: normal;
 	text-align: center;
 }
@@ -80,7 +80,7 @@ body
 
 td.SignalCaption, #tdPhoneCarrier
 {
-	font-size: 7px;
+	font-size: 6px;
 	font-weight: normal;
 }
 
@@ -91,6 +91,6 @@ td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
 
 .spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
 {
-	font-size: 9px;
+	font-size: 7px;
 	vertical-align: middle;
 }
