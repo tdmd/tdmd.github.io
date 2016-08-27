@@ -1,0 +1,205 @@
+<html>
+<head>
+<title>Music Banner by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="iphone6plus.css">
+<style>
+*{
+	padding: 0;
+	margin: 0;
+}
+.container{
+	width: 320px;
+	height: 70px;
+}
+.base{
+	position: absolute;
+	top:2px;
+	left:2px;
+	width: 315px;
+	height:60px;
+	background-color: transparent;
+}
+.base div{
+	position: absolute;
+}
+#title{
+	white-space: nowrap;
+	color:#353535;
+	top:5px;
+	left:65px;
+	font-size: 13px;
+}
+#artist{
+	top:25px;
+	left:65px;
+	font-size: 12px;
+	font-weight: 100;
+	color:#adadad;
+}
+#controls{
+	margin-left: -60px;
+	margin-top: 18px;
+}
+#play{
+	position: absolute;
+	top:15px;
+	left:250px;
+}
+#next{
+	position: absolute;
+	top:20px;
+	left:285px;
+}
+#prev{
+	position: absolute;
+	top:20px;
+	left:225px;
+}
+#art{
+	top:5px;
+	left:5px;
+	width: 50px;
+	height: 50px;
+	border-radius: 4px;
+	background-size: cover;
+	background-image: url('img/blank.png');
+}
+</style>
+</head>
+<body onload="startOnLoad()">
+	<table id="tblGlobal">
+		<tr>
+			<td nowrap align="center">
+				<table id="tblMainContainer">
+					<tr>
+						<td nowrap>	<div class="container" id="divMusicPanel">
+							<div class="container">
+								<div class="base">
+									<div id="art"></div>
+									<div id="title">No Song</div>
+									<div id="artist">No Artist</div>
+									<div id="controls">
+										<img id="play" src="img/play.svg"/>
+										<img id="next" src="img/next.svg" width="25"/>
+										<img id="prev" src="img/prev.svg" width="25"/>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+<!-- Cycript data access -->
+<script type="text/cycript">
+var $$ = function(el){
+	return document.getElementById(el);
+}
+var media = {
+	play: function(){
+		[IS2Media togglePlayPause];
+		this.check();
+	},
+	next: function(){
+		[IS2Media skipToNextTrack];
+	},
+	prev: function(){
+		[IS2Media skipToPreviousTrack];
+	},
+	check: function(){
+		if([IS2Media isPlaying]){
+			$$('play').src="img/pause.svg";
+		}else{
+			$$('play').src="img/play.svg";
+		}
+
+	},
+	update: function(){
+		$$("title").innerHTML = "" + [IS2Media currentTrackTitle].substring(0,28);
+		$$("artist").innerHTML = "" + [IS2Media currentTrackArtist].substring(0,24);
+		$$("art").style.backgroundImage = "url('" + [IS2Media currentTrackArtworkBase64] + "')";
+		this.check();
+	},
+	init: function(){
+		var img;
+		musicApp = "com.apple.Music";
+
+		switch(musicApp) {
+				case "com.spotify.client":
+						img = "spotify.png";
+						break;
+				case "com.pandora":
+						img = "pandora.png";
+						break;
+				case "com.soundcloud.TouchApp":
+						img = "soundcloud.png";
+						break;
+				case "com.apple.Music":
+						img = "music.png";
+						break;
+		}
+		$$('art').style.backgroundImage = "url('img/" + img + "')";
+		[IS2Media registerForNowPlayingNotificationsWithIdentifier:"com.tdmd.IS2music" andCallback:^ void () {
+		media.update();
+		}];
+	},
+	kill: function(){
+		[IS2Media unregisterForNotificationsWithIdentifier:"com.tdmd.IS2music"];
+		return null;
+	}
+};
+//var musicApp = "com.apple.Music"; //Options.plist
+$$('controls').addEventListener('click', function(el){
+	media[el.target.id]();
+});
+$$('art').addEventListener('touchend',function(){
+	[IS2System openApplication:@"" + musicApp];
+});
+
+media.init();
+window.onunload = function(){
+	media.kill();
+}
+</script>
+
+<script type="text/javascript" charset="utf-8">
+
+function startOnLoad()
+{
+	setCSSForDevice();
+}
+
+function setCSSForDevice()
+{
+	var head  = document.getElementsByTagName('head')[0];
+	var link  = document.createElement('link');
+	link.rel  = 'stylesheet';
+	link.type = 'text/css';
+	link.media = 'all';
+
+	var strHREF = "";
+
+	switch (intDevice)
+	{
+		case "1":
+			strHREF = "iphone5.css"
+			break;
+		case "2":
+			strHREF = "iphone6.css";
+			break;
+		case "3":
+			strHREF = "iphone6plus.css";
+			break;
+		default:
+			strHREF = "iphone6plus.css";
+	}
+	link.href = strHREF;
+	head.appendChild(link);
+}
+
+</script>
+</html>

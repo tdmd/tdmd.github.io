@@ -16,6 +16,7 @@
 var strEnabledColor = "4bcf54";
 var strDisabledColor = "b5b5b5";
 var blnBlinkText = false;
+var blnMusicDisplayed = false;
 
 // set opacity for disabled weekdays, from 0 to 1
 var strDisabledWeekdayOpacity = "0.4";
@@ -68,7 +69,6 @@ default:
 
 function startOnLoad()
 {
-
 	setCSSForDevice();
 
 	// set the days of the week
@@ -161,9 +161,9 @@ function setDateAndTime() {
 	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
 	var intLineHeight = document.getElementById('spnClock').getBoundingClientRect().bottom - document.getElementById('spnClock').getBoundingClientRect().top;
 
-	var intUnderlineWidth = document.getElementById('tdDayOfWeek').getBoundingClientRect().right - document.getElementById('tdDayOfWeek').getBoundingClientRect().left;
+	var intUnderlineWidth = document.getElementById('spnSun').getBoundingClientRect().right - document.getElementById('spnMon').getBoundingClientRect().left;
 	document.getElementById('imgUnderline').style.width = intUnderlineWidth;
-  document.getElementById('spnUnderline').style.left = document.getElementById('tdDayOfWeek').getBoundingClientRect().left;
+  document.getElementById('spnUnderline').style.left = document.getElementById('spnMon').getBoundingClientRect().left;
   document.getElementById('spnUnderline').style.top = document.getElementById('tdDayOfWeek').getBoundingClientRect().bottom;
 
 	// only show the seconds bar if the user has enabled it
@@ -346,18 +346,29 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 			<td nowrap align="center">
 				<table id="tblMainContainer">
 					<tr>
-						<td nowrap rowspan="2"><span id="spnClock"/></span></td>
-						<td rowspan="2">&nbsp;</td>
-						<td nowrap class="tdDayOfWeek" id="tdDayOfWeek">
-							<span id="spnMon" class="spnDayOfWeek"></span>
-							<span id="spnTue" class="spnDayOfWeek"></span>
-							<span id="spnWed" class="spnDayOfWeek"></span>
-							<span id="spnThu" class="spnDayOfWeek"></span>
-							<span id="spnFri" class="spnDayOfWeek"></span>
-							<span id="spnSat" class="spnDayOfWeek"></span>
-							<span id="spnSun" class="spnDayOfWeek"></span>
+						<td nowrap id="tdClock">
+							<span id="spnClock"/></span>
 						</td>
-						<td width=100%>&nbsp;</td>
+						<td><img src="blank.png" width=7></td>
+						<td nowrap>
+							<table id="tblDayOfWeek">
+								<tr>
+									<td class="tdDayOfWeek" id="tdDayOfWeek">
+										<span id="spnMon" class="spnDayOfWeek"></span>
+										<span id="spnTue" class="spnDayOfWeek"></span>
+										<span id="spnWed" class="spnDayOfWeek"></span>
+										<span id="spnThu" class="spnDayOfWeek"></span>
+										<span id="spnFri" class="spnDayOfWeek"></span>
+										<span id="spnSat" class="spnDayOfWeek"></span>
+										<span id="spnSun" class="spnDayOfWeek"></span>
+									</td>
+								</tr>
+								<tr>
+									<td id="divMonthAndDay">&nbsp;</td>
+								</tr>
+							</table>
+						</td>
+						<td><img src="blank.png" width=7></td>
 						<td nowrap rowspan="2" id="tdPhoneDetails">
 							<table id="tblPhoneDetails">
 								<tr>
@@ -375,14 +386,12 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 							</table>
 						</td>
 					</tr>
-					<tr>
-						<td nowrap id="divMonthAndDay">&nbsp;</td>
-					</tr>
 				</table>
 			</td>
 		</tr>
 	</table>
 	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
-	<span id="spnUnderline"><img id="imgUnderline" src="seconds.jpg"></span>
+	<span id="spnUnderline"><img id="imgUnderline" src="seconds.jpg"></span
+
 </body>
 </html>

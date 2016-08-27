@@ -1,0 +1,10 @@
+Package: com.tdmd.musicBanner
+Name: tdMD Music Banner
+Version: 1.0
+Architecture: iphoneos-arm
+Description: tdMD Music Banner
+Depends: com.eldwin.iwidgets, com.matchstic.infostats2, com.macciti.tdmdclockcalendarwidgetpack1
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Widgets
+Depiction: https://tdmd.github.io/Depictions/com.tdmd.musicBanner/index.html
