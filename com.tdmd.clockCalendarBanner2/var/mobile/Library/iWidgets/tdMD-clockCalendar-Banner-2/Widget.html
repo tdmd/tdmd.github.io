@@ -3,52 +3,109 @@
 <title>Clock Calendar Banner 2 by @tvdmd</title>
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<link rel="stylesheet" type="text/css" href="iphone6plus.css">
-<!-- Cycript data access -->
-<script type="text/cycript">
-	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
-	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
-	var getPhoneSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
-	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
-</script>
-
-<script type="text/javascript" charset="utf-8">
-/* for testing
-var intDevice = 3;
-var blnAbbreviateMonth = false;
-var blnAbbreviateDay = true;
-var bln24hours = false;
-var blnShowLeadingZeroHour = true;
-var blnShowYear = true;
-var blnShowSeconds = true;
-var strCurrentDayColor = "orange";
-var strLanguage = "en";
-
-var intBatteryPercentTemp = 100;
-function getBatteryPercentage()
-{
-	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
-	intBatteryPercentTemp = intBatteryPercentTemp-5;
-	return intBatteryPercentTemp;
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
 }
 
-function getBatteryState()
+body
 {
-	return 1;
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+	text-transform: uppercase;
+	font-weight: normal;
 }
 
-function getPhoneSignalBars()
+#tblGlobal
 {
-	return 1;
+	position:absolute;
+	z-index:-5;
+	padding: 10px;
 }
 
-function getWifiSignalBars()
+#tblMainContainer
 {
-	return 0;
+	position:absolute;
+	width: 100%;
+	z-index:-5;
 }
-*/
-</script>
-<style>
+
+.tdDayOfWeek
+{
+	text-align: center;
+}
+
+.spnDayOfWeek
+{
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#tdClock
+{
+	position: relative;;
+}
+
+#spnClock
+{
+	z-index: -1;
+}
+
+#divMonthAndDay
+{
+	font-weight: normal;
+	text-align: center;
+}
+
+#spnSeconds
+{
+  position: absolute;
+	top: 0px;
+	left: 1px;
+}
+
+#imgSeconds
+{
+  opacity: 0.4;
+	z-index: -70;
+}
+
+td.SignalCaption, #tdPhoneCarrier
+{
+	font-weight: normal;
+}
+
+td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
+{
+	vertical-align: middle;
+}
+
+.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
+{
+	vertical-align: middle;
+}
+
+.tdDivider
+{
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+}
+
+hr
+{
+	border: none;
+	height: 1px;
+	background-color: #fff;
+	margin: 1px;
+	opacity: 0.5;
+}
+
 #tblSignalDetails
 {
 		border-collapse: separate;
@@ -69,7 +126,6 @@ function getWifiSignalBars()
 {
 	background-color: transparent;
 	color: #fff;
-	font-size: 7px;
 	text-align: center;
 	vertical-align: bottom;
 	position: relative;
@@ -78,7 +134,7 @@ function getWifiSignalBars()
 #divBatteryPercentText
 {
 	position: absolute;
-	top: 13px;
+	top: 12px;
 	width: 70%;
 	z-index: 1;
 	font-size: 10px;
@@ -90,27 +146,32 @@ function getWifiSignalBars()
 	top: 24px;
 	width: 70%;
 	z-index: 2;
+	font-size: 8px;
+	text-align: center;
 }
 
 #tblBatteryTop
 {
-	width: 12px;
+	width: 13px;
 	position:relative;
 	background-color: #fff;
 	border-collapse: collapse;
 	top: 5px;
-	left: 4px;
+	left: 5px;
+	border-top-right-radius: 1px;
+	border-top-left-radius: 1px;
+	z-index: -100;
 }
 
 #imgBatteryTop
 {
-	height: 1px;
+	height: 2px;
 	width: 1px;
 }
 
 #imgBatteryPercent
 {
-	width: 12px;
+	width: 15px;
 	height: 1px;
 	opacity: 0.7;
 }
@@ -130,7 +191,7 @@ function getWifiSignalBars()
 .pillInside
 {
 	/* this is the only relevant part: */
-	border-radius: 5%/40%;
+	border-radius: 10%/40%;
 
 	/* this is irrelevant, and just so the element can be visualised/displayed: */
 	width: 38px;
@@ -144,19 +205,72 @@ function getWifiSignalBars()
 .pillLevel
 {
 	/* this is the only relevant part: */
-	border-radius: 20%/20%;
+	border-radius: 7%/35%;
 
 	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 34px;
-	height: 2px;
-	top: 2px;
-	left: 2px;
+	width: 36px;
+	height: 4px;
+	top: 1px;
+	left: 1px;
 	background-color: #fff;
 	position:absolute;
 }
 </style>
-
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+	var getPhoneSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
+	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
+</script>
 <script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "4";
+var blnAbbreviateMonth = false;
+var blnAbbreviateDay = true;
+var bln24hours = false;
+var blnShowLeadingZeroHour = true;
+var blnShowYear = true;
+var blnShowSeconds = true;
+var strCurrentDayColor = "orange";
+var strLanguage = "en";
+var strBackgroundOpacity = "1";
+
+var intBatteryPercentTemp = 100;
+var intCellularSignalTemp = 5;
+var intWifiSignalTemp = 3;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryState()
+{
+	return 2;
+}
+
+function getPhoneSignalBars()
+{
+	if (intCellularSignalTemp<=0) intCellularSignalTemp=6;
+	intCellularSignalTemp = intCellularSignalTemp-1;
+	return intCellularSignalTemp;
+}
+
+function getWifiSignalBars()
+{
+	if (intWifiSignalTemp<=0) intWifiSignalTemp=4;
+	intWifiSignalTemp = intWifiSignalTemp-1;
+	return intWifiSignalTemp;
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+// get height for seconds bar
+var intLineHeight = 0;
+
 var blnBlink = false;
 
 // set opacity for disabled weekdays, from 0 to 1
@@ -236,6 +350,10 @@ function startOnLoad()
 	}
 
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+	intLineHeight = document.getElementById('tblMainContainer').getBoundingClientRect().bottom - document.getElementById('tblMainContainer').getBoundingClientRect().top;
+
+	document.getElementById('spnSeconds').style.height = intLineHeight;
+	document.getElementById('imgSeconds').style.height = intLineHeight;
 
 	setInterval ( "setDateAndTime()", 1000);
 }
@@ -277,12 +395,12 @@ function setCSSForDevice()
 			strHREF = "iphone6plus.css";
 			break;
 		case "4":
-			strHREF = "iphone6plus.css";
+			strHREF = "ipad.css";
 			break;
 		default:
-			strHREF = "ipad.css";
+			strHREF = "iphone6plus.css";
 	}
-	
+
 	link.href = strHREF;
 	head.appendChild(link);
 }
@@ -313,12 +431,6 @@ function setDateAndTime() {
 	setMonthAndDay(dtCurrentDate);
 
 	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
-	var intLineHeight = document.getElementById('spnClock').getBoundingClientRect().bottom - document.getElementById('spnClock').getBoundingClientRect().top;
-
-	var intUnderlineWidth = document.getElementById('spnSun').getBoundingClientRect().right - document.getElementById('spnMon').getBoundingClientRect().left;
-	document.getElementById('imgUnderline').style.width = intUnderlineWidth;
-  document.getElementById('spnUnderline').style.left = document.getElementById('spnMon').getBoundingClientRect().left;
-  document.getElementById('spnUnderline').style.top = document.getElementById('tdDayOfWeek').getBoundingClientRect().bottom;
 
 	// only show the seconds bar if the user has enabled it
 	if (blnShowSeconds)
@@ -327,11 +439,7 @@ function setDateAndTime() {
 
 		var intSecondsLineWidth = intLineWidth;
 		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
-
-		document.getElementById('spnSeconds').style.left = document.getElementById('spnClock').getBoundingClientRect().left;
-		document.getElementById('spnSeconds').style.top = document.getElementById('spnClock').getBoundingClientRect().top;
 	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
-		document.getElementById('imgSeconds').style.height = intLineHeight;
 	}
 	else {
 		document.getElementById('spnSeconds').style.visibility = "hidden";
@@ -466,7 +574,7 @@ function setLevel(intLevel, divLevel)
 	if (intLevel > 0)
 	{
 		divLevel.style.backgroundColor = "#fff";
-		divLevel.style.width = intLevel-10 + "%";
+		divLevel.style.width = intLevel-6 + "%";
 	}
 	else {
 		divLevel.style.backgroundColor = "#000";
@@ -507,6 +615,7 @@ function setLevel(intLevel, divLevel)
 						</td>
 						<td nowrap id="tdClock">
 							<span id="spnClock"/></span>
+							<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 						</td>
 						<td nowrap>
 							<table id="tblDayOfWeek">
@@ -520,6 +629,9 @@ function setLevel(intLevel, divLevel)
 										<span id="spnSat" class="spnDayOfWeek"></span>
 										<span id="spnSun" class="spnDayOfWeek"></span>
 									</td>
+								</tr>
+								<tr>
+									<td class="tdDivider"><hr></td>
 								</tr>
 								<tr>
 									<td id="divMonthAndDay">&nbsp;</td>
@@ -547,9 +659,5 @@ function setLevel(intLevel, divLevel)
 			</td>
 		</tr>
 	</table>
-	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
-	<span id="spnUnderline"><img id="imgUnderline" src="seconds.jpg"></span>
-
-
 </body>
 </html>

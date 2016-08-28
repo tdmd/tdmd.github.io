@@ -3,7 +3,109 @@
 <title>Clock Calendar Banner 1 by @tvdmd</title>
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<link rel="stylesheet" type="text/css" href="iphone6plus.css">
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+#tblGlobal
+{
+	position:absolute;
+	z-index:-5;
+	padding: 10px;
+}
+
+#tblMainContainer
+{
+	position:absolute;
+	width: 100%;
+	z-index:-5;
+}
+
+.tdDayOfWeek
+{
+	text-align: center;
+}
+
+.spnDayOfWeek
+{
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#tdClock
+{
+	position: relative;;
+}
+
+#spnClock
+{
+	z-index: -1;
+}
+
+#divMonthAndDay
+{
+	font-weight: normal;
+	text-align: center;
+}
+
+#spnSeconds
+{
+  position: absolute;
+	top: 0px;
+	left: 1px;
+}
+
+#imgSeconds
+{
+  opacity: 0.4;
+	z-index: -70;
+}
+
+td.SignalCaption, #tdPhoneCarrier
+{
+	font-weight: normal;
+}
+
+td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
+{
+	vertical-align: middle;
+}
+
+.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
+{
+	vertical-align: middle;
+}
+
+.tdDivider
+{
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+}
+
+hr
+{
+	border: none;
+	height: 1px;
+	background-color: #fff;
+	margin: 1px;
+	opacity: 0.5;
+}
+</style>
 <!-- Cycript data access -->
 <script type="text/cycript">
 	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
@@ -11,7 +113,50 @@
 	var getPhoneSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
 	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
 </script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "3";
+var blnAbbreviateMonth = false;
+var blnAbbreviateDay = true;
+var bln24hours = false;
+var blnShowLeadingZeroHour = true;
+var blnShowYear = true;
+var blnShowSeconds = true;
+var strCurrentDayColor = "orange";
+var strLanguage = "en";
+var strBackgroundOpacity = "1";
 
+var intBatteryPercentTemp = 100;
+var intCellularSignalTemp = 5;
+var intWifiSignalTemp = 3;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryState()
+{
+	return 2;
+}
+
+function getPhoneSignalBars()
+{
+	if (intCellularSignalTemp<=0) intCellularSignalTemp=6;
+	intCellularSignalTemp = intCellularSignalTemp-1;
+	return intCellularSignalTemp;
+}
+
+function getWifiSignalBars()
+{
+	if (intWifiSignalTemp<=0) intWifiSignalTemp=4;
+	intWifiSignalTemp = intWifiSignalTemp-1;
+	return intWifiSignalTemp;
+}
+*/
+</script>
 <script type="text/javascript" charset="utf-8">
 var strEnabledColor = "4bcf54";
 var strDisabledColor = "b5b5b5";
@@ -103,6 +248,10 @@ function startOnLoad()
 	document.getElementById("spnWifiSignalDisabled").style.color = strDisabledColor;
 
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+	intLineHeight = document.getElementById('tblMainContainer').getBoundingClientRect().bottom - document.getElementById('tblMainContainer').getBoundingClientRect().top;
+
+	document.getElementById('spnSeconds').style.height = intLineHeight;
+	document.getElementById('imgSeconds').style.height = intLineHeight;
 
 	setInterval ( "setDateAndTime()", 1000);
 }
@@ -144,10 +293,10 @@ function setCSSForDevice()
 			strHREF = "iphone6plus.css";
 			break;
 		case "4":
-			strHREF = "iphone6plus.css";
+			strHREF = "ipad.css";
 			break;
 		default:
-			strHREF = "ipad.css";
+			strHREF = "iphone6plus.css";
 	}
 	link.href = strHREF;
 	head.appendChild(link);
@@ -179,12 +328,6 @@ function setDateAndTime() {
 	setMonthAndDay(dtCurrentDate);
 
 	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
-	var intLineHeight = document.getElementById('spnClock').getBoundingClientRect().bottom - document.getElementById('spnClock').getBoundingClientRect().top;
-
-	var intUnderlineWidth = document.getElementById('spnSun').getBoundingClientRect().right - document.getElementById('spnMon').getBoundingClientRect().left;
-	document.getElementById('imgUnderline').style.width = intUnderlineWidth;
-  document.getElementById('spnUnderline').style.left = document.getElementById('spnMon').getBoundingClientRect().left;
-  document.getElementById('spnUnderline').style.top = document.getElementById('tdDayOfWeek').getBoundingClientRect().bottom;
 
 	// only show the seconds bar if the user has enabled it
 	if (blnShowSeconds)
@@ -193,11 +336,7 @@ function setDateAndTime() {
 
 		var intSecondsLineWidth = intLineWidth;
 		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
-
-		document.getElementById('spnSeconds').style.left = document.getElementById('spnClock').getBoundingClientRect().left;
-		document.getElementById('spnSeconds').style.top = document.getElementById('spnClock').getBoundingClientRect().top;
 	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
-		document.getElementById('imgSeconds').style.height = intLineHeight;
 	}
 	else {
 		document.getElementById('spnSeconds').style.visibility = "hidden";
@@ -375,8 +514,8 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 					<tr>
 						<td nowrap id="tdClock">
 							<span id="spnClock"/></span>
+							<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 						</td>
-						<td><img src="blank.png" width=7></td>
 						<td nowrap>
 							<table id="tblDayOfWeek">
 								<tr>
@@ -391,11 +530,13 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 									</td>
 								</tr>
 								<tr>
+									<td class="tdDivider"><hr></td>
+								</tr>
+								<tr>
 									<td id="divMonthAndDay">&nbsp;</td>
 								</tr>
 							</table>
 						</td>
-						<td><img src="blank.png" width=7></td>
 						<td nowrap id="tdPhoneDetails">
 							<table id="tblPhoneDetails">
 								<tr>
@@ -417,7 +558,5 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 			</td>
 		</tr>
 	</table>
-	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
-	<span id="spnUnderline"><img id="imgUnderline" src="seconds.jpg"></span>
 </body>
 </html>
