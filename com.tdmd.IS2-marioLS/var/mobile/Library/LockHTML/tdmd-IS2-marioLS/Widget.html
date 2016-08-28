@@ -74,11 +74,11 @@ function setBattery()
 	// get the charging status, 1=not charging, 2=charging, 3=fullycharged
 	var intBatteryState = getBatteryStateAsInteger();
 
-	// show the charging status
-	document.getElementById('tdChargingStatus').innerHTML = getBatteryState();
-
 	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)))
 	{
+		// show the charging status
+		document.getElementById('tdChargingStatus').innerHTML = getBatteryState();
+
 		var intBatteryPercent = parseInt(getBatteryPercentage());
 		var intBatteryPercentTemp = intBatteryPercent;
 		var strChargedSymbol = "<img src='coin.png' style='width: 20px;'>";
@@ -103,6 +103,10 @@ function setBattery()
 		for (var i = intIndexForEmpty; i < 10; i++) {
 			strBatteryTextToDisplay += strDisabledSymbol;
 		}
+	}
+	else {
+		// clear the charging status
+		document.getElementById('tdChargingStatus').innerHTML = "";
 	}
 
 	document.getElementById('tdBattery').innerHTML = strBatteryTextToDisplay;
