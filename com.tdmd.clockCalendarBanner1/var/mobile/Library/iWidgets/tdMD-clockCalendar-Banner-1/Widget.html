@@ -73,6 +73,7 @@ body
 {
   opacity: 0.4;
 	z-index: -70;
+	height: 4px;
 }
 
 td.SignalCaption, #tdPhoneCarrier
@@ -248,10 +249,6 @@ function startOnLoad()
 	document.getElementById("spnWifiSignalDisabled").style.color = strDisabledColor;
 
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
-	intLineHeight = document.getElementById('tblMainContainer').getBoundingClientRect().bottom - document.getElementById('tblMainContainer').getBoundingClientRect().top;
-
-	document.getElementById('spnSeconds').style.height = intLineHeight;
-	document.getElementById('imgSeconds').style.height = intLineHeight;
 
 	setInterval ( "setDateAndTime()", 1000);
 }
@@ -327,14 +324,12 @@ function setDateAndTime() {
 
 	setMonthAndDay(dtCurrentDate);
 
-	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
-
 	// only show the seconds bar if the user has enabled it
 	if (blnShowSeconds)
 	{
 		document.getElementById('spnSeconds').style.visibility = "visible";
 
-		var intSecondsLineWidth = intLineWidth;
+		var intSecondsLineWidth = document.getElementById('tblGlobal').getBoundingClientRect().right;
 		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
 	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
 	}
@@ -434,7 +429,9 @@ function setBattery()
 	var objEnabled = document.getElementById("spnBatteryEnabled");
 	var objDisabled = document.getElementById("spnBatteryDisabled");
 	setLevel(getBatteryPercentage(), 10, objEnabled, objDisabled);
-	blnBlink = (getBatteryState()==2) ? true:false;
+	
+	var intBatteryState = getBatteryState();
+	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
 }
 
 function setPhone()
@@ -455,7 +452,6 @@ function blinkItem(objItem)
 {
 		if(objItem && blnBlink)
 		{
-				//objItem.style.visibility= (objItem.style.visibility=="visible")?"hidden":"visible";
 				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
 				document.getElementById("tdBatteryCaption").innerHTML = getBatteryPercentage() + "%";
 		}
@@ -514,7 +510,6 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 					<tr>
 						<td nowrap id="tdClock">
 							<span id="spnClock"/></span>
-							<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 						</td>
 						<td nowrap>
 							<table id="tblDayOfWeek">
@@ -558,5 +553,6 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 			</td>
 		</tr>
 	</table>
+	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 </body>
 </html>

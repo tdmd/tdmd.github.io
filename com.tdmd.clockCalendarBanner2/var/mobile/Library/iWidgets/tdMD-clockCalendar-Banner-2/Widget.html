@@ -66,13 +66,14 @@ body
 {
   position: absolute;
 	top: 0px;
-	left: 1px;
+	left: 0px;
 }
 
 #imgSeconds
 {
   opacity: 0.4;
 	z-index: -70;
+	height: 4px;
 }
 
 td.SignalCaption, #tdPhoneCarrier
@@ -268,9 +269,6 @@ function getWifiSignalBars()
 */
 </script>
 <script type="text/javascript" charset="utf-8">
-// get height for seconds bar
-var intLineHeight = 0;
-
 var blnBlink = false;
 
 // set opacity for disabled weekdays, from 0 to 1
@@ -350,11 +348,6 @@ function startOnLoad()
 	}
 
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
-	intLineHeight = document.getElementById('tblMainContainer').getBoundingClientRect().bottom - document.getElementById('tblMainContainer').getBoundingClientRect().top;
-
-	document.getElementById('spnSeconds').style.height = intLineHeight;
-	document.getElementById('imgSeconds').style.height = intLineHeight;
-
 	setInterval ( "setDateAndTime()", 1000);
 }
 
@@ -430,14 +423,12 @@ function setDateAndTime() {
 
 	setMonthAndDay(dtCurrentDate);
 
-	var intLineWidth = document.getElementById('spnClock').getBoundingClientRect().right - document.getElementById('spnClock').getBoundingClientRect().left;
-
 	// only show the seconds bar if the user has enabled it
 	if (blnShowSeconds)
 	{
 		document.getElementById('spnSeconds').style.visibility = "visible";
 
-		var intSecondsLineWidth = intLineWidth;
+		var intSecondsLineWidth = document.getElementById('tblGlobal').getBoundingClientRect().right;
 		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
 	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
 	}
@@ -552,9 +543,9 @@ function setBattery()
 	document.getElementById('divBatteryPercentText').innerText = intBatteryPercent;
 
 	var intBatteryState = getBatteryState();
-	document.getElementById('divBatteryChargingStatus').innerHTML = (intBatteryState==2) ? "&#9889;":"";
+	document.getElementById('divBatteryChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3) ? "&#9889;":"";
 
-	blnBlink = (intBatteryState==2) ? true:false;
+	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
 }
 
 function setPhone()
@@ -615,7 +606,6 @@ function setLevel(intLevel, divLevel)
 						</td>
 						<td nowrap id="tdClock">
 							<span id="spnClock"/></span>
-							<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 						</td>
 						<td nowrap>
 							<table id="tblDayOfWeek">
@@ -659,5 +649,6 @@ function setLevel(intLevel, divLevel)
 			</td>
 		</tr>
 	</table>
+<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 </body>
 </html>

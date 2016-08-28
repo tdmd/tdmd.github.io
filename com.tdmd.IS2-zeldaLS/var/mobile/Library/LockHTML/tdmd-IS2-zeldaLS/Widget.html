@@ -53,7 +53,8 @@ body
 <!-- Cycript data access -->
 <script type="text/cycript">
 	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
-	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
 </script>
 
 <script type="text/javascript" charset="utf-8">
@@ -73,13 +74,13 @@ function setBattery()
 {
 	var strBatteryTextToDisplay = "";
 
-	// get the charging status, 1=not charging, 2=charging
-	var intBatteryState = getBatteryState();
+	// get the charging status, 1=not charging, 2=charging, 3=fullycharged
+	var intBatteryState = getBatteryStateAsInteger();
 
 	// show the charging status
-	document.getElementById('tdChargingStatus').innerHTML = (intBatteryState==2) ? "CHARGING":"";
+	document.getElementById('tdChargingStatus').innerHTML = getBatteryState();
 
-	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && intBatteryState==2))
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)))
 	{
 		var intBatteryPercent = parseInt(getBatteryPercentage());
 		var intBatteryPercentTemp = intBatteryPercent;
