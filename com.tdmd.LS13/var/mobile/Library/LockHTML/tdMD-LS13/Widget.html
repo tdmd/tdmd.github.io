@@ -1,0 +1,192 @@
+<html>
+<head>
+<title>LS TDMD 13 by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+@font-face {
+	font-family:impact;
+	src: url("impact.ttf");
+}
+
+#divContainer
+{
+	position: relative;
+	top: 0px;
+}
+
+#divTime
+{
+		transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+    position: relative;
+    top: 50%;
+    text-align: center;
+    width: auto;
+    left: 50%;
+	 	color: #fff;
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+	font-weight:100;
+	color:ffffff;
+	letter-spacing:1;
+
+	font-family: impact;
+}
+
+.spnLine
+{
+	background-color: #000;
+	position: absolute;
+	opacity: 0.3;
+}
+
+.imgLine
+{
+	height: 1px;
+	width: 2px;
+	position: absolute;
+}
+
+#divAMPM
+{
+	font-size: 50px;
+	position: absolute;
+	-webkit-transform: rotate(-90deg); /* Safari and Chrome */
+}
+</style>
+<script type="text/javascript" charset="utf-8">
+/* for test
+var strBackgroundOpacity = "0.2";
+var bln24hours = false;
+var blnShowLeadingZeroHour = true;
+var blnShowAMPM = true;
+*/
+
+// set blnShowAMPM to true if you want to show the AM/PM
+var bgColor = new RGBA(0,0,0, 1.0);
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+	var intScreenHeight = screen.availHeight;
+
+	var objTimeContainer = document.getElementById("divContainer");
+
+	objTimeContainer.style.width = intScreenWidth;
+	objTimeContainer.style.height = intScreenHeight;
+
+	setCSSForDevice(intScreenWidth);
+
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+	setInterval ( "setDateAndTime()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function setCSSForDevice(intScreenWidth)
+{
+	var strTimeFontSize = "";
+
+	switch (intScreenWidth)
+	{
+		case 320:
+			strTimeFontSize = "200";
+			break;
+		case 375:
+			strTimeFontSize = "230";
+			break;
+		case 414:
+			strTimeFontSize = "250";
+			break;
+		case 768:
+			strTimeFontSize = "400";
+			break;
+		default:
+			strTimeFontSize = "200";
+	}
+
+	document.getElementById('divTime').style.fontSize = strTimeFontSize;
+}
+
+function setDateAndTime() {
+  var dtCurrentDate = new Date();
+  var intHours = dtCurrentDate.getHours();
+  var intMinutes = dtCurrentDate.getMinutes();
+  var intSeconds = dtCurrentDate.getSeconds();
+
+  intMinutes = checkTime(intMinutes);
+  intSeconds = checkTime(intSeconds);
+
+	var intHourToDisplay = intHours;
+
+  if (intHours > 12) { intHourToDisplay = intHours - 12;}
+  if (intHours == 0) { intHourToDisplay = intHours + 12;}
+
+	if (blnShowLeadingZeroHour) intHourToDisplay = checkTime(intHourToDisplay);
+
+  var strTimeToDisplay = intHourToDisplay + ":" + intMinutes;
+
+	var objTime = document.getElementById('divTime');
+
+	if (blnShowAMPM && !bln24hours)
+	{
+		document.getElementById('divAMPM').innerHTML = (intHours >= 12) ? "PM":"AM";
+	}
+
+  objTime.innerHTML = strTimeToDisplay;
+
+  var intMainContainerRight = objTime.getBoundingClientRect().right;
+  var intMainContainerLeft = objTime.getBoundingClientRect().left;
+  var intMainContainerTop = objTime.getBoundingClientRect().top;
+  var intMainContainerBottom = objTime.getBoundingClientRect().bottom;
+
+  var intLineWidth = intMainContainerRight - intMainContainerLeft;
+	var intLineHeight = intMainContainerBottom - intMainContainerTop;
+
+  // set lines
+  var intLineTop = objTime.getBoundingClientRect().top;
+
+  document.getElementById('imgUnderline1').style.width = 2;
+	document.getElementById('imgUnderline1').style.height = screen.availHeight;
+  document.getElementById('spnUnderline1').style.left = intMainContainerLeft + ((intMainContainerRight - intMainContainerLeft)/2);
+  document.getElementById('spnUnderline1').style.top = 0;
+
+	// reposition the AMPM
+	document.getElementById('divAMPM').style.left = intMainContainerLeft + ((intMainContainerRight - intMainContainerLeft)/2) + 30;
+  document.getElementById('divAMPM').style.top = intMainContainerBottom;
+}
+
+function checkTime(intDigit) {
+    if (intDigit < 10) { intDigit = "0" + intDigit};  // add zero in front of numbers < 10
+    return intDigit;
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+
+<div id="divContainer">
+	<div id="divTime"></div>
+	<div id="divAMPM"></div>
+	<span id="spnUnderline1" class="spnLine"><img id="imgUnderline1" class="imgLine" src="blank.png"></span>
+<div>
+</body>
+</html>
