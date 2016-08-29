@@ -323,7 +323,11 @@ default:
 
 function startOnLoad()
 {
-	setCSSForDevice();
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+
+	document.getElementById("tblGlobal").style.width = intScreenWidth;
+	setCSSForDevice(intScreenWidth);
 
 	// set the days of the week
 	// check if we abbreviate the days
@@ -376,22 +380,22 @@ function setCSSForDevice()
 
 	var strHREF = "";
 
-	switch (intDevice)
+	switch (intScreenWidth)
 	{
-		case "1":
+		case 320:
 			strHREF = "iphone5.css"
 			break;
-		case "2":
+		case 375:
 			strHREF = "iphone6.css";
 			break;
-		case "3":
+		case 414:
 			strHREF = "iphone6plus.css";
 			break;
-		case "4":
+		case 768:
 			strHREF = "ipad.css";
 			break;
 		default:
-			strHREF = "iphone6plus.css";
+			strHREF = "iphone5.css";
 	}
 
 	link.href = strHREF;

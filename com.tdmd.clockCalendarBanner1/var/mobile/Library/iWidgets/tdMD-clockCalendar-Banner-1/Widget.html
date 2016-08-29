@@ -66,7 +66,7 @@ body
 {
   position: absolute;
 	top: 0px;
-	left: 1px;
+	left: 0px;
 }
 
 #imgSeconds
@@ -116,7 +116,6 @@ hr
 </script>
 <script type="text/javascript" charset="utf-8">
 /* for testing
-var intDevice = "3";
 var blnAbbreviateMonth = false;
 var blnAbbreviateDay = true;
 var bln24hours = false;
@@ -215,7 +214,11 @@ default:
 
 function startOnLoad()
 {
-	setCSSForDevice();
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+
+	document.getElementById("tblGlobal").style.width = intScreenWidth;
+	setCSSForDevice(intScreenWidth);
 
 	// set the days of the week
 	// check if we abbreviate the days
@@ -268,7 +271,7 @@ function setBgOpacity(objColor, objElement, strOpacity) {
     objElement.style.backgroundColor = objColor.getCSS();
 }
 
-function setCSSForDevice()
+function setCSSForDevice(intScreenWidth)
 {
 	var head  = document.getElementsByTagName('head')[0];
 	var link  = document.createElement('link');
@@ -278,23 +281,24 @@ function setCSSForDevice()
 
 	var strHREF = "";
 
-	switch (intDevice)
+	switch (intScreenWidth)
 	{
-		case "1":
+		case 320:
 			strHREF = "iphone5.css"
 			break;
-		case "2":
+		case 375:
 			strHREF = "iphone6.css";
 			break;
-		case "3":
+		case 414:
 			strHREF = "iphone6plus.css";
 			break;
-		case "4":
+		case 768:
 			strHREF = "ipad.css";
 			break;
 		default:
-			strHREF = "iphone6plus.css";
+			strHREF = "iphone5.css";
 	}
+
 	link.href = strHREF;
 	head.appendChild(link);
 }
@@ -341,7 +345,6 @@ function setDateAndTime() {
 	setPhone();
 	setWifi();
 	blinkItem(document.getElementById('spnBatteryEnabled'));
-
 }
 
 function checkTime(intDigit) {
@@ -429,7 +432,7 @@ function setBattery()
 	var objEnabled = document.getElementById("spnBatteryEnabled");
 	var objDisabled = document.getElementById("spnBatteryDisabled");
 	setLevel(getBatteryPercentage(), 10, objEnabled, objDisabled);
-	
+
 	var intBatteryState = getBatteryState();
 	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
 }
@@ -438,7 +441,9 @@ function setPhone()
 {
 	var objEnabled = document.getElementById("spnCellularSignalEnabled");
 	var objDisabled = document.getElementById("spnCellularSignalDisabled");
-	setLevel((getPhoneSignalBars()*20), 5, objEnabled, objDisabled);
+
+	var intPhoneSignalLevel = parseInt(getPhoneSignalBars());
+	setLevel((intPhoneSignalLevel*20), 5, objEnabled, objDisabled);
 }
 
 function setWifi()
@@ -543,7 +548,7 @@ function setLevel(intLevel, intCircles, objEnabled, objDisabled)
 									<td class="Level" nowrap id="tdCellularSignalLevel"><span id="spnCellularSignalEnabled"></span><span id="spnCellularSignalDisabled"></span></td>
 								</tr>
 								<tr>
-									<td class="SignalCaption">Wifi</td>
+									<td class="SignalCaption" id="tdWifiSignalLevelCaption">Wifi</td>
 									<td class="Level" nowrap id="tdWifiSignalLevel"><span id="spnWifiSignalEnabled"></span><span id="spnWifiSignalDisabled"></span></td>
 								</tr>
 							</table>

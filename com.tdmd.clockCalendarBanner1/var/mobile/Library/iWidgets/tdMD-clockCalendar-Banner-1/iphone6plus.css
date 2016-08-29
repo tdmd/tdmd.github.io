@@ -1,8 +1,3 @@
-#tblGlobal
-{
-	width: 414px;
-}
-
 .spnDayOfWeek
 {
 	font-size: 10px;
@@ -10,20 +5,20 @@
 
 #spnClock
 {
-	font-size: 30px;
+	font-size: 40px;
 }
 
 #divMonthAndDay
 {
-	font-size: 16px;
+	font-size: 20px;
 }
 
 td.SignalCaption, #tdPhoneCarrier
 {
-	font-size: 8px;
+	font-size: 9px;
 }
 
 .spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
 {
-	font-size: 7px;
+	font-size: 8px;
 }
