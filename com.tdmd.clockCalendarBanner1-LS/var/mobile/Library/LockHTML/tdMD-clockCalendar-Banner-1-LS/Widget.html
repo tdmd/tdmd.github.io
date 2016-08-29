@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Clock Calendar Banner 2 by @tvdmd</title>
+<title>Clock Calendar Banner 1 by @tvdmd</title>
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style type="text/css">
@@ -106,116 +106,6 @@ hr
 	margin: 1px;
 	opacity: 0.5;
 }
-
-#tblSignalDetails
-{
-		border-collapse: separate;
-		border-spacing: 5px;
-}
-
-#tblBatteryPercent
-{
-	height: 40px;
-	width: 20px;
-	border: 1px solid #fff;
-	top: 5px;
-	left: 0px;
-	position: relative;
-}
-
-#trBattery
-{
-	background-color: transparent;
-	color: #fff;
-	text-align: center;
-	vertical-align: bottom;
-	position: relative;
-}
-
-#divBatteryPercentText
-{
-	position: absolute;
-	top: 12px;
-	width: 70%;
-	z-index: 1;
-	font-size: 10px;
-}
-
-#divBatteryChargingStatus
-{
-	position: absolute;
-	top: 24px;
-	width: 70%;
-	z-index: 2;
-	font-size: 8px;
-	text-align: center;
-}
-
-#tblBatteryTop
-{
-	width: 13px;
-	position:relative;
-	background-color: #fff;
-	border-collapse: collapse;
-	top: 5px;
-	left: 5px;
-	border-top-right-radius: 1px;
-	border-top-left-radius: 1px;
-	z-index: -100;
-}
-
-#imgBatteryTop
-{
-	height: 2px;
-	width: 1px;
-}
-
-#imgBatteryPercent
-{
-	width: 15px;
-	height: 1px;
-	opacity: 0.7;
-}
-
-.pillOutside
-{
-	/* this is the only relevant part: */
-	border-radius: 10%/40%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 40px;
-	height: 8px;
-	background-color: #fff;
-	position:relative;
-}
-
-.pillInside
-{
-	/* this is the only relevant part: */
-	border-radius: 10%/40%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 38px;
-	height: 6px;
-	top: 1px;
-	left: 1px;
-	background-color: #000;
-	position:absolute;
-}
-
-.pillLevel
-{
-	/* this is the only relevant part: */
-	border-radius: 7%/35%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 36px;
-	height: 4px;
-	top: 1px;
-	left: 1px;
-	background-color: #fff;
-	position:absolute;
-}
 </style>
 <!-- Cycript data access -->
 <script type="text/cycript">
@@ -226,7 +116,6 @@ hr
 </script>
 <script type="text/javascript" charset="utf-8">
 /* for testing
-var intDevice = "4";
 var blnAbbreviateMonth = false;
 var blnAbbreviateDay = true;
 var bln24hours = false;
@@ -269,12 +158,14 @@ function getWifiSignalBars()
 */
 </script>
 <script type="text/javascript" charset="utf-8">
-var blnBlink = false;
+var strEnabledColor = "4bcf54";
+var strDisabledColor = "b5b5b5";
+var blnBlinkText = false;
+var bgColor = new RGBA(0,0,0, 1.0);
 
 // set opacity for disabled weekdays, from 0 to 1
 var strDisabledWeekdayOpacity = "0.4";
 var strDisabledDayColor = "#a8a8a8";
-var bgColor = new RGBA(0,0,0, 1.0);
 
 var arrWeekday = new Array(7);
 var arrWeekdayAbbreviated = new Array(7);
@@ -351,7 +242,17 @@ function startOnLoad()
 		document.getElementById('spnSat').innerHTML = arrWeekday[6];
 	}
 
+	document.getElementById("spnBatteryEnabled").style.color = strEnabledColor;
+	document.getElementById("spnBatteryDisabled").style.color = strDisabledColor;
+
+	document.getElementById("spnCellularSignalEnabled").style.color = strEnabledColor;
+	document.getElementById("spnCellularSignalDisabled").style.color = strDisabledColor;
+
+	document.getElementById("spnWifiSignalEnabled").style.color = strEnabledColor;
+	document.getElementById("spnWifiSignalDisabled").style.color = strDisabledColor;
+
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
 	setInterval ( "setDateAndTime()", 1000);
 }
 
@@ -443,18 +344,7 @@ function setDateAndTime() {
 	setBattery();
 	setPhone();
 	setWifi();
-	blinkItem(document.getElementById('imgBatteryPercent'));
-}
-
-function blinkItem(objItem)
-{
-		if(objItem && blnBlink)
-		{
-				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
-		}
-		else {
-			objItem.style.opacity = "0.7";
-		}
+	blinkItem(document.getElementById('spnBatteryEnabled'));
 }
 
 function checkTime(intDigit) {
@@ -539,42 +429,81 @@ function setMonthAndDay(dtCurrentDate)
 
 function setBattery()
 {
-	var intBatteryPercent = getBatteryPercentage();
-	var intBatteryTableHeight = document.getElementById('tblBatteryPercent').getBoundingClientRect().bottom - document.getElementById('tblBatteryPercent').getBoundingClientRect().top - 9;
-
-	var intBatteryHeight = parseInt((intBatteryPercent/100) * intBatteryTableHeight);
-	document.getElementById('imgBatteryPercent').style.height = intBatteryHeight + "px";
-	document.getElementById('divBatteryPercentText').innerText = intBatteryPercent;
+	var objEnabled = document.getElementById("spnBatteryEnabled");
+	var objDisabled = document.getElementById("spnBatteryDisabled");
+	setLevel(getBatteryPercentage(), 10, objEnabled, objDisabled);
 
 	var intBatteryState = getBatteryState();
-	document.getElementById('divBatteryChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3) ? "&#9889;":"";
-
 	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
 }
 
 function setPhone()
 {
-	var divSignalLevel = document.getElementById("divSignalLevel");
-	setLevel((getPhoneSignalBars()*20), divSignalLevel);
+	var objEnabled = document.getElementById("spnCellularSignalEnabled");
+	var objDisabled = document.getElementById("spnCellularSignalDisabled");
+
+	var intPhoneSignalLevel = parseInt(getPhoneSignalBars());
+	setLevel((intPhoneSignalLevel*20), 5, objEnabled, objDisabled);
 }
 
 function setWifi()
 {
-	var divWifiLevel = document.getElementById("divWifiLevel");
-	setLevel((getWifiSignalBars()*33.4),divWifiLevel);
+	var objEnabled = document.getElementById("spnWifiSignalEnabled");
+	var objDisabled = document.getElementById("spnWifiSignalDisabled");
+	setLevel((getWifiSignalBars()*33.4), 3, objEnabled, objDisabled);
 }
 
-function setLevel(intLevel, divLevel)
+function blinkItem(objItem)
 {
+		if(objItem && blnBlink)
+		{
+				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
+				document.getElementById("tdBatteryCaption").innerHTML = getBatteryPercentage() + "%";
+		}
+		else {
+			//objItem.style.visibility = "visible";
+			objItem.style.opacity = "1";
+			document.getElementById("tdBatteryCaption").innerHTML = "BATTERY";
+		}
+}
+
+function setLevel(intLevel, intCircles, objEnabled, objDisabled)
+{
+	var intLevelPercentTemp = intLevel;
+	var intIncrement = (100/intCircles);
+
+	var intIndexForEmpty = 0;
+
+	var strSymbol = "&#9679;";
+	var strEnabledTextToDisplay = "";
+	var strDisabledTextToDisplay = "";
+
+	var intIndexForEmpty = 0;
+
 	if (intLevel > 0)
 	{
-		divLevel.style.backgroundColor = "#fff";
-		divLevel.style.width = intLevel-6 + "%";
-	}
-	else {
-		divLevel.style.backgroundColor = "#000";
+		if (intLevel <= intIncrement)
+		{
+			strEnabledTextToDisplay += strSymbol + " ";
+			intIndexForEmpty++;
+		}
+		else {
+			while (intLevelPercentTemp >= intIncrement) {
+		    strEnabledTextToDisplay += strSymbol + " ";
+		    intLevelPercentTemp = intLevelPercentTemp - intIncrement;
+				intIndexForEmpty++;
+			}
+		}
 	}
 
+	objEnabled.innerHTML = strEnabledTextToDisplay;
+
+	// set the disabled charged circles
+	for (var i = intIndexForEmpty; i < intCircles; i++) {
+		strDisabledTextToDisplay += strSymbol + " ";
+	}
+
+	objDisabled.innerHTML = strDisabledTextToDisplay;
 }
 </script>
 </head>
@@ -584,30 +513,6 @@ function setLevel(intLevel, divLevel)
 			<td nowrap align="center">
 				<table id="tblMainContainer">
 					<tr>
-						<td nowrap>
-							<table id="tblSignalDetails">
-								<tr>
-									<td class="SignalCaption">Signal</td>
-									<td class="Level" nowrap id="tdCellularSignalLevel">
-										<div id="divSignalOutside" class="pillOutside">
-											<div id="divSignalInside" class="pillInside">
-												<div id="divSignalLevel" class="pillLevel"></div>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="SignalCaption">Wifi</td>
-									<td class="Level" nowrap id="tdWifiSignalLevel">
-										<div id="divWifiOutside" class="pillOutside">
-											<div id="divWifiInside" class="pillInside">
-												<div id="divWifiLevel" class="pillLevel"></div>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
 						<td nowrap id="tdClock">
 							<span id="spnClock"/></span>
 						</td>
@@ -632,27 +537,27 @@ function setLevel(intLevel, divLevel)
 								</tr>
 							</table>
 						</td>
-						<td id="tdRight">
-							<table id="tblBatteryTop">
+						<td nowrap id="tdPhoneDetails">
+							<table id="tblPhoneDetails">
 								<tr>
-									<td><img src="blank.png" id="imgBatteryTop"></td>
+									<td class="SignalCaption" id="tdBatteryCaption">Battery</td>
+									<td class="Level" nowrap id="tdBattery"><span id="spnBatteryEnabled"></span><span id="spnBatteryDisabled"></span></td>
+								</tr>
+								<tr>
+									<td class="SignalCaption">Signal</td>
+									<td class="Level" nowrap id="tdCellularSignalLevel"><span id="spnCellularSignalEnabled"></span><span id="spnCellularSignalDisabled"></span></td>
+								</tr>
+								<tr>
+									<td class="SignalCaption" id="tdWifiSignalLevelCaption">Wifi</td>
+									<td class="Level" nowrap id="tdWifiSignalLevel"><span id="spnWifiSignalEnabled"></span><span id="spnWifiSignalDisabled"></span></td>
 								</tr>
 							</table>
-							<table id="tblBatteryPercent">
-								<tr id="trBattery">
-									<td id="tdBattery">
-										<img id="imgBatteryPercent" src="batterypercent.png">
-										<div id="divBatteryPercentText"></div>
-										<div id="divBatteryChargingStatus"></div>
-									</td>
-								</tr>
-							</table>
-						<td>
+						</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 	</table>
-<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
+	<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
 </body>
 </html>

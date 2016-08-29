@@ -1,0 +1,24 @@
+.spnDayOfWeek
+{
+	font-size: 10px;
+}
+
+#spnClock
+{
+	font-size: 30px;
+}
+
+#divMonthAndDay
+{
+	font-size: 12px;
+}
+
+td.SignalCaption, #tdPhoneCarrier
+{
+	font-size: 7px;
+}
+
+.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
+{
+	font-size: 7px;
+}
