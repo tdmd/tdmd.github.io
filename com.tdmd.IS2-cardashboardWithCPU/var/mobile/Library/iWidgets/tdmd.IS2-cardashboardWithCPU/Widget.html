@@ -253,7 +253,7 @@ function setPointerForMeter(imgPointer, intPointerTop, intPointerLeft, intPointe
 function setBatteryChargingStatus(intBatteryPercent)
 {
 	var intBatteryState = getBatteryState();
-	document.getElementById('spnChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3) ? "<i class='step fi-battery-half size-36'></i>":"";
+	document.getElementById('spnChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3 || intBatteryPercent<=10) ? "<i class='step fi-battery-half size-36'></i>":"";
 	if (intBatteryPercent <= 10)
 	{
 		document.getElementById('spnChargingStatus').style.color = "#cf2551";
