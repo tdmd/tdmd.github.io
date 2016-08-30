@@ -1,0 +1,296 @@
+<html>
+<head>
+<title>Car Dashboard by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="foundation-icons.css" />
+<style>
+@font-face {
+	font-family:digital;
+	src: url("digital-7.ttf");
+}
+
+@font-face {
+	font-family:foundation;
+	src: url("foundation-icons.ttf");
+}
+
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+
+body
+{
+	margin:0;
+	padding:0;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+	letter-spacing:1;
+
+	font-family: digital;
+	background-color: transparent;
+	text-transform: uppercase;
+}
+
+#tblMain
+{
+	padding: 3px;
+	position: absolute;
+	bottom:0px;
+}
+
+#tdBatteryMeter, #tdCellularSignalMeter, #tdWifiSignalMeter
+{
+	position: relative;
+	vertical-align: bottom;
+	text-align: center;
+	font-size: 9px;
+	ont-family: libel;
+}
+
+#spnBatteryPercentage
+{
+	font-weight: normal;
+	font-family: digital;
+	position: absolute;
+	background-color: #1c1c1c;
+	padding: 0px;
+	border:1px solid #3e3e3e;
+	border-radius: 5px;
+	width: 30px;
+	font-size: 15px;
+	z-index: -100;
+}
+
+#spnChargingStatus
+{
+	font-weight: normal;
+	font-family: fondation;
+	position: absolute;
+	top: 5;
+	left: 0;
+	font-size: 20px;
+}
+
+#imgBatteryPointer, #imgCellularSignalPointer, #imgWifiSignalPointer
+{
+	position:absolute;
+	z-index:0;
+	top: 0;
+}
+
+</style>
+<!-- Cycript data access-->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
+	var getCellularSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
+	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intBatteryPercent = 100;
+var strFontSize = 20;
+var strTextColor = "#fff";
+
+var intWifiSignal = 3;
+var intCellularSignal = 5;
+var intBatteryState = 1;
+
+function getCellularSignalBars()
+{
+	intCellularSignal = intCellularSignal - 1;
+	if (intCellularSignal<0) intCellularSignal=5;
+	return intCellularSignal;
+}
+
+function getWifiSignalBars()
+{
+	intWifiSignal = intWifiSignal - 1;
+	if (intWifiSignal<0) intWifiSignal=3;
+	return intWifiSignal;
+}
+
+function getBatteryState()
+{
+	intBatteryState = intBatteryState - 1;
+	if (intBatteryState<0) intBatteryState=3;
+	return 3;
+}
+
+function getBatteryPercentage()
+{
+	intBatteryPercent = intBatteryPercent - 5;
+	if (intBatteryPercent<0) intBatteryPercent=100;
+	return intBatteryPercent;
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var strImageSize = 125;
+var bgColor = new RGBA(0,0,0, 1.0);
+
+function startOnLoad()
+{
+	// set the styles
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+	document.body.style.color = strTextColor;
+	document.getElementById("spnBatteryPercentage").style.color = strTextColor;
+
+	var imgBatteryMeter = document.getElementById("imgBatteryMeter");
+	var imgBatteryPointer = document.getElementById("imgBatteryPointer");
+
+	imgBatteryMeter.style.width = strImageSize;
+	imgBatteryPointer.style.width = strImageSize;
+
+	var imgCellularSignalMeter = document.getElementById("imgCellularSignalMeter");
+	var imgCellularSignalPointer = document.getElementById("imgCellularSignalPointer");
+	imgCellularSignalMeter.style.width = strImageSize * 0.6;
+	imgCellularSignalPointer.style.width = strImageSize * 0.6;
+
+	var imgWifiSignalMeter = document.getElementById("imgWifiSignalMeter");
+	var imgWifiSignalPointer = document.getElementById("imgWifiSignalPointer");
+	imgWifiSignalMeter.style.width = strImageSize * 0.6;
+	imgWifiSignalPointer.style.width = strImageSize * 0.6;
+
+	var spnBatteryPercentage = document.getElementById("spnBatteryPercentage");
+	spnBatteryPercentage.style.left = document.getElementById('tdBatteryMeter').getBoundingClientRect().left - 35;
+	spnBatteryPercentage.style.top = 25;
+
+	setInterval ( "setMeters()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function setMeters()
+{
+	setBattery();
+	setCellularSignal();
+	setWifiSignal();
+}
+
+function setBattery()
+{
+	var intBatteryPercent = getBatteryPercentage();
+	document.getElementById('spnBatteryPercentage').innerHTML = intBatteryPercent;
+
+	var imgBatteryMeter = document.getElementById("imgBatteryMeter");
+	var imgBatteryPointer = document.getElementById("imgBatteryPointer");
+
+	var imgBatteryMeterLeft = imgBatteryMeter.getBoundingClientRect().left;
+	var imgBatteryMeterRight = imgBatteryMeter.getBoundingClientRect().right;
+	var imgBatteryMeterTop = imgBatteryMeter.getBoundingClientRect().top;
+	var imgBatteryMeterBottom = imgBatteryMeter.getBoundingClientRect().bottom;
+
+	var intBatteryPointerLeft = ((imgBatteryMeterRight - imgBatteryMeterLeft)/2);
+	var intBatteryPointerTop = imgBatteryMeterBottom - imgBatteryMeterTop - 10;
+
+	//var imgPointerRotation = 146;
+	//var imgPointerRotation = 32;
+
+	var intBatteryIncrement = 114 * (intBatteryPercent/100);
+	var intBatteryPointerRotation = 35 + intBatteryIncrement;
+
+	setPointerForMeter(imgBatteryPointer, intBatteryPointerTop, intBatteryPointerLeft, intBatteryPointerRotation, strImageSize);
+	setBatteryChargingStatus(intBatteryPercent);
+}
+
+function setCellularSignal()
+{
+	var intCellularSignal = getCellularSignalBars();
+
+	var imgCellularSignalMeter = document.getElementById("imgCellularSignalMeter");
+	var imgCellularSignalPointer = document.getElementById("imgCellularSignalPointer");
+
+	var imgCellularSignalMeterLeft = imgCellularSignalMeter.getBoundingClientRect().left;
+	var imgCellularSignalMeterRight = imgCellularSignalMeter.getBoundingClientRect().right;
+	var imgCellularSignalMeterTop = imgCellularSignalMeter.getBoundingClientRect().top;
+	var imgCellularSignalMeterBottom = imgCellularSignalMeter.getBoundingClientRect().bottom;
+
+	var imgBatteryMeter = document.getElementById("imgBatteryMeter");
+	var imgBatteryMeterTop = imgBatteryMeter.getBoundingClientRect().top;
+	var imgBatteryMeterBottom = imgBatteryMeter.getBoundingClientRect().bottom;
+
+	var intCellularSignalPointerLeft = ((imgCellularSignalMeterRight - imgCellularSignalMeterLeft)/2);
+	var intCellularSignalPointerTop = imgBatteryMeterBottom - imgBatteryMeterTop - 10;
+
+	var intCellularSignalIncrement = 114 * (intCellularSignal/5);
+	var intCellularSignalPointerRotation = 34 + intCellularSignalIncrement;
+
+	setPointerForMeter(imgCellularSignalPointer, intCellularSignalPointerTop, intCellularSignalPointerLeft, intCellularSignalPointerRotation, (strImageSize * 0.6));
+}
+
+function setWifiSignal()
+{
+	var intWifiSignal = getWifiSignalBars();
+
+	var imgWifiSignalMeter = document.getElementById("imgWifiSignalMeter");
+	var imgWifiSignalPointer = document.getElementById("imgWifiSignalPointer");
+
+	var imgWifiSignalMeterLeft = imgWifiSignalMeter.getBoundingClientRect().left;
+	var imgWifiSignalMeterRight = imgWifiSignalMeter.getBoundingClientRect().right;
+	var imgWifiSignalMeterTop = imgWifiSignalMeter.getBoundingClientRect().top;
+	var imgWifiSignalMeterBottom = imgWifiSignalMeter.getBoundingClientRect().bottom;
+
+	var imgBatteryMeter = document.getElementById("imgBatteryMeter");
+	var imgBatteryMeterTop = imgBatteryMeter.getBoundingClientRect().top;
+	var imgBatteryMeterBottom = imgBatteryMeter.getBoundingClientRect().bottom;
+
+	var intWifiSignalPointerLeft = ((imgWifiSignalMeterRight - imgWifiSignalMeterLeft)/2);
+	var intWifiSignalPointerTop = imgBatteryMeterBottom - imgBatteryMeterTop - 10;
+
+	var intWifiSignalIncrement = 114 * (intWifiSignal/3);
+	var intWifiSignalPointerRotation = 34 + intWifiSignalIncrement;
+
+	setPointerForMeter(imgWifiSignalPointer, intWifiSignalPointerTop, intWifiSignalPointerLeft, intWifiSignalPointerRotation, (strImageSize * 0.6));
+}
+
+function setPointerForMeter(imgPointer, intPointerTop, intPointerLeft, intPointerRotation, strPointerSize)
+{
+	imgPointer.setAttribute("style", "position: absolute; top: " + intPointerTop + ";left: " +  intPointerLeft + "; width: " + strPointerSize + ";transform: translateX(-50%) translateY(-50%) rotate(" + intPointerRotation + "deg);");
+}
+
+function setBatteryChargingStatus(intBatteryPercent)
+{
+	var intBatteryState = getBatteryState();
+	document.getElementById('spnChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3) ? "<i class='step fi-battery-half size-36'></i>":"";
+	if (intBatteryPercent <= 10)
+	{
+		document.getElementById('spnChargingStatus').style.color = "#cf2551";
+	}
+	else if ((intBatteryState==2 || intBatteryState==3))
+	{
+		document.getElementById('spnChargingStatus').style.color = "#59b57e";
+	}
+	else {
+		document.getElementById('spnChargingStatus').style.color = strTextColor;
+	}
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+<table id="tblMain">
+	<tr>
+		<td id="tdCellularSignalMeter"><img id="imgCellularSignalMeter" src="emptymeter.png"><br><br>Cellular<img id="imgCellularSignalPointer" src="pointer.png"></td>
+		<td id="tdBatteryMeter"><img id="imgBatteryMeter" src="meter.png"><img id="imgBatteryPointer" src="pointer.png"><span id="spnBatteryPercentage"></span><span id="spnChargingStatus"></span>
+		</td>
+		<td id="tdWifiSignalMeter"><img id="imgWifiSignalMeter" src="emptymeter.png"><br><br>Wifi<img id="imgWifiSignalPointer" src="pointer.png"></td>
+	</tr>
+</table>
+</body>
+</html>

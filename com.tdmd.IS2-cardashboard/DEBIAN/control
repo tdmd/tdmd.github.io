@@ -1,10 +1,10 @@
-Package: com.tdmd.IS2-deviceinfo-iwidget
-Name: Device Information for iWidget
+Package: com.tdmd.IS2-cardashboard
+Name: Car Dashboard for iWidget
 Version: 1.0
 Architecture: iphoneos-arm
-Description: Device Information for iWidget
+Description: Car Dashboard for iWidget
 Depends: com.eldwin.iwidgets, com.matchstic.infostats2
 Maintainer: TDMD <tdmd@outlook.com>
 Author: TDMD <tdmd@outlook.com>
 Section: Widgets
-Depiction: https://tdmd.github.io/Depictions/com.tdmd.IS2-deviceinfo-iwidget/index.html
+Depiction: https://tdmd.github.io/Depictions/com.tdmd.IS2-cardashboard/index.html
