@@ -1,6 +1,6 @@
 Package: com.tdmd.IS2-cardashboard
 Name: Car Dashboard for iWidget
-Version: 1.0.1
+Version: 1.0.2
 Architecture: iphoneos-arm
 Description: Car Dashboard for iWidget
 Depends: com.eldwin.iwidgets, com.matchstic.infostats2
