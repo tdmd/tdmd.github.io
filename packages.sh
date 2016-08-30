@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.IS2-cardashboard
+dpkg-deb -Zgzip -b com.tdmd.IS2-cardashboardWithCPU
