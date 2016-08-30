@@ -38,6 +38,7 @@ body
 	padding: 3px;
 	position: absolute;
 	bottom:0px;
+	height: 250px;
 }
 
 #tdBatteryMeter, #tdCellularSignalMeter, #tdWifiSignalMeter
@@ -130,12 +131,11 @@ function getBatteryPercentage()
 </script>
 <script type="text/javascript" charset="utf-8">
 var strImageSize = 125;
-var bgColor = new RGBA(0,0,0, 1.0);
 
 function startOnLoad()
 {
 	// set the styles
-	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
 	document.body.style.color = strTextColor;
 	document.getElementById("spnBatteryPercentage").style.color = strTextColor;
 
@@ -160,21 +160,6 @@ function startOnLoad()
 	spnBatteryPercentage.style.top = 25;
 
 	setInterval ( "setMeters()", 1000);
-}
-
-function RGBA(red,green,blue,alpha) {
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
-    this.alpha = alpha;
-    this.getCSS = function() {
-        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
-    }
-}
-
-function setBgOpacity(objColor, objElement, strOpacity) {
-    objColor.alpha = strOpacity;
-    objElement.style.backgroundColor = objColor.getCSS();
 }
 
 function setMeters()
