@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.BigAssBatteryLS
+dpkg-deb -Zgzip -b com.tdmd.iPhoneXRAY-LS

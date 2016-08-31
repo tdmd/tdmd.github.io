@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>default</key>
+		<string>10</string>
+		<key>label</key>
+		<string>Alert Percent</string>
+		<key>name</key>
+		<string>strAlertPercentage</string>
+		<key>type</key>
+		<string>edit</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<false/>
+		<key>label</key>
+		<string>Only show when plugged in</string>
+		<key>name</key>
+		<string>blnOnlyShowWhenPluggedIn</string>
+		<key>type</key>
+		<string>switch</string>
+	</dict>
+	<dict>
+		<key>default</key>
+		<string>0.3</string>
+		<key>label</key>
+		<string>Background opacity</string>
+		<key>name</key>
+		<string>strBackgroundOpacity</string>
+		<key>options</key>
+		<dict>
+			<key>0.0</key>
+			<string>0.0</string>
+			<key>0.1</key>
+			<string>0.1</string>
+			<key>0.2</key>
+			<string>0.2</string>
+			<key>0.3</key>
+			<string>0.3</string>
+			<key>0.4</key>
+			<string>0.4</string>
+			<key>0.5</key>
+			<string>0.5</string>
+			<key>0.6</key>
+			<string>0.6</string>
+			<key>0.7</key>
+			<string>0.7</string>
+			<key>0.8</key>
+			<string>0.8</string>
+			<key>0.9</key>
+			<string>0.9</string>
+			<key>1.0</key>
+			<string>1.0</string>
+		</dict>
+		<key>type</key>
+		<string>select</string>
+	</dict>
+</array>
+</plist>

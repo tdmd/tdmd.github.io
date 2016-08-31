@@ -1,0 +1,350 @@
+<html>
+<head>
+<title>iPhone XRAY by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: libel;
+	font-weight: normal;
+}
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#tblGlobal
+{
+	position:absolute;
+	z-index:-5;
+	padding: 3px;
+	visibility: hidden;
+}
+
+#tblBatteryPercent
+{
+	height: 97%;
+	width: 69%;
+	border: 5px solid #2f2f2f;
+	position: relative;
+	border-radius: 20px;
+	left: 4px;
+	top: 1px;
+	background-color: #3e3e4a;
+}
+
+#trBattery
+{
+	background-color: transparent;
+	color: #fff;
+	text-align: center;
+	vertical-align: bottom;
+	position: relative;
+}
+
+#divBatteryPercentText
+{
+	z-index: 1;
+	font-size: 150%;
+}
+
+#divBatteryChargingStatus
+{
+	z-index: 2;
+	text-align: center;
+	color: #7b88ab;
+	font-size: 150%;
+}
+
+.imgBatteryPercentNon100
+{
+	width: 99%;
+	height: 1px;
+	opacity: 1;
+	border-bottom-left-radius: 13px;
+	border-bottom-right-radius: 13px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.imgBatteryPercent100
+{
+	width: 99%;
+	height: 1px;
+	opacity: 1;
+	border-bottom-left-radius: 13px;
+	border-bottom-right-radius: 13px;
+	border-top-left-radius: 13px;
+	border-top-right-radius: 13px;
+}
+
+#divBatteryOverlay
+{
+	color: #7b88ab;
+	position: absolute;
+	text-align: center;
+	vertical-align: middle;
+	top: 60;
+	left: 0;
+	width: 70%;
+	height: 97%;
+	font-size: x-small;
+}
+
+#imgAppleLogo
+{
+	width: 40px;
+}
+
+#imgLithiumIon
+{
+	width: 50px;
+}
+
+#imgWarning
+{
+	width: 30px;
+	vertical-align: middle;
+	padding: 5px;
+}
+
+#imgPSE
+{
+	width: 50px;
+}
+
+#imgBG
+{
+	z-index: -100;
+	position: absolute;
+	top:0;
+	left:0;
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "4";
+var strBackgroundOpacity = "0.6";
+var strAlertPercentage = 50;
+var blnOnlyShowWhenPluggedIn = false;
+
+var intBatteryPercentTemp = 100;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryStateAsInteger()
+{
+	return 2;
+}
+
+function getBatteryState()
+{
+	return "CHARGING";
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var blnBlink = false;
+var bgColor = new RGBA(0,0,0, 1.0);
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+	var intScreenHeight = screen.height;
+
+	document.getElementById("tblGlobal").style.width = intScreenWidth;
+	document.getElementById("tblGlobal").style.height = intScreenHeight;
+
+	document.getElementById("imgBG").style.width = intScreenWidth;
+	document.getElementById("imgBG").style.height = intScreenHeight;
+
+	var strFontSize = "";
+	var strOverlayTop = 0;
+	var strAppleBatteryWidth = 0;
+	var strBatterySize = 0;
+	var strBatteryVoltage = "";
+	var strAPN = "";
+
+	switch (intScreenWidth)
+	{
+			case 320:
+				strFontSize = "x-small";
+				strOverlayTop = 35;
+				strAppleBatteryWidth = 40;
+				strBatterySize = 1570;
+				strBatteryVoltage = "3.82V==5.96Whr";
+				strAPN = "616-0613";
+				break;
+			case 375:
+				strFontSize = "small";
+				strOverlayTop = 50;
+				strAppleBatteryWidth = 40;
+				strBatterySize = 1810;
+				strBatteryVoltage = "3.82V==6.91Whr";
+				strAPN = "616-0805";
+				break;
+			case 414:
+				strFontSize = "medium";
+				strOverlayTop = 35;
+				strAppleBatteryWidth = 45;
+				strBatterySize = 2750;
+				strBatteryVoltage = "3.82V==11.1Whr";
+				strAPN = "616-0770";
+				break;
+			case 768:
+				strFontSize = "x-large";
+				strOverlayTop = 40;
+				strAppleBatteryWidth = 70;
+				strBatterySize = 7340;
+				strBatteryVoltage = "3.763V==27.62Whr";
+				strAPN = "020-8561";
+				break;
+			default:
+				strFontSize = "medium";
+				strOverlayTop = 35;
+				strAppleBatteryWidth = 45;
+				strBatterySize = 2915;
+				strBatteryVoltage = "3.82V==11.1Whr";
+				strAPN = "616-0770";
+	}
+
+	document.getElementById("divBatteryOverlay").style.fontSize = strFontSize;
+	document.getElementById("divBatteryOverlay").style.top = strOverlayTop;
+	document.getElementById("imgAppleLogo").style.width = strAppleBatteryWidth;
+	document.getElementById("spnBatterySize").innerText = strBatterySize;
+	document.getElementById("spnBatteryVoltage").innerText = strBatteryVoltage;
+	document.getElementById("spnAPN").innerText = strAPN;
+
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
+	setInterval ( "setBattery()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function blinkItem(objItem)
+{
+		if(objItem && blnBlink)
+		{
+				objItem.style.opacity= (objItem.style.opacity=="0.1")?"1":"0.1";
+		}
+		else {
+			objItem.style.opacity = "1";
+		}
+}
+
+function setBattery()
+{
+	var intBatteryState = getBatteryStateAsInteger();
+	var intBatteryPercent = getBatteryPercentage();
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
+	{
+		document.getElementById("tblGlobal").style.visibility = "visible";
+
+		var intBatteryTableHeight = document.getElementById('tblBatteryPercent').getBoundingClientRect().bottom - document.getElementById('tblBatteryPercent').getBoundingClientRect().top - 9;
+
+		var intBatteryHeight = parseInt((intBatteryPercent/100) * intBatteryTableHeight);
+		document.getElementById('imgBatteryPercent').style.height = intBatteryHeight + "px";
+		document.getElementById('divBatteryPercentText').innerText = intBatteryPercent + "%";
+		document.getElementById('divBatteryChargingStatus').innerHTML = getBatteryState();
+
+		document.getElementById("imgBatteryPercent").src = (intBatteryPercent <= strAlertPercentage) ? "batterypercent-red.png":"batterypercent.png";
+
+		blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
+		blinkItem(document.getElementById("imgAppleLogo"));
+	}
+	else {
+		document.getElementById("tblGlobal").style.visibility = "hidden";
+	}
+
+	// we need to change the border radius if it's at 100, otherwise it will look weird
+	document.getElementById("imgBatteryPercent").className = (intBatteryPercent>96) ? "imgBatteryPercent100":"imgBatteryPercentNon100";
+}
+
+</script>
+</head>
+<body onload="startOnLoad()">
+	<table id="tblGlobal">
+		<tr>
+			<td>
+				<table id="tblBatteryPercent">
+					<tr id="trBattery">
+						<td id="tdBattery">
+							<img id="imgBatteryPercent" class="imgBatteryPercentNon100" src="batterypercent.png">
+						</td>
+					</tr>
+				</table>
+				<div id="divBatteryOverlay">
+					<img id="imgAppleLogo" src="apple-logo.png"><br><br>
+					Li-ion Polymer Battery<br>
+					<span id="spnBatteryVoltage"></span><br>
+					APN: <span id="spnAPN"></span><br><br>
+					<img id="imgWarning" src="warning.png"> <span style="font-size: larger;">WARNING</span><br>
+					Authorized Service<br>
+					Provider Only<br><br>
+					Potential for fire or<br>
+					burning.  Do not<br>
+					disassemble, puncture,<br>
+					crush, heat, or burn.<br><br>
+					TIS 2217-2548<br>
+					Apple South Asia<br>
+					(Thailand) Limited<br><br>
+					<img id="imgPSE" src="pse.png">
+					<br>
+					<span style="font-size: smaller;">
+					<span id="spnBatterySize"></span>mAh<br>
+					Apple Japan<br>
+					</span>
+					<br>
+					<img id="imgLithiumIon" src="li-ion.png"><br><br>
+					<span id="divBatteryChargingStatus"></span>
+					<span id="divBatteryPercentText"></span>
+				</div>
+			<td>
+		</tr>
+	</table>
+	<img src="iphonexray-cropped-gray.png" id="imgBG" alt="">
+</body>
+</html>
