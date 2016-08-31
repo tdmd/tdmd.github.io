@@ -85,13 +85,26 @@ body
 	width: 1px;
 }
 
-#imgBatteryPercent
+.imgBatteryPercentNon100
 {
 	width: 99%;
 	height: 1px;
-	opacity: 0.7;
+	opacity: 1;
 	border-bottom-left-radius: 13px;
 	border-bottom-right-radius: 13px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.imgBatteryPercent100
+{
+	width: 99%;
+	height: 1px;
+	opacity: 1;
+	border-bottom-left-radius: 13px;
+	border-bottom-right-radius: 13px;
+	border-top-left-radius: 13px;
+	border-top-right-radius: 13px;
 }
 </style>
 <!-- Cycript data access -->
@@ -112,7 +125,7 @@ var intBatteryPercentTemp = 100;
 function getBatteryPercentage()
 {
 	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
-	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	intBatteryPercentTemp = intBatteryPercentTemp-1;
 	return intBatteryPercentTemp;
 }
 
@@ -193,6 +206,9 @@ function setBattery()
 	else {
 		document.getElementById("tblGlobal").style.visibility = "hidden";
 	}
+
+	// we need to change the border radius if it's at 100, otherwise it will look weird
+	document.getElementById("imgBatteryPercent").className = (intBatteryPercent>96) ? "imgBatteryPercent100":"imgBatteryPercentNon100";
 }
 
 </script>
@@ -209,7 +225,7 @@ function setBattery()
 				<table id="tblBatteryPercent">
 					<tr id="trBattery">
 						<td id="tdBattery">
-							<img id="imgBatteryPercent" src="batterypercent.png">
+							<img id="imgBatteryPercent" class="imgBatteryPercentNon100" src="batterypercent.png">
 							<div id="divBatteryPercentText"></div>
 							<div id="divBatteryChargingStatus"></div>
 						</td>
