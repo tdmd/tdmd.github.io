@@ -1,0 +1,222 @@
+<html>
+<head>
+<title>Clock Calendar Banner 2 by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+#tblGlobal
+{
+	position:absolute;
+	z-index:-5;
+	padding: 10px;
+	visibility: hidden;
+}
+
+#tblBatteryPercent
+{
+	height: 55%;
+	width: 55%;
+	border: 5px solid #fff;
+	position: relative;
+	border-radius: 20px;
+}
+
+#trBattery
+{
+	background-color: transparent;
+	color: #fff;
+	text-align: center;
+	vertical-align: bottom;
+	position: relative;
+}
+
+#divBatteryPercentText
+{
+	position: absolute;
+	top: 20%;
+	width: 100%;
+	z-index: 1;
+	font-size: 100px;
+}
+
+#divBatteryChargingStatus
+{
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	z-index: 2;
+	font-size: 30px;
+	text-align: center;
+}
+
+#tblBatteryTop
+{
+	width: 20%;
+	height: 3%;
+	position:relative;
+	background-color: #fff;
+	border-collapse: collapse;
+	top: 5px;
+	border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
+	z-index: -100;
+}
+
+#imgBatteryTop
+{
+	height: 2px;
+	width: 1px;
+}
+
+#imgBatteryPercent
+{
+	width: 99%;
+	height: 1px;
+	opacity: 0.7;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "4";
+var strBackgroundOpacity = "0.6";
+var strAlertPercentage = 50;
+var blnOnlyShowWhenPluggedIn = true;
+
+var intBatteryPercentTemp = 100;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryStateAsInteger()
+{
+	return 2;
+}
+
+function getBatteryState()
+{
+	return "CHARGING";
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var blnBlink = false;
+var bgColor = new RGBA(0,0,0, 1.0);
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+	var intScreenHeight = screen.availHeight;
+	document.getElementById("tblGlobal").style.width = intScreenWidth;
+	document.getElementById("tblGlobal").style.height = intScreenHeight;
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
+	setInterval ( "setBattery()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function blinkItem(objItem)
+{
+		if(objItem && blnBlink)
+		{
+				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
+		}
+		else {
+			objItem.style.opacity = "1";
+		}
+}
+
+function setBattery()
+{
+	var intBatteryState = getBatteryStateAsInteger();
+	var intBatteryPercent = getBatteryPercentage();
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
+	{
+		document.getElementById("tblGlobal").style.visibility = "visible";
+
+		var intBatteryTableHeight = document.getElementById('tblBatteryPercent').getBoundingClientRect().bottom - document.getElementById('tblBatteryPercent').getBoundingClientRect().top - 9;
+
+		var intBatteryHeight = parseInt((intBatteryPercent/100) * intBatteryTableHeight);
+		document.getElementById('imgBatteryPercent').style.height = intBatteryHeight + "px";
+		document.getElementById('divBatteryPercentText').innerText = intBatteryPercent;
+		document.getElementById('divBatteryChargingStatus').innerHTML = getBatteryState();
+
+		document.getElementById("imgBatteryPercent").src = (intBatteryPercent <= strAlertPercentage) ? "batterypercent-red.png":"batterypercent.png";
+
+		blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
+		blinkItem(document.getElementById("imgBatteryPercent"));
+	}
+	else {
+		document.getElementById("tblGlobal").style.visibility = "hidden";
+	}
+}
+
+</script>
+</head>
+<body onload="startOnLoad()">
+	<table id="tblGlobal">
+		<tr>
+			<td align="center">
+				<table id="tblBatteryTop">
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+				<table id="tblBatteryPercent">
+					<tr id="trBattery">
+						<td id="tdBattery">
+							<img id="imgBatteryPercent" src="batterypercent.png">
+							<div id="divBatteryPercentText"></div>
+							<div id="divBatteryChargingStatus"></div>
+						</td>
+					</tr>
+				</table>
+			<td>
+		</tr>
+	</table>
+</body>
+</html>
