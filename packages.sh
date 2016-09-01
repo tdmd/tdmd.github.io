@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.iPhoneXRAY-LS
+dpkg-deb -Zgzip -b com.tdmd.SquirtSquirtLS

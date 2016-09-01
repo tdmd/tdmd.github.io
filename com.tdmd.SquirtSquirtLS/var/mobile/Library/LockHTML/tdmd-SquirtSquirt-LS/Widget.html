@@ -1,0 +1,279 @@
+<html>
+<head>
+<title>Squirt Squirt battery by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+body
+{
+	margin:0;
+	padding:0;
+
+	background-color: transparent;
+}
+
+#divContainer
+{
+	position: relative;
+	height; 100%;
+	visibility: hidden;
+}
+
+#divAnimation, #divAnimation2
+{
+	position: absolute;
+	bottom: 0;
+}
+
+#divItem1, #divItem2, #divItem3, #divItem4, #divItem5, #divItem6
+{
+	position: absolute;
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var strChargeStatusFontSize = 10;
+var strSize = 10;
+var blnOnlyShowWhenPluggedIn = false;
+var strSymbolChoice = "☉";
+
+function getBatteryPercentage() { return 100; };
+function getBatteryStateAsInteger() { return 2; };
+function getBatteryState() { return "CHARGING"; };
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var strMinSize = 20;
+var strMaxSize = 100;
+var strFontSize = strMinSize;
+
+var strItemOpacity = 1.0;
+var strStartTop;
+var strEndTop;
+var strItemTop;
+var intLeftIncrement = 1.4;
+var intLeftIncrement2 = 2.5;
+
+var strItem1InitialLeft;
+var strItem2InitialLeft;
+var strItem3InitialLeft;
+var strItem4InitialLeft;
+var strItem5InitialLeft;
+var strItem6InitialLeft;
+
+var strDiv1InitialTop;
+var strDiv2InitialTop;
+
+var intXOffset = 5;
+var intDiv2YOffset = 40;
+var intSpeed = 40;
+
+var objTimer;
+
+function startOnLoad()
+{
+	// set the styles
+	document.getElementById('divContainer').style.height = screen.availHeight;
+	var objDiv1 = document.getElementById('divAnimation');
+	var objDiv2 = document.getElementById('divAnimation2');
+
+	objDiv1.style.width = screen.availWidth-20;
+	objDiv1.style.fontSize = strMinSize;
+
+	objDiv2.style.width = screen.availWidth-20;
+	objDiv2.style.top = document.getElementById("divAnimation").getBoundingClientRect().top - intDiv2YOffset;
+	objDiv2.style.fontSize = strMinSize;
+
+	var intDiv1Top = document.getElementById("divContainer").getBoundingClientRect().bottom;
+	strStartTop = intDiv1Top;
+	strEndTop = intDiv1Top - 300;
+	strItemTop = intDiv1Top;
+
+	document.getElementById('divItem2').style.left = (screen.availWidth/2) - intXOffset;
+	document.getElementById('divItem1').style.left = (screen.availWidth/2) - intLeftIncrement - intXOffset;
+	document.getElementById('divItem3').style.left = (screen.availWidth/2) + intLeftIncrement - intXOffset;
+	document.getElementById('divItem5').style.left = (screen.availWidth/2) - intXOffset;
+	document.getElementById('divItem4').style.left = (screen.availWidth/2) - intLeftIncrement2 - intXOffset;
+	document.getElementById('divItem6').style.left = (screen.availWidth/2) + intLeftIncrement2 - intXOffset;
+
+	var arrItems = document.getElementsByClassName("divItem");
+
+	for (var i=0; i<arrItems.length; i++)
+	{
+		arrItems[i].innerHTML = strSymbolChoice;
+	}
+
+	strItem1InitialLeft = document.getElementById("divItem1").getBoundingClientRect().left;
+	strItem2InitialLeft = document.getElementById("divItem2").getBoundingClientRect().left;
+	strItem3InitialLeft = document.getElementById("divItem3").getBoundingClientRect().left;
+	strItem4InitialLeft = document.getElementById("divItem4").getBoundingClientRect().left;
+	strItem5InitialLeft = document.getElementById("divItem5").getBoundingClientRect().left;
+	strItem6InitialLeft = document.getElementById("divItem6").getBoundingClientRect().left;
+
+	strDiv1InitialTop = document.getElementById("divAnimation").getBoundingClientRect().top;
+	strDiv2InitialTop = document.getElementById("divAnimation2").getBoundingClientRect().top;
+
+	setInterval("checkCharging();", 1000);
+}
+
+function checkCharging()
+{
+	if (getBatteryStateAsInteger()==2 || getBatteryStateAsInteger()==3)
+	{
+		showHideDiv(1);
+		clearInterval(objTimer);
+		objTimer = setInterval("setDiv1();setDiv2();", intSpeed);
+	}
+	else {
+		clearInterval(objTimer);
+		showHideDiv(2);
+	}
+
+	// change the color to green if we're at 100%
+	var intBatteryPercentage = getBatteryPercentage();
+
+	if (intBatteryPercentage==100)
+	{
+		document.getElementById('divContainer').style.color = "#77c94b";
+	}
+	else if (intBatteryPercentage <= 20)
+	{
+		document.getElementById('divContainer').style.color = "#ff4545";
+	}
+	else {
+		document.getElementById('divContainer').style.color = "#ffffff";
+	}
+}
+
+function showHideDiv(intShowHide)
+{
+	// 1 = show, 2 = hide
+	document.getElementById('divContainer').style.visibility = (intShowHide==1) ? "visible":"hidden";
+}
+
+function setDiv1()
+{
+	var objDiv = document.getElementById('divAnimation');
+	changeItemTop(objDiv);
+	changeFontSize(objDiv);
+	changeItemOpacity(objDiv);
+	changeItemLeft();
+}
+
+function setDiv2()
+{
+	var objDiv = document.getElementById('divAnimation2');
+	changeItemTop2(objDiv);
+	changeFontSize(objDiv);
+	changeItemOpacity(objDiv);
+	changeItemLeft2();
+}
+
+function changeFontSize(objDiv)
+{
+	var strAnimationFontSize = getFontSize();
+	objDiv.style.fontSize = strAnimationFontSize;
+}
+
+function changeItemOpacity(objDiv)
+{
+	var strAnimationItemOpacity = getItemOpacity();
+	objDiv.style.opacity = strAnimationItemOpacity;
+}
+
+function changeItemTop(objDiv)
+{
+	strItemTop = strItemTop - 5;
+
+	if (strItemTop < strEndTop)
+	{
+		strItemTop=strStartTop;
+		resetAll();
+	}
+
+	objDiv.style.top = strItemTop;
+}
+
+function changeItemTop2(objDiv)
+{
+	strItemTop = strItemTop - 5;
+
+	if (strItemTop < strEndTop)
+	{
+		strItemTop=strStartTop;
+		resetAll();
+	}
+
+	objDiv.style.top = strItemTop - intDiv2YOffset;
+}
+
+function changeItemLeft()
+{
+	document.getElementById("divItem1").style.left = document.getElementById("divItem1").getBoundingClientRect().left - intLeftIncrement;
+	document.getElementById("divItem3").style.left = document.getElementById("divItem3").getBoundingClientRect().left + intLeftIncrement;
+}
+
+function changeItemLeft2()
+{
+	document.getElementById("divItem4").style.left = document.getElementById("divItem4").getBoundingClientRect().left - intLeftIncrement2;
+	document.getElementById("divItem6").style.left = document.getElementById("divItem6").getBoundingClientRect().left + intLeftIncrement2;
+}
+
+function getFontSize()
+{
+	strFontSize = strFontSize + 0.5;
+	return strFontSize;
+}
+
+function getItemOpacity()
+{
+	strItemOpacity = strItemOpacity - 0.02;
+	return strItemOpacity;
+}
+
+function resetAll()
+{
+	strItemTop = strStartTop;
+	strItemOpacity = 1;
+	strFontSize = strMinSize;
+
+	document.getElementById('divItem1').style.left = strItem1InitialLeft;
+	document.getElementById('divItem2').style.left = strItem2InitialLeft;
+	document.getElementById('divItem3').style.left = strItem3InitialLeft;
+
+	document.getElementById('divItem4').style.left = strItem4InitialLeft;
+	document.getElementById('divItem5').style.left = strItem5InitialLeft;
+	document.getElementById('divItem6').style.left = strItem6InitialLeft;
+
+	document.getElementById('divAnimation').style.opacity = 1;
+	document.getElementById('divAnimation').style.fontSize = strMinSize;
+	document.getElementById('divAnimation2').style.opacity = 1;
+	document.getElementById('divAnimation2').style.fontSize = strMinSize;
+
+	document.getElementById('divAnimation').style.top = strDiv1InitialTop;
+	document.getElementById('divAnimation2').style.top = strDiv2InitialTop;
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+<div id="divContainer">
+	<div id="divAnimation">
+		<div id="divItem1" class="divItem"></div>
+		<div id="divItem2" class="divItem"></div>
+		<div id="divItem3" class="divItem"></div>
+	</div>
+
+	<div id="divAnimation2">
+		<div id="divItem4" class="divItem"></div>
+		<div id="divItem5" class="divItem"></div>
+		<div id="divItem6" class="divItem"></div>
+	</div>
+</div>
+</body>
+</html>

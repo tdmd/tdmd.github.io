@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+<dict>
+	<key>default</key>
+	<string>circle</string>
+	<key>label</key>
+	<string>symbol</string>
+	<key>name</key>
+	<string>strSymbolChoice</string>
+	<key>options</key>
+	<dict>
+		<key>circle</key>
+		<string>&#9679;</string>
+		<key>square</key>
+		<string>&#9632;</string>
+		<key>circled dot</key>
+		<string>&#8857;</string>
+	</dict>
+	<key>type</key>
+	<string>select</string>
+</dict>
+</array>
+</plist>
