@@ -9,6 +9,11 @@
 	src: url("Ubuntu-C.ttf");
 }
 
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
 body
 {
 	margin:0;
@@ -18,7 +23,6 @@ body
 	font-family: ubuntu;
 	background-color: rgba(0,0,0,0.3);
 	text-transform: uppercase;
-	font-weight: normal;
 }
 
 #tblGlobal
@@ -26,24 +30,35 @@ body
 	position:absolute;
 	z-index:-5;
 	padding: 10px;
+
 }
 
 #tblMainContainer
 {
-	position:absolute;
+	position:relative;
 	width: 100%;
 	z-index:-5;
+	border-collapse: collapse;
 }
 
-.tdDayOfWeek
+#tdDayOfWeek, #tdDayOfMonth
 {
 	text-align: center;
+	padding-left: 20px;
 }
 
 .spnDayOfWeek
 {
 	padding-left: 3px;
 	padding-right: 3px;
+}
+
+.spnDay
+{
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 #tdClock
@@ -56,39 +71,18 @@ body
 	z-index: -1;
 }
 
-#divMonthAndDay
-{
-	font-weight: normal;
-	text-align: center;
-}
-
-#spnSeconds
-{
-  position: absolute;
-	top: 0px;
-	left: 0px;
-}
-
-#imgSeconds
-{
-  opacity: 0.4;
-	z-index: -70;
-	height: 4px;
-}
-
 td.SignalCaption, #tdPhoneCarrier
 {
 	font-weight: normal;
+	padding-top: 2px;
 }
 
-td.Level, td.tdCellularSignalLevel, td.tdWifiSignalLevel
+#tdCellularSignalLevel, #tdWifiSignalLevel
 {
+	font-family: libel;
+	font-weight: normal;
 	vertical-align: middle;
-}
-
-.spnBattery, #spnBatteryEnabled, #spnBatteryDisabled, #spnCellularSignalEnabled, #spnCellularSignalDisabled, #spnWifiSignalEnabled, #spnWifiSignalDisabled
-{
-	vertical-align: middle;
+	font-size: 13px;
 }
 
 .tdDivider
@@ -107,114 +101,26 @@ hr
 	opacity: 0.5;
 }
 
-#tblSignalDetails
+#tblBattery
 {
-		border-collapse: separate;
-		border-spacing: 5px;
-}
-
-#tblBatteryPercent
-{
-	height: 35px;
-	width: 10px;
-	border: 1px solid #fff;
-	top: 5px;
-	left: 0px;
-	position: relative;
-}
-
-#trBattery
-{
-	background-color: transparent;
-	color: #fff;
-	text-align: center;
-	vertical-align: bottom;
-	position: relative;
-}
-
-#divBatteryPercentText
-{
-	position: absolute;
-	top: 7px;
-	width: 70%;
-	z-index: 1;
-	font-size: 10px;
-}
-
-#divBatteryChargingStatus
-{
-	position: absolute;
-	top: 18px;
-	width: 60%;
-	z-index: 2;
-	font-size: 8px;
-	text-align: center;
+	padding: 1px;
+	border-collapse: collapse;
 }
 
 #tblBatteryTop
 {
-	width: 8px;
-	position:relative;
-	background-color: #fff;
+	padding: 1px;
 	border-collapse: collapse;
-	top: 5px;
-	left: 5px;
-	border-top-right-radius: 1px;
-	border-top-left-radius: 1px;
-	z-index: -100;
 }
 
-#imgBatteryTop
+#trBattery
 {
-	height: 2px;
-	width: 1px;
+	border: 1px solid #fff;
 }
 
-#imgBatteryPercent
+#tdEmpty
 {
-	width: 10px;
-	height: 1px;
-	opacity: 0.7;
-}
-
-.pillOutside
-{
-	/* this is the only relevant part: */
-	border-radius: 10%/40%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 40px;
-	height: 8px;
-	background-color: #fff;
-	position:relative;
-}
-
-.pillInside
-{
-	/* this is the only relevant part: */
-	border-radius: 10%/40%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 38px;
-	height: 6px;
-	top: 1px;
-	left: 1px;
-	background-color: #000;
-	position:absolute;
-}
-
-.pillLevel
-{
-	/* this is the only relevant part: */
-	border-radius: 7%/35%;
-
-	/* this is irrelevant, and just so the element can be visualised/displayed: */
-	width: 36px;
-	height: 4px;
-	top: 1px;
-	left: 1px;
-	background-color: #fff;
-	position:absolute;
+	width: 50%;
 }
 </style>
 <!-- Cycript data access -->
@@ -225,7 +131,7 @@ hr
 	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
 </script>
 <script type="text/javascript" charset="utf-8">
-/* for testing */
+/* for testing
 var intDevice = "4";
 var blnAbbreviateMonth = false;
 var blnAbbreviateDay = true;
@@ -237,9 +143,20 @@ var strCurrentDayColor = "orange";
 var strLanguage = "en";
 var strBackgroundOpacity = "0.5";
 
+// for batteryPercent
+var strBatteryFontSize = 10;
+var strBatteryWidth = 60;
+var strBatteryText = "battery";
+var strSecondsLineHeight = 70;
+
+// for day of month
+var strAlignment = "top";
+var strDayOfMonthFontSize = "25";
+var strCurrentDayOfMonthColor = "#36a6ed";
+
 var intBatteryPercentTemp = 100;
-var intCellularSignalTemp = 5;
-var intWifiSignalTemp = 3;
+var intCellularSignalTemp = 6;
+var intWifiSignalTemp = 4;
 
 function getBatteryPercentage()
 {
@@ -266,10 +183,20 @@ function getWifiSignalBars()
 	intWifiSignalTemp = intWifiSignalTemp-1;
 	return intWifiSignalTemp;
 }
-
+*/
 </script>
 <script type="text/javascript" charset="utf-8">
 var blnBlink = false;
+var strSymbol = "☉";
+
+// for batteryPercent
+var strBatteryFontSize = 10;
+var strBatteryWidth = 60;
+var strSecondsLineHeight = 70;
+
+// for day of month
+var strAlignment = "top";
+var strDayOfMonthFontSize = "25";
 
 // set opacity for disabled weekdays, from 0 to 1
 var strDisabledWeekdayOpacity = "0.4";
@@ -330,13 +257,38 @@ function startOnLoad()
 	setCSSForDevice(intScreenWidth);
 
 	// set the days of the week
-	document.getElementById('spnSun').innerHTML = arrWeekday[0].substring(0,1);
-	document.getElementById('spnMon').innerHTML = arrWeekday[1].substring(0,1);
-	document.getElementById('spnTue').innerHTML = arrWeekday[2].substring(0,1);
-	document.getElementById('spnWed').innerHTML = arrWeekday[3].substring(0,1);
-	document.getElementById('spnThu').innerHTML = arrWeekday[4].substring(0,1);
-	document.getElementById('spnFri').innerHTML = arrWeekday[5].substring(0,1);
-	document.getElementById('spnSat').innerHTML = arrWeekday[6].substring(0,1);
+	// check if we abbreviate the days
+	if (blnAbbreviateDay)
+	{
+		document.getElementById('spnSun').innerHTML = arrWeekdayAbbreviated[0];
+		document.getElementById('spnMon').innerHTML = arrWeekdayAbbreviated[1];
+		document.getElementById('spnTue').innerHTML = arrWeekdayAbbreviated[2];
+		document.getElementById('spnWed').innerHTML = arrWeekdayAbbreviated[3];
+		document.getElementById('spnThu').innerHTML = arrWeekdayAbbreviated[4];
+		document.getElementById('spnFri').innerHTML = arrWeekdayAbbreviated[5];
+		document.getElementById('spnSat').innerHTML = arrWeekdayAbbreviated[6];
+	}
+	else {
+		document.getElementById('spnSun').innerHTML = arrWeekday[0];
+		document.getElementById('spnMon').innerHTML = arrWeekday[1];
+		document.getElementById('spnTue').innerHTML = arrWeekday[2];
+		document.getElementById('spnWed').innerHTML = arrWeekday[3];
+		document.getElementById('spnThu').innerHTML = arrWeekday[4];
+		document.getElementById('spnFri').innerHTML = arrWeekday[5];
+		document.getElementById('spnSat').innerHTML = arrWeekday[6];
+	}
+
+
+	// for battery	// set the styles
+	document.getElementById('tdBatteryTop').style.fontSize = strBatteryFontSize;
+	document.getElementById('imgChargeStatus').style.width = strBatteryFontSize-4;
+	document.getElementById('tdBatteryTop').style.color = "white";
+	document.getElementById('tdBattery').style.height = 5;
+	document.getElementById('tblBattery').style.width = strBatteryWidth;
+
+	// for day of month
+	document.getElementById('spnDay4').style.fontSize = strDayOfMonthFontSize;
+	document.getElementById('spnDay4').style.color = strCurrentDayColor;
 
 	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
 	setInterval ( "setDateAndTime()", 1000);
@@ -395,8 +347,8 @@ function setDateAndTime() {
   var intMinutes = dtCurrentDate.getMinutes();
   var intSeconds = dtCurrentDate.getSeconds();
 
-  var intMinutesToDisplay = checkTime(intMinutes);
-  var intSecondsToDisplay = checkTime(intSeconds);
+  var intMinutesToDisplay = checkNumber(intMinutes);
+  var intSecondsToDisplay = checkNumber(intSeconds);
 
 	var intHourToDisplay = intHours;
 
@@ -406,7 +358,7 @@ function setDateAndTime() {
 	  if (intHours == 0) { intHourToDisplay = intHours + 12;}
 	}
 
-	intHourToDisplay = (blnShowLeadingZeroHour) ? checkTime(intHourToDisplay):intHourToDisplay;
+	intHourToDisplay = (blnShowLeadingZeroHour) ? checkNumber(intHourToDisplay):intHourToDisplay;
 
   var strTimeToDisplay = intHourToDisplay + ":" + intMinutesToDisplay;
 
@@ -414,37 +366,13 @@ function setDateAndTime() {
 
 	setMonthAndDay(dtCurrentDate);
 
-	// only show the seconds bar if the user has enabled it
-	if (blnShowSeconds)
-	{
-		document.getElementById('spnSeconds').style.visibility = "visible";
-
-		var intSecondsLineWidth = document.getElementById('tblGlobal').getBoundingClientRect().right;
-		var intSecondsLineIncrement = ((intSecondsLineWidth)/60);
-	  document.getElementById('imgSeconds').style.width = intSeconds * intSecondsLineIncrement;
-	}
-	else {
-		document.getElementById('spnSeconds').style.visibility = "hidden";
-	}
-
 	setBattery();
-	setPhone();
-	setWifi();
-	blinkItem(document.getElementById('imgBatteryPercent'));
+	setCellularSignal();
+	setWifiSignal();
+	setCurrentDay(dtCurrentDate);
 }
 
-function blinkItem(objItem)
-{
-		if(objItem && blnBlink)
-		{
-				objItem.style.opacity= (objItem.style.opacity=="0.3")?"1":"0.3";
-		}
-		else {
-			objItem.style.opacity = "0.7";
-		}
-}
-
-function checkTime(intDigit) {
+function checkNumber(intDigit) {
     if (intDigit < 10) { intDigit = "0" + intDigit};  // add zero in front of numbers < 10
     return intDigit;
 }
@@ -453,49 +381,6 @@ function setMonthAndDay(dtCurrentDate)
 {
 	// get day of week
   var intDayOfWeek = dtCurrentDate.getDay();
-	var intMonth = dtCurrentDate.getMonth();
-	var intDateDay = dtCurrentDate.getDate();
-
-	var intFullYear = dtCurrentDate.getFullYear();
-	var strDayOfWeek = (blnAbbreviateDay) ? arrWeekdayAbbreviated[intDayOfWeek]:arrWeekday[intDayOfWeek];
-	var strMonth = (blnAbbreviateMonth) ? arrMonthAbbreviated[intMonth]:arrMonth[intMonth];
-
-	// get day of month
-  var strDayOfMonth = dtCurrentDate.getDate().toString();
-
-  if (strLanguage == "en")
-  {
-    // get wording for day of month
-    var intLastNumberOfDay = strDayOfMonth.slice(-1);
-
-    var strDayOfMonthAppend = "";
-
-		switch (intLastNumberOfDay) {
-    	case "1":
-    		strDayOfMonthAppend = "st";
-    		break;
-    	case "2":
-    		strDayOfMonthAppend = "nd";
-    		break;
-    	case "3":
-    		strDayOfMonthAppend = "rd";
-    		break;
-    	default:
-    		strDayOfMonthAppend = "th";
-    }
-
-    strDayOfMonth = strDayOfMonth + strDayOfMonthAppend;
-  }
-	else if (strLanguage == "vn")
-	{
-		strDayOfMonth = "ngày " + strDayOfMonth;
-	}
-
-	// get year
-	strDayOfMonth += (blnShowYear) ? ", " + intFullYear:"";
-
-  // show the Month and Day in our div
-  document.getElementById('divMonthAndDay').innerHTML = strMonth + " " + strDayOfMonth;
 
 	// reset our highlighted day of week
 	var arrSpnDayOfWeek = document.querySelectorAll(".spnDayOfWeek");
@@ -524,135 +409,200 @@ function setMonthAndDay(dtCurrentDate)
 	arrDayOfWeekElements[intDayOfWeek].style.color = strCurrentDayColor;
 }
 
+function setCellularSignal()
+{
+	var intPhoneSignalBars = getPhoneSignalBars();
+	setSignalLevel(intPhoneSignalBars,5,document.getElementById("tdCellularSignalLevel"))
+}
+
+function setWifiSignal()
+{
+	var intWifiSignal = getWifiSignalBars();
+	setSignalLevel(intWifiSignal,3,document.getElementById("tdWifiSignalLevel"))
+}
+
+function setSignalLevel(intLevel, intMaxLevel, objSignalContainer)
+{
+	// clear the signal bars
+	while (objSignalContainer.hasChildNodes()) {
+    objSignalContainer.removeChild(objSignalContainer.lastChild);
+	}
+
+	// set the disabled signal bars
+	for (var i = 0; i < intMaxLevel; i++) {
+
+		var objItem = document.createElement("label");
+		objItem.innerText = strSymbol;
+
+		if (i >= intLevel)
+		{
+			objItem.style.color = "#dddddd";
+			objItem.style.opacity = "0.2";
+		}
+		else {
+			objItem.style.color = "#ffffff";
+			objItem.style.opacity = "1";
+		}
+
+		objSignalContainer.appendChild(objItem);
+	}
+}
+
 function setBattery()
 {
 	var intBatteryPercent = getBatteryPercentage();
-	var intBatteryTableHeight = document.getElementById('tblBatteryPercent').getBoundingClientRect().bottom - document.getElementById('tblBatteryPercent').getBoundingClientRect().top - 9;
 
-	var intBatteryHeight = parseInt((intBatteryPercent/100) * intBatteryTableHeight);
-	document.getElementById('imgBatteryPercent').style.height = intBatteryHeight + "px";
-	document.getElementById('divBatteryPercentText').innerText = intBatteryPercent;
+	var strText = strBatteryText + " - " + intBatteryPercent + "%";
+	document.getElementById('spnBatteryText').innerHTML = strText;
 
-	var intBatteryState = getBatteryState();
-	document.getElementById('divBatteryChargingStatus').innerHTML = (intBatteryState==2 || intBatteryState==3) ? "&#9889;":"";
+	// show the charging icon
+	document.getElementById('imgChargeStatus').src = (getBatteryState()==2) ? "bolt.png":"blank.png";
 
-	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
-}
+	// create our battery
+	var intBatteryLeftWidth = (intBatteryPercent/100) * parseInt(strBatteryWidth);
+	var intBatteryEmptyWidth = parseInt(strBatteryWidth) - intBatteryLeftWidth;
+	document.getElementById('tdBattery').style.width = intBatteryLeftWidth;
+	document.getElementById('tdBatteryEmpty').style.width = intBatteryEmptyWidth;
 
-function setPhone()
-{
-	var divSignalLevel = document.getElementById("divSignalLevel");
-	setLevel((getPhoneSignalBars()*20), divSignalLevel);
-}
-
-function setWifi()
-{
-	var divWifiLevel = document.getElementById("divWifiLevel");
-	setLevel((getWifiSignalBars()*33.4),divWifiLevel);
-}
-
-function setLevel(intLevel, divLevel)
-{
-	if (intLevel > 0)
+	// let's hide the empty battery td if we're at 100%;
+	if (parseInt(intBatteryPercent) == 100)
 	{
-		divLevel.style.backgroundColor = "#fff";
-		divLevel.style.width = intLevel-6 + "%";
+		document.getElementById('tdBatteryEmpty').style.display = "none";
 	}
 	else {
-		divLevel.style.backgroundColor = "#000";
+		document.getElementById('tdBatteryEmpty').style.display = "";
 	}
 
+	document.getElementById('tdBattery').style.backgroundColor = "#fff";
+	document.getElementById('tdBatteryEmpty').style.backgroundColor = "transparent";
+}
+
+function getNewDateSubtract(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() - days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
+}
+
+function getNewDateAdd(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() + days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
+}
+
+function setCurrentDay(dtCurrentDate)
+{
+	var dtTempDate;
+
+	var arrDates = new Array(7);
+
+	for (var i = 0; i < 4; i++) {
+		dtTempDate = getNewDateSubtract(dtCurrentDate,i);
+	  arrDates[3-i] = dtTempDate;
+	}
+
+	arrDates[3] = dtCurrentDate;
+
+	for (var i = 1; i < 4; i++) {
+		dtTempDate = getNewDateAdd(dtCurrentDate, i);
+	  arrDates[i+3] = dtTempDate;
+	}
+
+	var arrSpnDay = document.querySelectorAll(".spnDay");
+
+	// set the dates
+	for (var i = 0; i < arrSpnDay.length; i++) {
+	  arrSpnDay[i].innerHTML = checkNumber(arrDates[i].getDate());
+
+		// disable all the dates
+		arrSpnDay[i].style.opacity = strDisabledWeekdayOpacity;
+		arrSpnDay[i].style.color = "ffffff";
+
+		// set the alignment
+		arrSpnDay[i].style.verticalAlign = strAlignment;
+	}
+
+	// we will also set the font size so that it decreases in size
+	// the farther it is away from the center
+	for (var i = 1; i < 4; i++) {
+		arrSpnDay[i+3].style.fontSize = strDayOfMonthFontSize * (1/(i+0.4));
+		arrSpnDay[3-i].style.fontSize = strDayOfMonthFontSize * (1/(i+0.4));
+	}
+
+	// we enable the middle one
+  arrSpnDay[3].style.opacity = "1";
+	arrSpnDay[3].style.color = strCurrentDayOfMonthColor;
+
+	// set the dates
+	for (var i = 0; i < arrSpnDay.length; i++) {
+		// set the alignment
+		arrSpnDay[i].style.verticalAlign = strAlignment;
+	}
 }
 </script>
 </head>
 <body onload="startOnLoad()">
-	<table id="tblGlobal">
-		<tr>
-			<td nowrap align="left">
-				<table>
-					<tr>
-							<td nowrap id="tdClock">
-								<span id="spnClock"/></span>
-							</td>
-							<td id="divMonthAndDay">&nbsp;</td>
-							<td nowrap>
-								<table id="tblSignalDetails">
-									<tr>
-										<td class="SignalCaption">Signal</td>
-										<td class="Level" nowrap id="tdCellularSignalLevel">
-											<div id="divSignalOutside" class="pillOutside">
-												<div id="divSignalInside" class="pillInside">
-													<div id="divSignalLevel" class="pillLevel"></div>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="SignalCaption">Wifi</td>
-										<td class="Level" nowrap id="tdWifiSignalLevel">
-											<div id="divWifiOutside" class="pillOutside">
-												<div id="divWifiInside" class="pillInside">
-													<div id="divWifiLevel" class="pillLevel"></div>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</td>
-		</tr>
-		<tr>
-			<td class="tdDivider"><hr></td>
-		</tr>
-		<tr>
-			<td nowrap align="center">
-				<table id="tblMainContainer">
-					<tr>
-						<td>
-							<table id="tblBatteryTop">
-								<tr>
-									<td><img src="blank.png" id="imgBatteryTop"></td>
-								</tr>
-							</table>
-							<table id="tblBatteryPercent">
-								<tr id="trBattery">
-									<td id="tdBattery">
-										<img id="imgBatteryPercent" src="batterypercent.png">
-										<div id="divBatteryPercentText"></div>
-										<div id="divBatteryChargingStatus"></div>
-									</td>
-								</tr>
-							</table>
-						<td>
-
-							<td nowrap>
-								<table id="tblDayOfWeek">
-									<tr>
-										<td class="tdDayOfWeek" id="tdDayOfWeek" nowrap>
-											<span id="spnMon" class="spnDayOfWeek"></span>
-											<span id="spnTue" class="spnDayOfWeek"></span>
-											<span id="spnWed" class="spnDayOfWeek"></span>
-											<span id="spnThu" class="spnDayOfWeek"></span>
-											<span id="spnFri" class="spnDayOfWeek"></span>
-											<span id="spnSat" class="spnDayOfWeek"></span>
-											<span id="spnSun" class="spnDayOfWeek"></span>
-										</td>
-									</tr>
-									<tr>
-										<td class="tdDivider"><hr></td>
-									</tr>
-								</table>
-							</td>
-
-
-
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-<span id="spnSeconds"><img id="imgSeconds" src="seconds-red.jpg"></span>
+<table id="tblGlobal">
+	<tr>
+		<td nowrap>
+			<table id="tblMainContainer">
+				<tr>
+					<td class="SignalCaption">Signal<br><span id="tdCellularSignalLevel"></span></td>
+					<td rowspan="3" nowrap id="tdEmpty">&nbsp;</td>
+					<td nowrap id="tdClock"><span id="spnClock"/></span></td>
+					<td class="tdDayOfWeek" id="tdDayOfWeek" nowrap>
+						<span id="spnMon" class="spnDayOfWeek"></span>
+						<span id="spnTue" class="spnDayOfWeek"></span>
+						<span id="spnWed" class="spnDayOfWeek"></span>
+						<span id="spnThu" class="spnDayOfWeek"></span>
+						<span id="spnFri" class="spnDayOfWeek"></span>
+						<span id="spnSat" class="spnDayOfWeek"></span>
+						<span id="spnSun" class="spnDayOfWeek"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdDivider"><hr></td>
+					<td class="tdDivider" colspan="2"><hr></td>
+				</tr>
+				<tr>
+					<td class="SignalCaption">Wifi<br><span id="tdWifiSignalLevel"></span></td>
+					<td>
+						<table id="tblBatteryTop">
+							<tr id="trBatteryTop">
+								<td id="tdBatteryTop" nowrap><span id="spnBatteryText"></span><img id="imgChargeStatus"></td>
+							</tr>
+						</table>
+						<table id="tblBattery">
+							<tr id="trBattery">
+								<td id="tdBattery" nowrap></td>
+								<td id="tdBatteryEmpty"></td>
+							</tr>
+						</table>
+					</td>
+					<td nowrap id="tdDayOfMonth">
+						<span id="spnDay1" class="spnDay"></span>
+						<span id="spnDay2" class="spnDay"></span>
+						<span id="spnDay3" class="spnDay"></span>
+						<span id="spnDay4" class="spnDay"></span>
+						<span id="spnDay5" class="spnDay"></span>
+						<span id="spnDay6" class="spnDay"></span>
+						<span id="spnDay7" class="spnDay"></span>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
 </body>
 </html>
