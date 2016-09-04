@@ -1,0 +1,554 @@
+<html>
+<head>
+<title>Clock Calendar Banner 3 by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+@font-face {
+	font-family:robotothin;
+	src: url("Roboto-Thin.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+	letter-spacing:1;
+	text-shadow:1px 1px 0px rgba(55,55,55,0.2);
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+	text-transform: uppercase;
+}
+
+#tblGlobal
+{
+	position:absolute;
+	z-index:-5;
+	padding: 10px;
+
+}
+
+#tblMainContainer
+{
+	position:relative;
+	width: 100%;
+	z-index:-5;
+	border-collapse: collapse;
+}
+
+#tdDayOfWeek, #tdDayOfMonth
+{
+	text-align: center;
+	padding-left: 20px;
+}
+
+.spnDayOfWeek
+{
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.spnDay
+{
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#tdClock
+{
+	position: relative;
+	font-family: libel;
+	vertical-align: middle;
+}
+
+.signalCaption
+{
+	font-weight: bold;
+	padding-top: 0px;
+	padding-right:10px;
+	font-family: robotothin;
+	letter-spacing: 2;
+}
+
+.signalLevel
+{
+	font-weight: normal;
+	padding: 0px;
+	font-family: robotothin;
+	padding-right: 10px;
+}
+
+#tblSignalDetails
+{
+	border-collapse: collapse;;;
+}
+
+#tdCellularSignalLevel, #tdWifiSignalLevel
+{
+	font-family: libel;
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.tdDivider
+{
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+}
+
+hr
+{
+	border: none;
+	height: 1px;
+	background-color: #fff;
+	margin: 1px;
+	opacity: 0.5;
+}
+
+#tdEmpty
+{
+	width: 50%;
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryStateAsInteger]; };
+	var getPhoneSignalBars = function() { return [IS2Telephony phoneSignalBars]; };
+	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var blnAbbreviateMonth = false;
+var blnAbbreviateDay = true;
+var bln24hours = false;
+var blnShowLeadingZeroHour = true;
+var blnShowYear = true;
+var blnShowSeconds = true;
+var strCurrentDayColor = "orange";
+var strLanguage = "en";
+var strBackgroundOpacity = "0.5";
+
+// for batteryPercent
+var strBatteryFontSize = 10;
+var strBatteryWidth = 60;
+var strBatteryText = "battery";
+var strSecondsLineHeight = 70;
+
+// for day of month
+var strAlignment = "top";
+var strDayFontSize;
+var strCurrentDayOfMonthColor = "#36a6ed";
+
+var intBatteryPercentTemp = 100;
+var intCellularSignalTemp = 6;
+var intWifiSignalTemp = 4;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-2;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryState()
+{
+	return 2;
+}
+
+function getPhoneSignalBars()
+{
+	if (intCellularSignalTemp<=0) intCellularSignalTemp=6;
+	intCellularSignalTemp = intCellularSignalTemp-1;
+	return intCellularSignalTemp;
+}
+
+function getWifiSignalBars()
+{
+	if (intWifiSignalTemp<=0) intWifiSignalTemp=4;
+	intWifiSignalTemp = intWifiSignalTemp-1;
+	return intWifiSignalTemp;
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var strSymbol = "☉";
+
+// set opacity for disabled weekdays, from 0 to 1
+var strDisabledWeekdayOpacity = "0.4";
+var strDisabledDayColor = "#a8a8a8";
+var bgColor = new RGBA(0,0,0, 1.0);
+
+var arrWeekday = new Array(7);
+var arrWeekdayAbbreviated = new Array(7);
+var arrMonth = new Array(12);
+var arrMonthAbbreviated = new Array(12);
+
+// different language support
+switch (strLanguage) {
+case "fr":
+	var arrWeekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+	var arrWeekdayAbbreviated = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+	var arrMonth = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
+	var arrMonthAbbreviated = ["janv","févr","mars","avril","mai","juin","juil","août","sept","oct","nov","déc"];
+  break;
+case "de":
+	var arrWeekday = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+	var arrWeekdayAbbreviated = ["So","Mo","Di","Mi","Do","Fri","Sa"];
+	var arrMonth = ["Januar","Februar","Marz","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+	var arrMonthAbbreviated = ["Jän","Feb","März","Apr","Mai","Juni","Juli","Aug","Sept","Okt","Nov","Dez"];
+  break;
+case "sp":
+	var arrWeekday = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
+	var arrWeekdayAbbreviated = ["Do","Lu","Ma","Mi","Ju","Vi","Sa"];
+	var arrMonth = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+	var arrMonthAbbreviated = ["enero","Feb","marzo","abr","mayo","jun","jul","agosto","sept","oct","nov","dic"];
+  break;
+case "it":
+	var arrWeekday = ["Domenica","Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato"];
+	var arrWeekdayAbbreviated = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+	var arrMonth = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+	var arrMonthAbbreviated = ["genn","febbr","mar","apr","magg","giugno","luglio","ag","sett","ott","nov","dic"];
+  break;
+case "vn":
+	var arrWeekday = ["chủ nhật", "thứ hai","thứ ba","thứ tư","thứ năm","thứ sáu","thứ bảy"];
+	var arrWeekdayAbbreviated = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+	var arrMonth = ["tháng một","tháng hai","tháng ba","tháng tư","tháng năm","tháng sáu","tháng bảy","tháng tám","tháng chín","tháng mười","tháng mười một","tháng mười hai"];
+	var arrMonthAbbreviated = ["tháng 1","tháng 2","tháng 3","tháng 4","tháng 5","tháng 6","tháng 7","tháng 8","tháng 9","tháng 10","tháng 11","tháng 12"];;
+	break;
+default:
+	var arrWeekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var arrWeekdayAbbreviated = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+	var arrMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+	var arrMonthAbbreviated = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  break;
+}
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+
+	document.getElementById("tblGlobal").style.width = intScreenWidth;
+	setCSSForDevice(intScreenWidth);
+
+	// set the days of the week
+	document.getElementById('spnSun').innerHTML = arrWeekday[0].substring(0,1);
+	document.getElementById('spnMon').innerHTML = arrWeekday[1].substring(0,1);
+	document.getElementById('spnTue').innerHTML = arrWeekday[2].substring(0,1);
+	document.getElementById('spnWed').innerHTML = arrWeekday[3].substring(0,1);
+	document.getElementById('spnThu').innerHTML = arrWeekday[4].substring(0,1);
+	document.getElementById('spnFri').innerHTML = arrWeekday[5].substring(0,1);
+	document.getElementById('spnSat').innerHTML = arrWeekday[6].substring(0,1);
+
+	// for battery	// set the styles
+	document.getElementById('imgChargeStatus').style.width = 5;
+
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+	setInterval ( "setDateAndTime()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function setCSSForDevice(intScreenWidth)
+{
+	var strClockFontSize = "";
+	var strSignalFontSize = "";
+
+	switch (intScreenWidth)
+	{
+		case 320:
+			strClockFontSize = "40";
+			strDayFontSize = "9";
+			strSignalFontSize = "5";
+			break;
+		case 375:
+			strClockFontSize = "50";
+			strDayFontSize = "12";
+			strSignalFontSize = "6";
+			break;
+		case 414:
+			strClockFontSize = "60";
+			strDayFontSize = "13";
+			strSignalFontSize = "7";
+			break;
+		case 768:
+			strClockFontSize = "80";
+			strDayFontSize = "16";
+			strSignalFontSize = "12";
+			break;
+		default:
+			strClockFontSize = "50s";
+			strDayFontSize = "11";
+			strSignalFontSize = "10";
+	}
+
+	document.getElementById('tdClock').style.fontSize = strClockFontSize;
+
+	//set our signal caption font size based on the device
+	// reset our highlighted day of week
+	var arrSignalCaption = document.querySelectorAll(".signalCaption");
+
+	for (var i = 0; i < arrSignalCaption.length; i++) {
+		arrSignalCaption[i].style.fontSize = strSignalFontSize;
+	}
+
+	var arrSignalLevel= document.querySelectorAll(".signalLevel");
+
+	var strSignalLevelFontSize = parseInt(strSignalFontSize) + 3;
+
+	for (var i = 0; i < arrSignalLevel.length; i++) {
+		arrSignalLevel[i].style.fontSize = strSignalLevelFontSize;
+	}
+}
+
+function setDateAndTime() {
+  var dtCurrentDate = new Date();
+  var intHours = dtCurrentDate.getHours();
+  var intMinutes = dtCurrentDate.getMinutes();
+  var intSeconds = dtCurrentDate.getSeconds();
+
+  var intMinutesToDisplay = checkNumber(intMinutes);
+  var intSecondsToDisplay = checkNumber(intSeconds);
+
+	var intHourToDisplay = intHours;
+
+	if (!bln24hours)
+	{
+		if (intHours > 12) { intHourToDisplay = intHours - 12;}
+	  if (intHours == 0) { intHourToDisplay = intHours + 12;}
+	}
+
+	intHourToDisplay = (blnShowLeadingZeroHour) ? checkNumber(intHourToDisplay):intHourToDisplay;
+
+  var strTimeToDisplay = intHourToDisplay + ":" + intMinutesToDisplay;
+
+	document.getElementById('tdClock').innerHTML = strTimeToDisplay;
+
+	setMonthAndDay(dtCurrentDate);
+	setCellularSignal();
+	setWifiSignal();
+	setCurrentDay(dtCurrentDate);
+	setBatteryLevel();
+}
+
+function checkNumber(intDigit) {
+    if (intDigit < 10) { intDigit = "0" + intDigit};  // add zero in front of numbers < 10
+    return intDigit;
+}
+
+function setMonthAndDay(dtCurrentDate)
+{
+	// get day of week
+  var intDayOfWeek = dtCurrentDate.getDay();
+
+	// reset our highlighted day of week
+	var arrSpnDayOfWeek = document.querySelectorAll(".spnDayOfWeek");
+
+	for (var i = 0; i < arrSpnDayOfWeek.length; i++) {
+	  arrSpnDayOfWeek[i].style.opacity = strDisabledWeekdayOpacity;
+		arrSpnDayOfWeek[i].style.color = strDisabledDayColor;
+		arrSpnDayOfWeek[i].style.fontSize = strDayFontSize;
+	}
+
+  var arrDayOfWeekElements = new Array(7);
+	arrDayOfWeekElements[0]=  arrSpnDayOfWeek[6];
+  arrDayOfWeekElements[1] = arrSpnDayOfWeek[0];
+  arrDayOfWeekElements[2] = arrSpnDayOfWeek[1];
+  arrDayOfWeekElements[3] = arrSpnDayOfWeek[2];
+  arrDayOfWeekElements[4] = arrSpnDayOfWeek[3];
+  arrDayOfWeekElements[5] = arrSpnDayOfWeek[4];
+  arrDayOfWeekElements[6] = arrSpnDayOfWeek[5];
+
+  arrDayOfWeekElements[intDayOfWeek].style.opacity = "1";
+	arrDayOfWeekElements[intDayOfWeek].style.color = strCurrentDayColor;
+}
+
+function setCellularSignal()
+{
+	var intPhoneSignalBars = getPhoneSignalBars();
+	setSignalLevel(intPhoneSignalBars,5,document.getElementById("tdCellularSignalLevel"))
+}
+
+function setWifiSignal()
+{
+	var intWifiSignal = getWifiSignalBars();
+	setSignalLevel(intWifiSignal,3,document.getElementById("tdWifiSignalLevel"))
+}
+
+function setBatteryLevel()
+{
+	var intBatteryPercent = getBatteryPercentage();
+	var intBatteryLevel = Math.floor(intBatteryPercent/10);
+	if (intBatteryLevel < 1) intBatteryLevel = 1;
+
+	setSignalLevel(intBatteryLevel,10,document.getElementById("tdBatteryLevel"))
+
+	var strText = strBatteryText + " - " + intBatteryPercent + "%";
+	document.getElementById('spnBatteryText').innerHTML = strText;
+
+	// show the charging icon
+	document.getElementById('imgChargeStatus').src = (getBatteryState()==2) ? "bolt.png":"blank.png";
+}
+
+function setSignalLevel(intLevel, intMaxLevel, objSignalContainer)
+{
+	// clear the signal bars
+	while (objSignalContainer.hasChildNodes()) {
+    objSignalContainer.removeChild(objSignalContainer.lastChild);
+	}
+
+	// set the disabled signal bars
+	for (var i = 0; i < intMaxLevel; i++) {
+
+		var objItem = document.createElement("label");
+		objItem.innerText = strSymbol;
+
+		if (i >= intLevel)
+		{
+			objItem.style.color = "#dddddd";
+			objItem.style.opacity = "0.2";
+		}
+		else {
+			objItem.style.color = "#ffffff";
+			objItem.style.opacity = "1";
+		}
+
+		objSignalContainer.appendChild(objItem);
+	}
+}
+
+function getNewDateSubtract(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() - days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
+}
+
+function getNewDateAdd(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() + days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
+}
+
+function setCurrentDay(dtCurrentDate)
+{
+	var dtTempDate;
+
+	var arrDates = new Array(7);
+
+	for (var i = 0; i < 4; i++) {
+		dtTempDate = getNewDateSubtract(dtCurrentDate,i);
+	  arrDates[3-i] = dtTempDate;
+	}
+
+	arrDates[3] = dtCurrentDate;
+
+	for (var i = 1; i < 4; i++) {
+		dtTempDate = getNewDateAdd(dtCurrentDate, i);
+	  arrDates[i+3] = dtTempDate;
+	}
+
+	var arrSpnDay = document.querySelectorAll(".spnDay");
+
+	// set the dates
+	for (var i = 0; i < arrSpnDay.length; i++) {
+	  arrSpnDay[i].innerHTML = arrDates[i].getDate();
+
+		// disable all the dates
+		arrSpnDay[i].style.opacity = "0.2";
+		arrSpnDay[i].style.color = "ffffff";
+		arrSpnDay[i].style.fontSize = strDayFontSize;
+	}
+
+	// we enable the middle one
+  arrSpnDay[3].style.opacity = "1";
+	arrSpnDay[3].style.color = strCurrentDayOfMonthColor;
+}
+</script>
+</head>
+<body onload="startOnLoad()">
+<table id="tblGlobal">
+	<tr>
+		<td nowrap>
+			<table id="tblMainContainer">
+				<tr>
+					<td nowrap>
+						<table id="tblSignalDetails">
+							<tr>
+									<td class="signalCaption">Signal</td>
+									<td class="signalCaption">Wifi</td>
+							</tr>
+							<tr>
+								<td class="signalLevel"><span id="tdCellularSignalLevel"></span></td>
+								<td class="signalLevel"><span id="tdWifiSignalLevel"></span></td>
+						</table>
+				</td>
+					<td rowspan="3" nowrap id="tdEmpty">&nbsp;</td>
+					<td nowrap id="tdClock" rowspan="3"></td>
+					<td class="tdDayOfWeek" id="tdDayOfWeek" nowrap>
+						<span id="spnMon" class="spnDayOfWeek"></span>
+						<span id="spnTue" class="spnDayOfWeek"></span>
+						<span id="spnWed" class="spnDayOfWeek"></span>
+						<span id="spnThu" class="spnDayOfWeek"></span>
+						<span id="spnFri" class="spnDayOfWeek"></span>
+						<span id="spnSat" class="spnDayOfWeek"></span>
+						<span id="spnSun" class="spnDayOfWeek"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdDivider"><hr></td>
+					<td class="tdDivider" colspan="2"><hr></td>
+				</tr>
+				<tr>
+					<td class="SignalCaption" nowrap><span id="spnBatteryText"></span>&nbsp;<img id="imgChargeStatus"><br><span id="tdBatteryLevel" class="signalLevel"></span></td>
+					<td nowrap id="tdDayOfMonth">
+						<span id="spnDay1" class="spnDay"></span>
+						<span id="spnDay2" class="spnDay"></span>
+						<span id="spnDay3" class="spnDay"></span>
+						<span id="spnDay4" class="spnDay"></span>
+						<span id="spnDay5" class="spnDay"></span>
+						<span id="spnDay6" class="spnDay"></span>
+						<span id="spnDay7" class="spnDay"></span>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

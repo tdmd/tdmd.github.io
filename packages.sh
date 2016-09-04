@@ -1,3 +1,2 @@
-dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner2-LS
-dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner3-LS
-dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner3
+dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner4-LS
+dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner4
