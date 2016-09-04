@@ -1,2 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner4-LS
-dpkg-deb -Zgzip -b com.tdmd.clockCalendarBanner4
+dpkg-deb -Zgzip -b com.tdmd.IS2-zeldaLS
