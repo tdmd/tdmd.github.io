@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style type="text/css">
 @font-face {
-	font-family:libel;
-	src: url("libel-suit-rg.ttf");
+	font-family:opensans;
+	src: url("OpenSans-Regular.ttf");
 }
 
 body
@@ -15,7 +15,7 @@ body
 	padding:0;
 	color:#fff;
 
-	font-family: libel;
+	font-family: opensans;
 	font-weight: normal;
 }
 
@@ -94,7 +94,6 @@ body
 	left: 0;
 	width: 70%;
 	height: 97%;
-	font-size: x-small;
 }
 
 #divRAMTable
@@ -241,12 +240,12 @@ function getBatteryStateAsInteger()
 
 function getBatteryState()
 {
-	return "CHARGING";
+	return "Unplugged";
 }
 
 function getDeviceModel()
 {
-	return "iPhone8,1";
+	return "iPhone8,2";
 }
 
 function getCarrierName()
@@ -293,7 +292,7 @@ function startOnLoad()
 			case "IPHONE4,1": //4S
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1432;
 				strBatteryVoltage = "3.7V==5.3Whr";
 				strAPN = "616-0613";
@@ -304,7 +303,7 @@ function startOnLoad()
 			case "IPHONE5,2": // 5 fallthrough
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1434;
 				strBatteryVoltage = "3.8V==5.45Whr";
 				strAPN = "616-0613";
@@ -315,7 +314,7 @@ function startOnLoad()
 			case "IPHONE5,4": //5c fallthrough
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1508;
 				strBatteryVoltage = "3.8V==5.73Whr";
 				strAPN = "616-0805";
@@ -326,7 +325,7 @@ function startOnLoad()
 			case "IPHONE6,2": //5s fallthrough
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1508;
 				strBatteryVoltage = "3.8V==5.73Whr";
 				strAPN = "616-0805";
@@ -334,8 +333,8 @@ function startOnLoad()
 				strCPU = "A7";
 				break;
 			case "IPHONE7,2": //6
-				strFontSize = "small";
-				strOverlayTop = 50;
+				strFontSize = "x-small";
+				strOverlayTop = 60;
 				strAppleBatteryWidth = 40;
 				strBatterySize = 1809;
 				strBatteryVoltage = "3.82V==6.91Whr";
@@ -344,8 +343,8 @@ function startOnLoad()
 				strCPU = "A8";
 				break;
 			case "IPHONE7,1": // 6 plus
-				strFontSize = "medium";
-				strOverlayTop = 35;
+				strFontSize = "small";
+				strOverlayTop = 50;
 				strAppleBatteryWidth = 45;
 				strBatterySize = 2906;
 				strBatteryVoltage = "3.82V==11.1Whr";
@@ -355,7 +354,7 @@ function startOnLoad()
 				break;
 			case "IPHONE8,1": //6s
 				strFontSize = "small";
-				strOverlayTop = 50;
+				strOverlayTop = 60;
 				strAppleBatteryWidth = 40;
 				strBatterySize = 1715;
 				strBatteryVoltage = "3.82V==6.55Whr";
@@ -364,8 +363,8 @@ function startOnLoad()
 				strCPU = "A9";
 				break;
 			case "IPHONE8,2": // 6s plus
-				strFontSize = "medium";
-				strOverlayTop = 35;
+				strFontSize = "small";
+				strOverlayTop = 50;
 				strAppleBatteryWidth = 45;
 				strBatterySize = 2750;
 				strBatteryVoltage = "3.8V==10.45Whr";
@@ -376,7 +375,7 @@ function startOnLoad()
 			case "IPHONE8,4": //SE
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1624;
 				strBatteryVoltage = "3.82V==6.21Whr";
 				strAPN = "616-0805";
@@ -493,7 +492,7 @@ function startOnLoad()
 			case "IPOD4,1": //ipod touch 4g
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 930;
 				strBatteryVoltage = "3.7V==3.44Whr";
 				strAPN = "616-0613";
@@ -503,7 +502,7 @@ function startOnLoad()
 			case "IPOD5,1": //ipod touch 5g
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1030;
 				strBatteryVoltage = "3.7V==3.8Whr";
 				strAPN = "616-0613";
@@ -513,7 +512,7 @@ function startOnLoad()
 			case "IPOD7,1": //ipod touch 6g
 				strFontSize = "x-small";
 				strOverlayTop = 35;
-				strAppleBatteryWidth = 40;
+				strAppleBatteryWidth = 25;
 				strBatterySize = 1043;
 				strBatteryVoltage = "3.83V==3.99Whr";
 				strAPN = "616-0613";
@@ -521,8 +520,8 @@ function startOnLoad()
 				strCPU = "A8";
 				break;
 			default: //6s plus
-				strFontSize = "medium";
-				strOverlayTop = 35;
+				strFontSize = "small";
+				strOverlayTop = 50;
 				strAppleBatteryWidth = 45;
 				strBatterySize = 2750;
 				strBatteryVoltage = "3.8V==10.45Whr";
@@ -576,6 +575,7 @@ function blinkItem(objItem)
 function setBattery()
 {
 	var intBatteryState = getBatteryStateAsInteger();
+	var strBatteryState = getBatteryState().toUpperCase();
 	var intBatteryPercent = getBatteryPercentage();
 
 	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
@@ -583,7 +583,7 @@ function setBattery()
 		document.getElementById("tblGlobal").style.visibility = "visible";
 		document.getElementById('imgBatteryPercent').style.height = intBatteryPercent + "%";
 		document.getElementById('divBatteryPercentText').innerText = intBatteryPercent + "%";
-		document.getElementById('divBatteryChargingStatus').innerHTML = getBatteryState();
+		document.getElementById('divBatteryChargingStatus').innerHTML = strBatteryState;
 
 		document.getElementById("imgBatteryPercent").src = (intBatteryPercent <= strAlertPercentage) ? "batterypercent-red.png":"batterypercent.png";
 
