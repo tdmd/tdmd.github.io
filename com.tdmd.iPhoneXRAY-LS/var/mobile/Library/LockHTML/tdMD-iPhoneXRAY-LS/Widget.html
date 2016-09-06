@@ -219,18 +219,18 @@ body
 	var getCarrierName = function() { return [IS2Telephony phoneCarrier]; };
 </script>
 <script type="text/javascript" charset="utf-8">
-/* for testing 
+/* for testing
 var intDevice = "4";
 var strBackgroundOpacity = "0.6";
 var strAlertPercentage = 50;
 var blnOnlyShowWhenPluggedIn = false;
 
-var intBatteryPercentTemp = 100;
+var intBatteryPercentTemp = 101;
 
 function getBatteryPercentage()
 {
-	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
-	intBatteryPercentTemp = intBatteryPercentTemp-5;
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=101;
+	intBatteryPercentTemp = intBatteryPercentTemp-1;
 	return intBatteryPercentTemp;
 }
 
@@ -581,11 +581,7 @@ function setBattery()
 	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
 	{
 		document.getElementById("tblGlobal").style.visibility = "visible";
-
-		var intBatteryTableHeight = document.getElementById('tblBatteryPercent').getBoundingClientRect().bottom - document.getElementById('tblBatteryPercent').getBoundingClientRect().top - 9;
-
-		var intBatteryHeight = parseInt((intBatteryPercent/100) * intBatteryTableHeight);
-		document.getElementById('imgBatteryPercent').style.height = intBatteryHeight + "px";
+		document.getElementById('imgBatteryPercent').style.height = intBatteryPercent + "%";
 		document.getElementById('divBatteryPercentText').innerText = intBatteryPercent + "%";
 		document.getElementById('divBatteryChargingStatus').innerHTML = getBatteryState();
 
