@@ -1,6 +1,6 @@
 Package: com.tdmd.IS2-IronManLS
 Name: Iron Man Battery for LockScreen
-Version: 1.2.1
+Version: 1.0
 Architecture: iphoneos-arm
 Description: Iron Man Battery for LockScreen
 Depends: com.bushe.lockhtml4, com.matchstic.infostats2

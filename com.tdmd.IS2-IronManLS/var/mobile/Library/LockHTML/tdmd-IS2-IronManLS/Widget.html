@@ -4,174 +4,269 @@
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style>
+
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
 body
 {
 	margin:0;
 	padding:0;
 	letter-spacing:2;
-
-	background-color: black;
+	font-family: libel;
+	background-color: transparent;
 	text-transform: uppercase;
 }
 
-#tblBattery
+#divContainer
 {
-	padding: 1px;
-	border-collapse: collapse;
-	margin: auto;
-}
-
-#trBattery
-{
-	border: none;
-}
-
-#tdChargingStatus
-{
-	text-align: center;
-	font-family: prstart;
-}
-
-#tdBattery
-{
-	color: white;
-	text-align: center;
-	vertical-align: middle;
-	position: relative;
+	visibility: hidden;
 }
 
 #imgHeart
 {
-	width: 50%;
+	width:200;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #divCentralCircle {
-    background: #fff;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-		position: absolute;
-		left: 100;
+	position: absolute;
+	left: 71;
+	top: 70;
+	background-color:#101212;
+	width: 60px;
+  height: 60px;
+	border-radius:50px;
+	box-shadow: 0 0 8px #a5ffff, inset 0 0 8px #a5ffff;
+	-webkit-animation: pulse 2s linear 1s infinite;
 }
 
-.dotOutside {
+#divMainCircle
+{
+	position: absolute;
+	left: 76;
+	top: 75;
+	padding-top: 40px;
+	background: #101212;
+	width: 50px;
+	height: 10px;
+	text-align: center;
+	vertical-align: middle;
+
+-webkit-border-radius: 50px;
+	 -moz-border-radius: 50px;
+				border-radius: 50px;
+}
+
+#divBatteryPercentage {
+
+		position: absolute;
+		left: 77;
+		top: 84;
+		font-size: 25px;
+		background-color:transparent;;
+		color: #82ffff;
+		font-weight: bold;
+		width: 50;
+		text-align: center;
+		vertical-align: middle;
+}
+
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 8px #82ffff, inset 0 0 8px #82ffff; }
+  50% { box-shadow:0 0 16px #82ffff, inset 0 0 12px #82ffff; }
+  100% { box-shadow:0 0 8px #82ffff, inset 0 0 8px #82ffff; }
+}
+
+.dotOutside{
     position:absolute;
     top:0;
     left:0;
-    width:5px;
-    height:5px;
-    background:red;
+    width:8px;
+    height:8px;
+    background:#82ffff;
     border-radius:50%;
 }
 
-.dotInside {
+.dotInside{
     position:absolute;
-    top:10;
-    left:10;
-    width:5px;
-    height:5px;
-    background:white;
+    top:0;
+    left:0;
+    width:6px;
+    height:6px;
+    background:#82ffff;
     border-radius:50%;
 }
 
-.sun1{
-    width:90px;
-    height:90px;
+.sunOutside{
+	width:92px;
+	height:92px;
+	top:55px;
+	left:55px;
     position:absolute;
     -webkit-animation-iteration-count:infinite;
     -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit;
+    -webkit-animation-name:orbitOutside8;
     -webkit-animation-duration:2s;
-		top:56px;
-    left:161px;
 }
 
-.sun2{
-    width:90px;
-    height:90px;
+
+#sunOutside1{
+    -webkit-animation-name:orbitOutside1;
+}
+
+#sunOutside2{
+    -webkit-animation-name:orbitOutside2;
+}
+
+#sunOutside3{
+    -webkit-animation-name:orbitOutside3;
+}
+
+#sunOutside4{
+    -webkit-animation-name:orbitOutside4;
+}
+
+#sunOutside5{
+    -webkit-animation-name:orbitOutside5;
+}
+
+#sunOutside6{
+    -webkit-animation-name:orbitOutside6;
+}
+
+#sunOutside7{
+    -webkit-animation-name:orbitOutside7;
+}
+
+#sunOutside8{
+    -webkit-animation-name:orbitOutside8;
+}
+
+.sunInside{
+	width:60px;
+	height:60px;
+	top:71px;
+	left:71px;
     position:absolute;
     -webkit-animation-iteration-count:infinite;
     -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit2;
-    -webkit-animation-duration:2s;
-		top:56px;
-    left:161px;
+    -webkit-animation-duration:0.5s;
 }
 
-.sun3{
-    width:98px;
-    height:98px;
-    position:absolute;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit3;
-    -webkit-animation-duration:3s;
-    top:54px;
-    left:159px;
+#sunInside1{
+    -webkit-animation-name:orbitInside1;
 }
 
-.sun4{
-    width:98px;
-    height:98px;
-    position:absolute;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit4;
-    -webkit-animation-duration:3s;
-    top:54px;
-    left:159px;
-}
-.sun5{
-    width:90px;
-    height:90px;
-    position:absolute;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit5;
-    -webkit-animation-duration:2s;
-		top:56px;
-    left:161px;
+#sunInside2{
+    -webkit-animation-name:orbitInside2;
 }
 
-.sun6{
-    width:90px;
-    height:90px;
-    position:absolute;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
-    -webkit-animation-name:orbit6;
-    -webkit-animation-duration:2s;
-		top:56px;
-    left:161px;
+#sunInside3{
+    -webkit-animation-name:orbitInside3;
 }
 
-@-webkit-keyframes orbit {
-from { -webkit-transform:rotate(0deg) }
+#sunInside4{
+    -webkit-animation-name:orbitInside4;
+}
+
+#sunInside5{
+    -webkit-animation-name:orbitInside5;
+}
+
+#sunInside6{
+    -webkit-animation-name:orbitInside6;
+}
+
+#sunInside7{
+    -webkit-animation-name:orbitInside7;
+}
+
+#sunInside8{
+    -webkit-animation-name:orbitInside8;
+}
+
+@-webkit-keyframes orbitOutside1 {
+from { -webkit-transform:rotate(45deg) }
+to { -webkit-transform:rotate(0deg) }
+}
+
+@-webkit-keyframes orbitOutside2 {
+from { -webkit-transform:rotate(90deg) }
+to { -webkit-transform:rotate(45deg) }
+}
+
+@-webkit-keyframes orbitOutside3 {
+from { -webkit-transform:rotate(135deg) }
 to { -webkit-transform:rotate(90deg) }
 }
 
-@-webkit-keyframes orbit2 {
-from { -webkit-transform:rotate(90deg) }
+@-webkit-keyframes orbitOutside4 {
+from { -webkit-transform:rotate(180deg) }
+to { -webkit-transform:rotate(135deg) }
+}
+
+@-webkit-keyframes orbitOutside5 {
+from { -webkit-transform:rotate(225deg) }
 to { -webkit-transform:rotate(180deg) }
 }
 
-@-webkit-keyframes orbit5 {
-from { -webkit-transform:rotate(180deg) }
+@-webkit-keyframes orbitOutside6 {
+from { -webkit-transform:rotate(270deg) }
+to { -webkit-transform:rotate(225deg) }
+}
+
+@-webkit-keyframes orbitOutside7 {
+from { -webkit-transform:rotate(315deg) }
 to { -webkit-transform:rotate(270deg) }
 }
 
-@-webkit-keyframes orbit6 {
-from { -webkit-transform:rotate(270deg) }
-to { -webkit-transform:rotate(360deg) }
+@-webkit-keyframes orbitOutside8 {
+from { -webkit-transform:rotate(360deg) }
+to { -webkit-transform:rotate(315deg) }
 }
 
-@-webkit-keyframes orbit3 {
+@-webkit-keyframes orbitInside1 {
 from { -webkit-transform:rotate(0deg) }
+to { -webkit-transform:rotate(45deg) }
+}
+
+@-webkit-keyframes orbitInside2 {
+from { -webkit-transform:rotate(45deg) }
+to { -webkit-transform:rotate(90deg) }
+}
+
+@-webkit-keyframes orbitInside3 {
+from { -webkit-transform:rotate(90deg) }
+to { -webkit-transform:rotate(135deg) }
+}
+
+@-webkit-keyframes orbitInside4 {
+from { -webkit-transform:rotate(135deg) }
 to { -webkit-transform:rotate(180deg) }
 }
 
-@-webkit-keyframes orbit4 {
+@-webkit-keyframes orbitInside5 {
 from { -webkit-transform:rotate(180deg) }
+to { -webkit-transform:rotate(225deg) }
+}
+
+@-webkit-keyframes orbitInside6 {
+from { -webkit-transform:rotate(225deg) }
+to { -webkit-transform:rotate(270deg) }
+}
+
+@-webkit-keyframes orbitInside7 {
+from { -webkit-transform:rotate(270deg) }
+to { -webkit-transform:rotate(315deg) }
+}
+
+@-webkit-keyframes orbitInside8 {
+from { -webkit-transform:rotate(315deg) }
 to { -webkit-transform:rotate(360deg) }
 }
 </style>
@@ -182,8 +277,7 @@ to { -webkit-transform:rotate(360deg) }
 	var getBatteryState = function() { return [IS2System batteryState]; };
 </script>
 <script type="text/javascript" charset="utf-8">
-/* for testing */
-var strChargeStatusFontSize = 15;
+/* for testing
 var blnOnlyShowWhenPluggedIn = false;
 var intBatteryPercent = 100;
 
@@ -196,63 +290,56 @@ function getBatteryPercentage()
 
 var getBatteryStateAsInteger = function() { return 2; };
 var getBatteryState = function() { return "CHARGING"; };
+*/
 </script>
 
 <script type="text/javascript" charset="utf-8">
 function startOnLoad()
 {
-	// set the styles
-	document.getElementById('tdChargingStatus').style.fontSize = strChargeStatusFontSize;
-	document.getElementById('tdChargingStatus').style.color = "white";
-
-	document.getElementById('tdBattery').style.fontSize = "20";
-	document.getElementById('tdBattery').style.color = "white";
-
-	document.getElementById('tblBattery').style.width = screen.availWidth;
-
 	setInterval ("setBattery()", 1000);
 }
 
 function setBattery()
 {
-
 	// get the charging status, 1=not charging, 2=charging, 3=fullycharged
 	var intBatteryState = getBatteryStateAsInteger();
 
 	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)))
 	{
-		// show the charging status
-		document.getElementById('tdChargingStatus').innerHTML = getBatteryState();
-
+		document.getElementById('divContainer').style.visibility = "visible";
 		var intBatteryPercent = parseInt(getBatteryPercentage());
-		//document.getElementById("imgHeart").style.opacity = intBatteryPercent/100;
+		document.getElementById('divBatteryPercentage').innerHTML = intBatteryPercent;
+
+		document.getElementById("divCentralCircle").style.opacity = intBatteryPercent * 0.01;
 	}
 	else {
-		// clear the charging status
-		document.getElementById('tdChargingStatus').innerHTML = "";
+		document.getElementById('divContainer').style.visibility = "hidden";
 	}
 }
 </script>
 </head>
 <body onload="startOnLoad()">
-<table id="tblBattery">
-	<tr id="trBattery">
-		<td id="tdBattery" nowrap>
-			<img src="heart.png" id="imgHeart">
-			<div id="divCentralCircle2"></div>
-			<div class="sun1"><div class="dotOutside"</div></div>​
-			<div class="sun2"><div class="dotOutside"</div></div>​
-			<div class="sun3"><div class="dotInside"</div></div>​
-			<div class="sun4"><div class="dotInside"</div></div>​
-		</td>
-	</tr>
-	<tr>
-		<td align=center valign=center>&nbsp;</td>
-	</tr>
-	<tr id="trChargingStatus">
-		<td id="tdChargingStatus" nowrap></td>
-	</tr>
-</table>
-
+<div id="divContainer">
+	<img src="heart.png" id="imgHeart">
+	<div id="divCentralCircle"></div>
+	<div id="divMainCircle"></div>
+	<div id="divBatteryPercentage"></div>
+	<div class="sunOutside" id="sunOutside1"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside2"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside3"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside4"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside5"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside6"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside7"><div class="dotOutside"></div></div>​
+	<div class="sunOutside" id="sunOutside8"><div class="dotOutside"></div></div>​
+	<div class="sunInside" id="sunInside1"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside2"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside3"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside4"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside5"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside6"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside7"><div class="dotInside"></div></div>​
+	<div class="sunInside" id="sunInside8"><div class="dotInside"></div></div>​
+</div>
 </body>
 </html>

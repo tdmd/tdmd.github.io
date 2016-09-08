@@ -4,23 +4,13 @@
 <array>
 	<dict>
 		<key>default</key>
-		<false/>
+		<true/>
 		<key>label</key>
 		<string>Only show when plugged in</string>
 		<key>name</key>
 		<string>blnOnlyShowWhenPluggedIn</string>
 		<key>type</key>
 		<string>switch</string>
-	</dict>
-	<dict>
-		<key>default</key>
-		<string>15</string>
-		<key>label</key>
-		<string>Charging status font size</string>
-		<key>name</key>
-		<string>strChargeStatusFontSize</string>
-		<key>type</key>
-		<string>edit</string>
 	</dict>
 </array>
 </plist>
