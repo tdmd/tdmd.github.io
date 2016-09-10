@@ -1,0 +1,194 @@
+<html>
+<head>
+<title>Big Ass Circle Battery by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@font-face {
+	font-family:libel;
+	src: url("libel-suit-rg.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: libel;
+	background-color: rgba(0,0,0,0.3);
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+#divBatteryPercentText
+{
+	position: relative;
+	z-index: 1;
+	font-size: 100px;
+	left: 0;
+	top: 40;
+}
+
+#divContainer{
+    width: 210px;
+    height: 210px;
+    margin: 50% auto;
+}
+
+.circle{
+    position: relative;
+    top: 5px;
+    left: 5px;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    background-color: #4377c9;
+}
+
+#activeBorder{
+    position: relative;
+    text-align: center;
+    width: 210px;
+    height: 210px;
+    border-radius: 100%;
+
+    background-color:#1b3e77;
+		/*
+    background-image:
+        linear-gradient(180deg, transparent 50%, #A2ECFB 50%),
+        linear-gradient(0deg, #A2ECFB 50%, transparent 50%);
+				*/
+
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "4";
+var strBackgroundOpacity = "0.6";
+var strAlertPercentage = 50;
+var blnOnlyShowWhenPluggedIn = true;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp - 1;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryStateAsInteger()
+{
+	return 2;
+}
+
+function getBatteryState()
+{
+	return "CHARGING";
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var blnBlink = false;
+var bgColor = new RGBA(0,0,0, 1.0);
+
+var intRotateIndexTemp = 100;
+var intBatteryPercentTemp = 100;
+var objChargingTimer = null;
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.availWidth;
+	var intScreenHeight = screen.availHeight;
+	document.getElementById('tblGlobal').style.width = intScreenWidth;
+	document.getElementById('tblGlobal').style.height = intScreenHeight;
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
+	setInterval ( "setBattery()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function rotateCircle()
+{
+	var objActiveBorder = document.getElementById('activeBorder');
+	intRotateIndexTemp = intRotateIndexTemp - 1;
+	if (intRotateIndexTemp < 0) intRotateIndexTemp = 101;
+
+	var intDegreeForRotation = ((intRotateIndexTemp/100) * 360) + 90;
+	var strActiveBorderBackgroundImage = (intDegreeForRotation >= 270) ? "linear-gradient(90deg, transparent 50%, transparent 50%),linear-gradient(" + intDegreeForRotation + "deg, #85b4ff 50%, transparent 50%)":"linear-gradient(90deg, transparent 50%, transparent 50%),linear-gradient(" + intDegreeForRotation + "deg, #85b4ff 50%, transparent 50%)";
+	objActiveBorder.style.backgroundImage = strActiveBorderBackgroundImage;
+}
+
+function setBattery()
+{
+	var intBatteryState = getBatteryStateAsInteger();
+	var intBatteryPercent = getBatteryPercentage();
+
+	blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
+	{
+		document.getElementById("divContainer").style.visibility = "visible";
+
+		if (!blnBlink)
+		{
+			// change circle outline
+			var objActiveBorder = document.getElementById('activeBorder');
+			var intDegrees = ((intBatteryPercent/100) * 360) + 90;
+
+			var strActiveBorderBackgroundImage = (intDegrees >= 270) ? "linear-gradient(90deg, transparent 50%, #85b4ff 50%),linear-gradient(" + intDegrees + "deg, #85b4ff 50%, transparent 50%)":"linear-gradient(90deg, #1b3e77 50%, transparent 50%),linear-gradient(" + intDegrees + "deg, #85b4ff 50%, transparent 50%)";
+			objActiveBorder.style.backgroundImage = strActiveBorderBackgroundImage;
+			clearInterval(objChargingTimer);
+		}
+		else {
+			if (objChargingTimer == null)	objChargingTimer = setInterval("rotateCircle()", 20);
+		}
+
+		document.getElementById('divBatteryPercentText').innerText = intBatteryPercent;
+
+		document.getElementById("circle").style.backgroundColor = (intBatteryPercent <= strAlertPercentage) ? "#a72828":"#4377c9";
+	}
+	else {
+		document.getElementById("divContainer").style.visibility = "hidden";
+	}
+}
+
+</script>
+</head>
+<body onload="startOnLoad()">
+<table id="tblGlobal">
+	<tr>
+		<td>
+			<div id="divContainer">
+			    <div id="activeBorder" class="active-border">
+			        <div id="circle" class="circle">
+			            <div id="divBatteryPercentText"></div>
+			        </div>
+			    </div>
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
