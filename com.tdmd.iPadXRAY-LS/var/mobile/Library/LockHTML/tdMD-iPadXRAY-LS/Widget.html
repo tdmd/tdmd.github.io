@@ -1,0 +1,497 @@
+<html>
+<head>
+<title>iPad XRAY by @tvdmd</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@font-face {
+	font-family:opensans;
+	src: url("OpenSans-Regular.ttf");
+}
+
+body
+{
+	margin:0;
+	padding:0;
+	color:#fff;
+
+	font-family: opensans;
+	font-weight: normal;
+}
+
+#tblGlobal
+{
+	position:absolute;
+	z-index:-5;
+	padding: 3px;
+	visibility: hidden;
+}
+
+.tblBatteryPercent
+{
+	height: 46%;
+	width: 85%;
+	border: 5px solid #2f2f2f;
+	position: relative;
+	border-radius: 20px;
+	left: 4px;
+	top: 15px;
+	background-color: #3e3e4a;
+}
+
+.trBattery
+{
+	background-color: transparent;
+	color: #fff;
+	text-align: left;
+	vertical-align: top;
+	position: relative;
+	height: 100%;
+}
+
+.tdBattery
+{
+	height: 100%;
+}
+
+#divBatteryChargingStatus
+{
+	z-index: 2;
+	text-align: center;
+	color: #7b88ab;
+	font-size: 150%;
+	position: absolute;
+	top: 65%;
+	left: 35%;
+}
+
+.imgBatteryPercentNon100
+{
+	width: 99%;
+	height: 100%;
+	opacity: 1;
+	border-bottom-left-radius: 13px;
+	border-bottom-right-radius: 0;
+	border-top-left-radius: 13px;
+	border-top-right-radius: 0;
+}
+
+.imgBatteryPercent100
+{
+	width: 99%;
+	height: 100%;
+	opacity: 1;
+	border-bottom-left-radius: 13px;
+	border-bottom-right-radius: 13px;
+	border-top-left-radius: 13px;
+	border-top-right-radius: 13px;
+}
+
+#divBatteryOverlay
+{
+	position: absolute;
+	text-align: center;
+	vertical-align: middle;
+	left: 1%;
+	width: 98%;
+	height: 100%;
+	display: table;
+}
+
+#imgBatteryImages
+{
+	text-align: center;
+	vertical-align: middle;
+	width: 70%;
+	margin-top: 20px;
+}
+
+#divBatteryOverlayContents
+{
+	color: #9fb3d6;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+	width: 100%;
+	padding: 10px;
+}
+
+#divRAMTable
+{
+	color: #7b88ab;
+	position: absolute;
+	text-align: center;
+	vertical-align: middle;
+	top: 60%;
+	left: 86%;
+	width: 10%;
+	height: 5%;
+	font-size: small;
+	padding: 6px;
+	border: 2px solid #000;
+	background-color: #1c1c1c;
+	display: table;
+}
+
+#divRAM
+{
+	color: #cecece;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 13px;
+	padding: 6px;
+	background-color: #1c1c1c;
+	display: table-cell;
+}
+
+#divCPU
+{
+	color: #cecece;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 28px;
+	padding: 6px;
+	background-color: #1c1c1c;
+	display: table-cell;
+}
+
+#divCPUTable
+{
+	color: #7b88ab;
+	position: absolute;
+	text-align: center;
+	vertical-align: middle;
+	top: 40%;
+	left: 86%;
+	width: 12%;
+	height: 10%;
+	font-size: 30px;
+	border: 2px solid #000;
+	background-color: #1c1c1c;
+	display: table;
+}
+
+#imgAppleLogoForCPU
+{
+	width: 25%;
+	padding-right: 2px;
+}
+
+#imgAppleLogo
+{
+	width: 150px;
+	position: absolute;
+	top: 15%;
+	left: 40%;
+}
+
+#imgBG
+{
+	z-index: -100;
+	position: absolute;
+	top:0;
+	left:0;
+}
+</style>
+<!-- Cycript data access -->
+<script type="text/cycript">
+	var getBatteryPercentage = function() { return [IS2System batteryPercent]; };
+	var getBatteryState = function() { return [IS2System batteryState]; };
+	var getBatteryStateAsInteger = function() { return [IS2System batteryStateAsInteger]; };
+	var getDeviceModel = function() { return [IS2System deviceModel]; };
+	var getCarrierName = function() { return [IS2Telephony phoneCarrier]; };
+</script>
+<script type="text/javascript" charset="utf-8">
+/* for testing
+var intDevice = "4";
+var strBackgroundOpacity = "0.6";
+var strAlertPercentage = 50;
+var blnOnlyShowWhenPluggedIn = false;
+
+var intBatteryPercentTemp = 100;
+
+function getBatteryPercentage()
+{
+	if (intBatteryPercentTemp<=0) intBatteryPercentTemp=100;
+	intBatteryPercentTemp = intBatteryPercentTemp-1;
+	return intBatteryPercentTemp;
+}
+
+function getBatteryStateAsInteger()
+{
+	return 2;
+}
+
+function getBatteryState()
+{
+	return "Unplugged";
+}
+
+function getDeviceModel()
+{
+	return "iPad5,3";
+}
+
+function getCarrierName()
+{
+	return "AT&T";
+}
+*/
+</script>
+<script type="text/javascript" charset="utf-8">
+var blnBlink = false;
+var bgColor = new RGBA(0,0,0, 1.0);
+
+var arrDeviceModel = ["iPhone1,1","iPhone1,2","iPhone2,1","iPhone3,1","iPhone3,3","iPhone4,1","iPhone5,1","iPhone5,2","iPhone5,3","iPhone5,4","iPhone6,1","iPhone6,2","iPhone7,1","iPhone7,2","iPhone8,1","iPhone8,2","iPhone8,4","iPad1,1","iPad2,1","iPad2,2", "iPad2,3", "iPad2,4", "iPad2,5", "iPad2,6", "iPad2,7", "iPad3,1", "iPad3,2", "iPad3,3", "iPad3,4", "iPad3,5", "iPad3,6", "iPad4,1", "iPad4,2", "iPad4,3", "iPad4,4", "iPad4,5", "iPad4,6", "iPad4,7", "iPad4,8", "iPad4,9", "iPad5,1", "iPad5,2", "iPad5,3", "iPad5,4", "iPad6,7", "iPad6,8", "iPod1,1", "iPod2,1", "iPod3,1", "iPod4,1", "iPod5,1", "iPod7,1"];
+var arrDeviceModelRealName = ["iPhone", "iPhone 3G", "iPhone 3GS", "iPhone 4 (GSM)", "iPhone 4 (CDMA)", "iPhone 4S", "iPhone 5 (A1428)", "iPhone 5 (A1429)", "iPhone 5c (A1456/A1532)", "iPhone 5c (A1507/A1516/A1529)", "iPhone 5s (A1433/A1453)", "iPhone 5s (A1457/A1518/A1530)", "iPhone 6 Plus", "iPhone 6", "iPhone 6s", "iPhone 6s Plus", "iPhone SE", "iPad", "iPad 2 (Wi-Fi)", "iPad 2 (GSM)", "iPad 2 (CDMA)", "iPad 2 (Wi-Fi, revised)", "iPad mini (Wi-Fi)", "iPad mini (A1454)", "iPad mini (A1455)", "iPad (3rd gen, Wi-Fi)", "iPad (3rd gen, Wi-Fi+LTE Verizon)", "iPad (3rd gen, Wi-Fi+LTE AT&amp;T)", "iPad (4th gen, Wi-Fi)", "iPad (4th gen, A1459)", "iPad (4th gen, A1460)", "iPad Air (Wi-Fi)", "iPad Air (Wi-Fi+LTE)", "iPad Air (Rev)", "iPad mini 2 (Wi-Fi)", "iPad mini 2 (Wi-Fi+LTE)", "iPad mini 2 (Rev)", "iPad mini 3 (Wi-Fi)", "iPad mini 3 (A1600)", "iPad mini 3 (A1601)", "iPad mini 4 (Wi-Fi)", "iPad mini 4 (Wi-Fi+LTE)", "iPad Air 2 (Wi-Fi)", "iPad Air 2 (Wi-Fi+LTE)", "iPad Pro (Wi-Fi)", "iPad Pro (Wi-Fi+LTE)", "iPod touch", "iPod touch (2nd gen)", "iPod touch (3rd gen)", "iPod touch (4th gen)", "iPod touch (5th gen)", "iPod touch (6th gen)"];
+
+function startOnLoad()
+{
+	// set the main table's width to the width of the screen
+	var intScreenWidth = screen.width;
+	var intScreenHeight = screen.height;
+
+	var blnIsLandscape = (window.innerWidth>window.innerHeight) ? true:false;
+
+	if (blnIsLandscape)
+	{
+		alert(intScreenHeight);
+		document.getElementById("tblGlobal").style.width = intScreenWidth;
+		document.getElementById("tblGlobal").style.height = intScreenHeight;
+
+		document.getElementById("imgBG").style.width = intScreenWidth;
+		document.getElementById("imgBG").style.height = intScreenHeight;
+	}
+	else {
+		document.getElementById("tblGlobal").style.width = intScreenWidth;
+		document.getElementById("tblGlobal").style.height = intScreenHeight;
+
+		document.getElementById("imgBG").style.width = intScreenWidth;
+		document.getElementById("imgBG").style.height = intScreenHeight;
+	}
+
+
+	var strFontSize = "12px";
+	var strOverlayTop = 0;
+	var strAppleBatteryWidth = 0;
+	var strBatterySize = 0;
+	var strBatteryVoltage = "";
+	var strAPN = "";
+	var strRAM = "";
+	var strCPU = "";
+
+	var strDeviceModel = getDeviceModel().trim().toUpperCase();
+
+	switch (strDeviceModel)
+	{
+			case "IPAD2,5": //ipad mini 1
+			case "IPAD2,6": //ipad mini 1
+			case "IPAD2,7": //ipad mini 1
+				strBatterySize = 4440;
+				strBatteryVoltage = "3.72V==16.5Whr";
+				strAPN = "020-8561";
+				strRAM = "512MB DDR2 DRAM";
+				strCPU = "A5";
+				break;
+			case "IPAD4,4": //ipad mini 2
+			case "IPAD4,5": //ipad mini 2
+			case "IPAD4,6": //ipad mini 2
+			case "IPAD4,7": //ipad mini 3
+			case "IPAD4,8": //ipad mini 3
+			case "IPAD4,9": //ipad mini 3
+				strBatterySize = 6471;
+				strBatteryVoltage = "3.75V==24.3Whr";
+				strAPN = "020-8561";
+				strRAM = "1GB LPDDR3 DRAM";
+				strCPU = "A7";
+				break;
+			case "IPAD5,1": //ipad mini 4
+			case "IPAD5,2": //ipad mini 4
+				strBatterySize = 5124;
+				strBatteryVoltage = "3.82V==19.32Whr";
+				strAPN = "020-8561";
+				strRAM = "2GB LPDDR3 DRAM";
+				strCPU = "A8";
+				break;
+			case "IPAD3,1": //ipad 3
+			case "IPAD3,2": //ipad 3
+			case "IPAD3,3": //ipad 3
+				strBatterySize = 11560;
+				strBatteryVoltage = "3.78V==42.5Whr";
+				strAPN = "020-8561";
+				strRAM = "1GB LPDDR2 DRAM";
+				strCPU = "A5X";
+				break;
+			case "IPAD3,4": //ipad 4
+			case "IPAD3,5": //ipad 4
+			case "IPAD3,6": //ipad 4
+				strBatterySize = 11560;
+				strBatteryVoltage = "3.78V==42.5Whr";
+				strAPN = "020-8561";
+				strRAM = "1GB LPDDR2 DRAM";
+				strCPU = "A6X";
+				break;
+			case "IPAD4,1": //ipad Air
+			case "IPAD4,2": //ipad Air
+			case "IPAD4,3": //ipad Air
+				strBatterySize = 8820;
+				strBatteryVoltage = "3.73V==32.9Whr";
+				strAPN = "020-8561";
+				strRAM = "1GB LPDDR3 DRAM";
+				strCPU = "A7";
+				break;
+			case "IPAD5,3": //ipad Air 2
+			case "IPAD5,4": //ipad Air 2
+				strBatterySize = 7340;
+				strBatteryVoltage = "3.763V==27.62Whr";
+				strAPN = "020-8561";
+				strRAM = "2GB LPDDR3 DRAM";
+				strCPU = "A8X";
+				break;
+			case "IPAD6,7": //ipad pro 12.9
+			case "IPAD6,8": //ipad pro 12.9
+				strBatterySize = 10307;
+				strBatteryVoltage = "3.77V==38.8Whr";
+				strAPN = "020-8561";
+				strRAM = "4GB LPDDR4 DRAM";
+				strCPU = "A9X";
+				break;
+			case "IPAD6,3": //ipad pro 9.7
+			case "IPAD6,4": //ipad pro 9.7
+				strBatterySize = 7306;
+				strBatteryVoltage = "3.82V==27.91Whr";
+				strAPN = "020-8561";
+				strRAM = "2GB LPDDR4 DRAM";
+				strCPU = "A9X";
+				break;
+			default: //6s plus
+				strBatterySize = 7340;
+				strBatteryVoltage = "3.763V==27.62Whr";
+				strAPN = "020-8561";
+				strRAM = "2GB LPDDR3 DRAM";
+				strCPU = "A8X";
+			}
+
+	document.getElementById("divBatteryOverlay").style.fontSize = strFontSize;
+	document.getElementById("divBatteryOverlay").style.top = strOverlayTop;
+
+	document.getElementById("spnBatterySize").innerText = strBatterySize;
+	document.getElementById("spnBatteryVoltage").innerText = strBatteryVoltage;
+	document.getElementById("spnAPN").innerText = strAPN;
+
+	document.getElementById("divRAM").innerHTML = strRAM;
+	document.getElementById("spnCPU").innerText = strCPU;
+
+	setBgOpacity(bgColor, document.body, strBackgroundOpacity);
+
+	setInterval ( "setBattery()", 1000);
+}
+
+function RGBA(red,green,blue,alpha) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
+    this.getCSS = function() {
+        return "rgba("+this.red+","+this.green+","+this.blue+","+this.alpha+")";
+    }
+}
+
+function setBgOpacity(objColor, objElement, strOpacity) {
+    objColor.alpha = strOpacity;
+    objElement.style.backgroundColor = objColor.getCSS();
+}
+
+function blinkItem(objItem)
+{
+		if(objItem && blnBlink)
+		{
+				objItem.style.opacity= (objItem.style.opacity=="0.1")?"1":"0.1";
+		}
+		else {
+			objItem.style.opacity = "1";
+		}
+}
+
+function setBattery()
+{
+	var intBatteryState = getBatteryStateAsInteger();
+	var strBatteryState = getBatteryState().toUpperCase();
+	var intBatteryPercent = getBatteryPercentage();
+
+	var intBatteryPercentWidth;
+
+	if ((!blnOnlyShowWhenPluggedIn) || (blnOnlyShowWhenPluggedIn && (intBatteryState==2 || intBatteryState==3)) || (intBatteryPercent <= parseInt(strAlertPercentage)))
+	{
+		document.getElementById("tblGlobal").style.visibility = "visible";
+
+		if (intBatteryPercent > 50)
+		{
+			document.getElementById('imgBatteryPercentTop').style.width = ((intBatteryPercent-50)*2) + "%";
+			document.getElementById('imgBatteryPercentBottom').style.width = "100%";
+		}
+		else {
+			document.getElementById('imgBatteryPercentTop').style.width = "0%";
+			document.getElementById('imgBatteryPercentBottom').style.width = (intBatteryPercent*2) + "%";
+		}
+
+		document.getElementById('divBatteryChargingStatus').innerHTML = strBatteryState + " " + intBatteryPercent + "%";
+
+		document.getElementById("imgBatteryPercentTop").src = (intBatteryPercent <= strAlertPercentage) ? "batterypercent-red.png":"batterypercent.png";
+		document.getElementById("imgBatteryPercentBottom").src = (intBatteryPercent <= strAlertPercentage) ? "batterypercent-red.png":"batterypercent.png";
+
+		blnBlink = (intBatteryState==2 || intBatteryState==3) ? true:false;
+		blinkItem(document.getElementById("imgAppleLogo"));
+	}
+	else {
+		document.getElementById("tblGlobal").style.visibility = "hidden";
+	}
+
+	// we need to change the border radius if it's at 100, otherwise it will look weird
+	document.getElementById("imgBatteryPercentTop").className = (intBatteryPercent>96) ? "imgBatteryPercent100":"imgBatteryPercentNon100";
+	document.getElementById("imgBatteryPercentBottom").className = (intBatteryPercent>46) ? "imgBatteryPercent100":"imgBatteryPercentNon100";
+}
+
+</script>
+</head>
+<body onload="startOnLoad()">
+	<table id="tblGlobal">
+		<tr>
+			<td>
+				<table id="tblBatteryPercentTop" class="tblBatteryPercent">
+					<tr id="trBatteryTop" class="trBattery">
+						<td id="tdBatteryTop" class="tdBattery">
+							<img id="imgBatteryPercentTop" class="imgBatteryPercentNon100" src="batterypercent.png">
+							<div id="divBatteryOverlay">
+								<div id="divBatteryOverlayContents">
+									Li-ion Battery Model No.:A1484
+									<span id="spnBatteryVoltage"></span>
+									APN: <span id="spnAPN"></span>
+									<span id="spnBatterySize"></span>mAh Assembled in China<br>
+									WARNING: Potential for fire or burning.  Do not disassemble, puncture, crush, heat, or burn.
+									<img id="imgBatteryImages" src="batteryimagesbar.png">
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<table id="tblBatteryPercentBottom" class="tblBatteryPercent">
+					<tr id="trBatteryBottom" class="trBattery">
+						<td id="tdBatteryBottom" class="tdBattery">
+							<img id="imgBatteryPercentBottom" class="imgBatteryPercentNon100" src="batterypercent.png">
+							<img id="imgAppleLogo" src="apple-logo.png">
+							<span id="divBatteryChargingStatus"></span>
+						</td>
+					</tr>
+				</table>
+
+				<div id="divRAMTable"><div id="divRAM"></div></div>
+				<div id="divCPUTable"><div id="divCPU"><img id="imgAppleLogoForCPU" src="apple-logo.png"><span id="spnCPU"></span></div></div>
+			<td>
+		</tr>
+	</table>
+	<img src="ipadxray-cropped.png" id="imgBG" alt="">
+</body>
+</html>
