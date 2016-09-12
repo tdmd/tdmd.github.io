@@ -225,7 +225,7 @@ hr
 	var getWifiSignalBars = function() { return [IS2Telephony wifiSignalBars]; };
 </script>
 <script type="text/javascript" charset="utf-8">
-/* for testing
+/* for testing */
 var intDevice = "4";
 var blnAbbreviateMonth = false;
 var blnAbbreviateDay = true;
@@ -266,7 +266,7 @@ function getWifiSignalBars()
 	intWifiSignalTemp = intWifiSignalTemp-1;
 	return intWifiSignalTemp;
 }
-*/
+
 </script>
 <script type="text/javascript" charset="utf-8">
 var blnBlink = false;
@@ -474,28 +474,34 @@ function setMonthAndDay(dtCurrentDate)
 	var strMonth = (blnAbbreviateMonth) ? arrMonthAbbreviated[intMonth]:arrMonth[intMonth];
 
 	// get day of month
-  var strDayOfMonth = dtCurrentDate.getDate().toString();
+  var strDayOfMonth = dtCurrentDate.getDate();
 
   if (strLanguage == "en")
   {
     // get wording for day of month
-    var intLastNumberOfDay = strDayOfMonth.slice(-1);
+    var intLastNumberOfDay = strDayOfMonth.toString().slice(-1);
 
     var strDayOfMonthAppend = "";
 
-		switch (intLastNumberOfDay) {
-    	case "1":
-    		strDayOfMonthAppend = "st";
-    		break;
-    	case "2":
-    		strDayOfMonthAppend = "nd";
-    		break;
-    	case "3":
-    		strDayOfMonthAppend = "rd";
-    		break;
-    	default:
-    		strDayOfMonthAppend = "th";
-    }
+		if (strDayOfMonth > 10 && strDayOfMonth < 20)
+		{
+			strDayOfMonthAppend = "th";
+		}
+		else {
+			switch (intLastNumberOfDay) {
+	    	case "1":
+	    		strDayOfMonthAppend = "st";
+	    		break;
+	    	case "2":
+	    		strDayOfMonthAppend = "nd";
+	    		break;
+	    	case "3":
+	    		strDayOfMonthAppend = "rd";
+	    		break;
+	    	default:
+	    		strDayOfMonthAppend = "th";
+	    }
+		}
 
     strDayOfMonth = strDayOfMonth + strDayOfMonthAppend;
   }

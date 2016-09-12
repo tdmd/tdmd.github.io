@@ -1,6 +1,6 @@
 Package: com.tdmd.clockCalendarBanner2-LS
 Name: tdMD Clock Calendar Banner 2 for LockHTML4
-Version: 1.0.1
+Version: 1.0.2
 Architecture: iphoneos-arm
 Description: tdMD Clock Calendar Banner 2 for LockHTML4
 Depends: com.bushe.lockhtml4, com.matchstic.infostats2, com.macciti.tdmdclockcalendarwidgetpack1
