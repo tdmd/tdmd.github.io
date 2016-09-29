@@ -28,7 +28,7 @@
 	<key>IB-MaskIcons</key>
 	<true/>
 	<key>DockMode</key>
-	<real>0</real>
+	<real>1</real>
 	<!-- End Anemone Settings -->
 </dict>
 </plist>

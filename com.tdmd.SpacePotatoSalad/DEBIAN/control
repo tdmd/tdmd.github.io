@@ -1,6 +1,6 @@
 Package: com.tdmd.SpacePotatoSalad
 Name: Space Potato Salad
-Version: 1.1.1
+Version: 1.2
 Architecture: iphoneos-arm
 Description: Space Potato Salad theme
 Depends: com.anemonetheming.anemone
