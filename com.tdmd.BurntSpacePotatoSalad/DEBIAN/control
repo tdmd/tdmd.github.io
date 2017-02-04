@@ -1,6 +1,6 @@
 Package: com.tdmd.BurntSpacePotatoSalad
 Name: Burnt Space Potato Salad
-Version: 1.1
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: Burnt Space Potato Salad
 Depends: com.anemonetheming.anemone
