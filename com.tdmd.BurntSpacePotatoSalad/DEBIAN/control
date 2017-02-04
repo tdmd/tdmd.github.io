@@ -1,0 +1,10 @@
+Package: com.tdmd.BurntSpacePotatoSalad
+Name: Burnt Space Potato Salad
+Version: 1.1
+Architecture: iphoneos-arm
+Description: Burnt Space Potato Salad
+Depends: com.anemonetheming.anemone
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes
+Depiction: https://tdmd.github.io/thevault/Depictions/com.tdmd.BurntSpacePotatoSalad/index.html
