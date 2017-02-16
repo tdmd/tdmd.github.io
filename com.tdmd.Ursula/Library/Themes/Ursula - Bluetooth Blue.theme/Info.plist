@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PackageName</key>
+	<string>Ursula</string>
+    <key>TintFilter</key>
+    <dict>
+        <key>policy</key>
+        <string>blacklist</string>
+        <key>BundleIdentifiers</key>
+        <array />
+    </dict>
+    <key>TintColors</key>
+    <dict>
+        <key>UIStatusBarBluetoothItemView</key>
+        <string>#0080ff</string>
+    </dict>
+</dict>
+</plist>

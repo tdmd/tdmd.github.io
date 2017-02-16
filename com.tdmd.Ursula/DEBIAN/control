@@ -1,0 +1,10 @@
+Package: com.tdmd.Ursula
+Name: Ursula
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Ursula
+Depends: com.anemonetheming.anemone
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes
+Depiction: https://tdmd.github.io/thevault/Depictions/com.tdmd.Ursula/index.html

@@ -1,1 +1,1 @@
-dpkg-deb -Zgzip -b com.tdmd.BurntSpacePotatoSalad
+dpkg-deb -Zgzip -b com.tdmd.Ursula
