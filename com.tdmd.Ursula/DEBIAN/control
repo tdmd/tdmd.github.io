@@ -1,6 +1,6 @@
 Package: com.tdmd.Ursula
 Name: Ursula
-Version: 1.0.1
+Version: 1.0.2
 Architecture: iphoneos-arm
 Description: Ursula
 Depends: com.anemonetheming.anemone

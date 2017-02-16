@@ -14,7 +14,7 @@
     <key>TintColors</key>
     <dict>
         <key>UIStatusBarMapsCompassItemView</key>
-        <string>#ff9900</string>
+        <string>#ff3300</string>
     </dict>
 </dict>
 </plist>

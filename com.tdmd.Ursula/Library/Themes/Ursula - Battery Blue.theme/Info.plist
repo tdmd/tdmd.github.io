@@ -13,8 +13,8 @@
     </dict>
     <key>TintColors</key>
     <dict>
-        <key>UIStatusBarMapsCompassItemView</key>
-        <string>#ff9900</string>
+        <key>UIStatusBarBatteryItemView</key>
+        <string>#0080ff</string>
     </dict>
 </dict>
 </plist>
