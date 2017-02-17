@@ -14,7 +14,7 @@
     <key>TintColors</key>
     <dict>
         <key>UIStatusBarTimeItemView</key>
-        <string>#ff9900</string>
+        <string>#ff5eee</string>
     </dict>
 </dict>
 </plist>

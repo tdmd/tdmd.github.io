@@ -13,7 +13,7 @@
     </dict>
     <key>TintColors</key>
     <dict>
-        <key>UIStatusBarSignalStrengthItemView</key>
+        <key>UIStatusBarBreadcrumbItemView</key>
         <string>#0080ff</string>
     </dict>
 </dict>

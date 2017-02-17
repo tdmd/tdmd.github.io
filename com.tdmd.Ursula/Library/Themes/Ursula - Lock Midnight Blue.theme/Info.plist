@@ -13,8 +13,8 @@
     </dict>
     <key>TintColors</key>
     <dict>
-        <key>UIStatusBarTimeItemView</key>
-        <string>#ff9900</string>
+        <key>UIStatusBarLockItemView</key>
+        <string>#133977</string>
     </dict>
 </dict>
 </plist>
