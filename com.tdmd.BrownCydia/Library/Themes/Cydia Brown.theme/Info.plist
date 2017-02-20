@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PackageName</key>
+	<string>Cydia Brown</string>
+    <key>ColorFilter</key>
+    <dict>
+        <key>BundleIdentifiers</key>
+        <array>
+            <string>com.saurik.Cydia</string>
+        </array>
+        <key>policy</key>
+        <string>whitelist</string>
+    </dict>
+    <key>OverrideColors</key>
+    <dict>
+        <key>BarBackgroundColor</key>
+        <string>#261304</string>
+        <key>TableCellBackground</key>
+        <string>#f9e9db</string>
+        <key>TableCellSelectionBackground</key>
+        <string>#dbc3af</string>
+        <key>TableBackground</key>
+        <string>#f7f3ed</string>
+        <key>DarkTextColor</key>
+        <string>#e0bc96</string>
+        <key>BlackColor</key>
+        <string>#ccaa8e</string>
+    </dict>
+    <key>TintColors</key>
+    <dict>
+        <key>Global</key>
+        <string>#e09f82</string>
+        <key>UILabel</key>
+        <string>#ad6c4f</string>
+        <key>UITextField</key>
+        <string>#704532</string>
+        <key>UIToolbar</key>
+        <string>#e09f82</string>
+        <key>UIControl</key>
+        <string>#e09f82</string>
+        <key>UISegmentedControl</key>
+        <string>#e09f82</string>
+    </dict>
+    <key>TintFilter</key>
+    <dict>
+        <key>BundleIdentifiers</key>
+        <array>
+            <string>com.saurik.Cydia</string>
+        </array>
+        <key>policy</key>
+        <string>whitelist</string>
+    </dict>
+</dict>
+</plist>

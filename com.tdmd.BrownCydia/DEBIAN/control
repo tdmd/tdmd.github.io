@@ -1,0 +1,10 @@
+Package: com.tdmd.BrownCydia
+Name: Brown Cydia
+Version: 1.0
+Architecture: iphoneos-arm
+Description: An Anemone ColorTint theme for Cydia
+Depends: com.anemonetheming.anemone
+Maintainer: TDMD <tdmd@outlook.com>
+Author: TDMD <tdmd@outlook.com>
+Section: Themes
+Depiction: https://tdmd.github.io/Depictions/com.tdmd.BrownCydia/index.html
